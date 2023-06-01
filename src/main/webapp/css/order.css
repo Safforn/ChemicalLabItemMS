@@ -1,0 +1,99 @@
+.tb-stock {
+    position: relative;
+    float: left;
+}
+.tb-increase {
+    border-left: 0!important;
+    margin-right: 8px;
+}
+.tb-stock .tb-disable-reduce, .tb-stock .tb-disable-reduce:hover {
+    color: #ccc;
+    cursor: not-allowed;
+    background-color: #ededed;
+}
+.tb-stock a, .tb-stock a:hover {
+    display: block;
+    _display: inline;
+    *zoom: 1;
+    float: left;
+    width: 26px;
+    height: 26px;
+    border: 1px solid #ccc;
+    line-height: 26px;
+    padding: 0;
+    vertical-align: top;
+    overflow: hidden;
+    text-align: center;
+    background-color: #ededed;
+    overflow: hidden;
+}
+.tb-stock .tb-reduce {
+    border-right: 0!important;
+}
+.tb-stock input {
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 48px;
+    height: 26px;
+    font-size: 16px;
+    line-height: 26px;
+    text-align: center;
+    color: #666;
+    border: 1px solid #CCC;
+    outline: 0;
+    background: #FFF;
+    ime-mode: disabled;
+}
+.tb-text {
+    width: 100px;
+    border-radius: 0px!important;
+}
+.body {
+    margin: auto;
+    width: 70%;
+}
+
+.text {
+    float: left;
+    margin-left: 25%;
+    margin-top: 5%;
+    padding: 2px;
+}
+.text li {
+    padding: 7px;
+    margin-top: 20px;
+    text-align: right;
+    font-weight: bold;
+    height: 30px;
+}
+.input {
+    float: right;
+    margin-right: 40%;
+    margin-top: 5%;
+    padding: 2px;
+}
+.input input , .price{
+    border: 1px solid #ccc!important;
+    padding: 7px;
+    border-radius: 6px!important;
+    margin-top: 20px;
+    height: 30px;
+    width: 250px;
+}
+.weixin {
+    height: 80%;
+    width: 30%;
+    float: left;
+    margin: 10%;
+}
+
+.zhifubao {
+    height: 80%;
+    width: 30%;
+    float: right;
+    margin-top: 10%;
+}
+.btn .btn-default .buy {
+    margin-left: 10px;
+}

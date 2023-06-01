@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>后台管理</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+    <!-- 侧边栏 -->
+    <link rel="stylesheet" href="css/demo.css">
+    <link rel="stylesheet" href="css/font-awesome.css">
+    <link rel="stylesheet" href="css/sky-mega-menu.css">
+    <link rel="stylesheet" href="css/sky-mega-menu-red.css">
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!--日历图标样式-->
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/moment.js/2.24.0/moment-with-locales.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!--导入布局js，共享header和footer-->
+    <script type="text/javascript" src="js/include.js"></script>
+    <script src="js/getParameter.js"></script>
+</head>
+<body>
+<!--引入头部-->
+<div id="header"></div>
+
+<!--侧边栏-->
+<div class="body-left">
+    <aside>
+        <!-- mega menu -->
+        <ul class="sky-mega-menu sky-mega-menu-pos-left sky-mega-menu-anim-scale sky-mega-menu-response-to-switcher">
+            <li>
+                <a href="admin.html"><i class="fa fa-dashboard" id="goods-but"></i>货物详情</a>
+            </li>
+            <li>
+                <a href="admin_rent.html"><i class="fa fa-dashboard" id="rent-but"></i>租赁详情</a>
+            </li>
+            <li>
+                <a href="admin_buy.html"><i class="fa fa-thumb-tack" id="buy-but"></i>购买详情</a>
+            </li>
+            <li>
+                <a href="admin_addtowarehouse.html"><i class="fa fa-thumb-tack" id="add-but"></i>入库单详情</a>
+            </li>
+            <li>
+                <a href="admin_exwarehouse.html"><i class="fa fa-thumb-tack" id="ex-but"></i>出库单详情</a>
+            </li>
+        </ul>
+        <!--/ mega menu -->
+    </aside>
+</div>
+
+<div class="body-right-admin">
+    <!--租赁管理-->
+    <div class="body-right-table-rent">
+        <div class="fixed-table-toolbar">
+
+            <!-- 查看详细数据表单弹窗 -->
+            <form action="#" method="post" class="form-horizontal" role="form">
+                <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="checkModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                    ×
+                                </button>
+                                <h4 class="modal-title" id="checkModalLabel">
+                                    查看订单
+                                </h4>
+                            </div>
+
+                            <div class="modal-body" style="height: 100%;">
+
+                                <div class="form-group">
+                                    <label for="check_oid" class="col-sm-3 control-label">订单编号</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="check_oid" id="check_oid" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="check_gid" class="col-sm-3 control-label">货物编号</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="check_gid" id="check_gid" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="check_uid" class="col-sm-3 control-label">用户编号</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="check_uid" id="check_uid" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="check_type" class="col-sm-3 control-label">类型</label>
+                                    <div class="col-sm-7">
+                                        <select type="text" class="form-control" name="check_type" id="check_type" readonly="readonly">
+                                            <option value="1" hassubinfo="true">租赁</option>
+                                            <option value="0" hassubinfo="true">购买</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="check_expressid" class="col-sm-3 control-label">快递单号</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control"  name="check_expressid" id="check_expressid" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="check_location" class="col-sm-3 control-label">地址</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control"  name="check_location" id="check_location" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="check_username" class="col-sm-3 control-label">收件人姓名</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control"  name="check_username" id="check_username" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="check_usertelephone" class="col-sm-3 control-label">手机号</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control"  name="check_usertelephone" id="check_usertelephone" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="check_starttime" class="col-sm-3 control-label">开始时间</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="check_starttime" id="check_starttime" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="check_renttime" class="col-sm-3 control-label">租赁时长</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="check_renttime" id="check_renttime" readonly="readonly">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="check_num" class="col-sm-3 control-label">数量</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="check_num" id="check_num" readonly="readonly">
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal -->
+                </div>
+            </form>
+
+        </div>
+
+        <div>
+            <table id="myTable" class="table table-hover"></table>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+<script type="text/javascript">
+    function load() {
+        $('#myTable').bootstrapTable("destroy").bootstrapTable({
+            url: '/order/searchOrder',
+            dataType: "json",
+            method: 'get',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: true,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            pageNumber: 1,                      //初始化加载第一页，默认第一页
+            pageSize: 5,                        //每页的记录行数（*）
+            pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            uniqueId: "oid",                   //每一行的唯一标识，一般为主键列
+            showToggle: false,                  //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                  //是否显示父子表
+            idField: 'oid',                     //指定主键
+            singleSelect: true,                 //开启单选,想要获取被选中的行数据必须要有该参数
+            responseHandler:function (res) {
+                res.data = eval('(' + res.data + ')')
+                $("#myTable").bootstrapTable('load', {data:res.data})
+                return res.data;
+            },
+            //得到查询的参数
+            queryParams: function (params) {
+                //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                var query_params = {
+                    rows: params.limit,                         //页面大小
+                    page: (params.offset / params.limit) + 1,   //页码
+                    sort: params.sort,      //排序列名
+                    sortOrder: params.order, //排位命令（desc，asc）
+
+                    //查询框中的参数传递给后台
+                    search_kw: $('#search-keyword').val(), // 请求时向服务端传递的参数
+                };
+                return query_params;
+            },
+            columns: [
+                {
+                    checkbox:true  //第一列显示复选框
+                }, {
+                    field: 'oid',  //返回数据rows数组中的每个字典的键名与此处的field值要保持一致
+                    title: '订单编号',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'gid',
+                    title: '商品编号',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'uid',
+                    title: '购买人编号',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'type',
+                    title: '类型',
+                    align: 'center',
+                    valign: 'middle'
+                },{
+                    field: 'expressid',
+                    title: '快递单号',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'location',
+                    title: '地址',
+                    align: 'center',
+                    valign: 'middle'
+                },{
+                    field: 'username',
+                    title: '收件人',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'usertelephone',
+                    title: '手机号',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'starttime',
+                    title: '出售时间',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'renttime',
+                    title: '租赁时长',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'num',
+                    title: '数量',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'operate',
+                    title: '操作',
+                    width: 120,
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: actionFormatter,
+                }],
+        });
+    }  // end function load()
+
+
+    //操作栏的格式化,value代表当前单元格中的值，row代表当前行数据，index表示当前行的下标
+    function actionFormatter(value, row, index) {
+        var id = index;
+        var data = JSON.stringify(row);
+        var result = "";
+        result += "<a href='javascript:;' class='btn btn-xs green' onclick=\"ViewById('" + row + "','" + id + "')\" " +
+            "title='查看'><span class='glyphicon glyphicon-search'></span></a>";
+        return result;
+    }
+
+    //查看货物详情弹窗
+    function ViewById(row, index){
+        var data = JSON.stringify($("#myTable").bootstrapTable('getData')); //获取全部数据
+        var data_json = JSON.parse(data); //data_json和data_json2一样都是json对象
+        console.log(data_json);
+        $("#check_oid").val(data_json[index].oid);
+        $("#check_gid").val(data_json[index].gid);
+        $("#check_uid").val(data_json[index].uid);
+        $("#check_type").val(data_json[index].type);
+        $("#check_expressid").val(data_json[index].expressid);
+        $("#check_location").val(data_json[index].location);
+        $("#check_username").val(data_json[index].username);
+        $("#check_usertelephone").val(data_json[index].usertelephone);
+        $("#check_starttime").val(data_json[index].starttime);
+        $("#check_renttime").val(data_json[index].renttime);
+        $("#check_num").val(data_json[index].num);
+
+        //弹出修改表单（非模态框）
+        $('#checkModal').modal('show');
+    }
+
+    // 选择时间日期
+    $(function () {
+
+        $.get('order/searchOrder', {type:0}, function (res) {
+            console.log('buy')
+            console.log(res)
+            res.data = eval('(' + res.data + ')')
+            $("#myTable").bootstrapTable('load', {data:res.data})
+        })
+
+        load();
+
+        $('#datetimepicker2').datetimepicker({
+            format: 'YYYY-MM-DD hh:mm',
+            locale: moment.locale('zh-cn')
+        });
+        //隐藏列
+        $("#myTable").bootstrapTable('hideColumn','type');
+        $("#myTable").bootstrapTable('hideColumn','renttime');
+        $("#myTable").bootstrapTable('hideColumn','expressid');
+
+    });
+
+</script>
+
+</html>

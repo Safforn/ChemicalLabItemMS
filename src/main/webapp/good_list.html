@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>货物搜索</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" href="css/search.css">
+    <script src="js/jquery-3.3.1.js"></script>
+    <script>
+        $(function () {
+            var search = location.search;
+            // 用=号切割字符串，结果[?cid,5]，取到第二个值,即序号
+            var gname = search.split("=")[1]
+            console.log(gname)
+            if (gname) {
+                //url 解码
+                gname = window.decodeURIComponent(gname);
+            }
+            // 当页面加载完成后，调用load方法，发送ajax请求，加载数据
+            load(gname);
+        });
+
+
+        // 页码加载触发和点击分页中的页码触发，因此放到外面比较合适
+        function load(gname, currentPage) {
+            //发送ajax请求，请求route/pageQuery,传递cid
+            $.get("goods/pageQuery", {gname: gname, currentPage: currentPage}, function (pb) {
+                console.log(pb)
+                // 解析pageBean中的数据，将其展示到页面上
+                // 1. 展示的第一部分：分页工具条
+                //1.1 展示总页码和总记录数
+                $("#totalPage").html(pb.totalPage);
+                $("#totalCount").html(pb.totalCount);
+                //1.2 展示分页页码详细情况
+                var lis = "";
+                var fristPage = '<li><a href="javascript:load()">首页</a></li>';
+                // 上一页
+                var beforeNum = pb.currentPage - 1;
+                if (beforeNum <= 0) {
+                    beforeNum = 1;
+                }
+                var beforePage = '<li class="threeword"><a href="javascript:load(' +gname + ', ' + beforeNum + ')">上一页</a></li>';
+
+                lis += fristPage;
+                lis += beforePage;
+
+                /* 需要达到前五后四的效果 baidu.com
+                   1.一共展示10个页码，能够达到前5后4的效果
+                   2.如果前边不够5个，后边补齐10个
+                   3.如果后边不足4个，前边补齐10个
+               */
+                var begin; //开始位置
+                var end; // 结束位置
+                // 1. 要显示10个页码
+                if (pb.totalPage < 10) {
+                    // 总页码不够10页
+                    begin = 1;
+                    end = pb.totalPage;
+                } else {
+                    // 总页码超过10页
+                    begin = pb.currentPage - 5;
+                    end = pb.currentPage + 4;
+                    // 2.如果前边不够5个，后边补齐10个
+                    if (begin < 1) {
+                        begin = 1;
+                        end = begin + 9;
+                    }
+                    //3.如果后边不足4个，前边补齐10个
+                    if (end > pb.totalPage) {
+                        end = pb.totalPage;
+                        begin = end - 9;
+                    }
+                }
+
+                for (var i = begin; i <= end; i++) {
+                    var li;
+                    // 当前页码是否等于i
+                    if (pb.currentPage == i) {
+                        li = '<li class="curPage"><a href="javascript:load(null,' + i + ')">' + i + '</a></li>';
+                    } else {
+                        // 创建页码的li
+                        // li = '<li onclick="javascript:load(' + cid + ',null,' + i + ')"><a href="javascript:load(0)">' + i + '</a></li>';
+                        li = '<li ><a href="javascript:load(null,' + i + ')">' + i + '</a></li>';
+
+                    }
+                    lis += li;
+                }
+
+                var nextPageNum = pb.currentPage + 1;
+                var lastPageNum = pb.totalPage;
+
+
+                if (nextPageNum >= pb.totalPage) {
+                    nextPageNum = pb.totalPage;
+                }
+                var nextPage = '<li class="threeword"><a href="javascript:load(null,' + nextPageNum + ')">下一页</a></li>';
+                var lastPage = '<li><a href="javascript:load(null,' + lastPageNum + ')">末页</a></li>';
+                lis += nextPage;
+                lis += lastPage;
+
+                // 将lis内容设置到ul中
+                $("#pageNum").html(lis);
+
+                //2. 展示的第二部分：列表数据的展示
+                var good_lis = "";
+                for (var i = 0; i < pb.list.length; i++) {
+                    //获取{rid：1,"gname": "【旅展 半价特惠 重走丝路•漫游宁夏 双飞4天】",}
+                    var good = pb.list[i];
+                    var li_inGood = ' </li>\n' +
+                        ' <li>\n' +
+                        '     <div class="img"><img src="' + good.picture + '" style="width:299px"></div>\n' +
+                        '     <div class="text1">\n' +
+                        '         <p>' + good.name + '</p>\n' +
+                        '         <br/>\n' +
+                        '         <p>' + good.description + '</p>\n' +
+                        '     </div>\n' +
+                        '     <div class="price">\n' +
+                        '         <p class="price_num">\n' +
+                        '             <span>&yen;</span>\n' +
+                        '             <span>' + good.price + '</span>\n' +
+                        '         </p>\n' +
+                        '         <p><a href=' + '"goods_detail.html?gid='+ good.gid + '">查看详情</a></p>\n' +
+                        '     </div>\n' +
+                        ' </li>';
+                    good_lis += li_inGood;
+                }
+                $("#goods").html(good_lis);
+                // 定位到页面的顶部
+                window.scrollTo(0, 0);
+            });
+        }
+    </script>
+</head>
+<body>
+<!--引入头部-->
+<div id="header"></div>
+<div class="page_one">
+    <div class="contant">
+        <div class="crumbs">
+            <img src="images/search.png" alt="">
+            <p><span>搜索结果</span></p>
+        </div>
+        <div class="xinxi clearfix">
+            <div class="left">
+                <div class="header">
+                    <span>商品信息</span>
+                    <span class="jg">价格</span>
+                </div>
+                <ul id="goods">
+
+
+
+
+                </ul>
+                <div class="page_num_inf">
+                    <i></i> 共
+                    <span id="totalPage"></span>页<span id="totalCount"></span>条
+                </div>
+                <div class="pageNum">
+                    <ul id="pageNum">
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--引入头部-->
+<div id="footer"></div>
+<!--导入布局js，共享header和footer-->
+<script type="text/javascript" src="js/include.js"></script>
+</body>
+
+</html>

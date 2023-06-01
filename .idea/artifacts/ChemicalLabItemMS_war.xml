@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ChemicalLabItemMS:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>ChemicalLabItemMS</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="ChemicalLabItemMS-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="ChemicalLabItemMS:war exploded" />
+    </root>
+  </artifact>
+</component>

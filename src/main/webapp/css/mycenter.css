@@ -1,0 +1,30 @@
+.body-right-user {
+    width: 82%;
+    height: 80%;
+    float: right;
+    margin-top: 3%;
+}
+.my-text {
+    width: 30%;
+    float: left;
+}
+.my-li{
+    float: right;
+}
+.my-li li{
+    padding-bottom: 22px;
+}
+.my-input {
+    width: 70%;
+    float: right;
+}
+.my-form {
+    float: left;
+}
+.my-form input {
+    border: #8c8c8c solid 1px;
+    margin-bottom: 22px;
+}
+.my-update {
+    border: #8c8c8c solid 2px;
+}
