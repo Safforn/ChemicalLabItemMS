@@ -414,7 +414,7 @@
 <script type="text/javascript">
     function load() {
         $('#myTable').bootstrapTable("destroy").bootstrapTable({
-            url: '/admin/search',               //从后台获取数据时，可以是json数组，也可以是json对象
+            url: 'admin/search',               //从后台获取数据时，可以是json数组，也可以是json对象
             dataType: "json",
             method: 'get',                      //请求方式（*）
             toolbar: '#toolbar',                //工具按钮用哪个容器
@@ -621,8 +621,8 @@
             var keyword = $('#search-keyword').val();
             $.post("admin/searchByKeyword",{keyword: keyword},function (data){
                 console.log(data.data);
-                $('#search-keyword').val('');
-                $('#myTable').bootstrapTable('refresh', {url: '/admin/searchByKeyword'});
+                //$('#search-keyword').val('');
+                $('#myTable').bootstrapTable('refresh', {url: 'admin/searchByKeyword'});
             })
         })
 

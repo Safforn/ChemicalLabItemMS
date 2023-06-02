@@ -1,50 +1,66 @@
 package domain;
 
-import java.io.Serializable;
+import org.joda.time.DateTime;
 
+import java.io.Serializable;
 /**
- * 用户实体类
+ *用户实体类
  */
-public class User implements Serializable {
-    private String uid;//用户id
-    private String name;//用户名，账号
+public class _User_ implements Serializable {
+
+    private String user_id;//(PK)
+    private String account;//账号
+    private String email;//电子邮件
     private String password;//密码
-    private String telephone;//手机号
+    private String name;//姓名
+    private String phonenumber;//电话号码
 
     /**
-     * 无参构造方法
+     *无参构造方法
      */
-    public User() {
+    public _User_() {
     }
 
     /**
      * 有参构方法
-     * @param uid
-     * @param name
+     * @param user_id
+     * @param account
+     * @param email
      * @param password
-     * @param telephone
+     * @param name
+     * @param phonenumber
      */
-    public User(String uid, String name, String password, String telephone) {
-        this.uid = uid;
-        this.name = name;
+    public _User_(String user_id, String account, String email, String password, String name, String phonenumber) {
+        this.user_id = user_id;
+        this.account = account;
+        this.email = email;
         this.password = password;
-        this.telephone = telephone;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
         this.name = name;
+        this.phonenumber = phonenumber;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -55,12 +71,19 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getTelephone() {
-        return telephone;
+    public String getName() {
+        return name;
     }
 
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
 }
