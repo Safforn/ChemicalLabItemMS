@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  *用户实体类
  */
-public class _User_ implements Serializable {
+public class User implements Serializable {
 
     private String user_id;//(PK)
     private String account;//账号
@@ -18,7 +18,7 @@ public class _User_ implements Serializable {
     /**
      *无参构造方法
      */
-    public _User_() {
+    public User() {
     }
 
     /**
@@ -30,7 +30,7 @@ public class _User_ implements Serializable {
      * @param name
      * @param phonenumber
      */
-    public _User_(String user_id, String account, String email, String password, String name, String phonenumber) {
+    public User(String user_id, String account, String email, String password, String name, String phonenumber) {
         this.user_id = user_id;
         this.account = account;
         this.email = email;
