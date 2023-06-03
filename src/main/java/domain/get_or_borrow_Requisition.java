@@ -25,8 +25,7 @@ public class get_or_borrow_Requisition implements Serializable {
     /**
      *无参构造方法
      */
-    public get_or_borrow_Requisition() {
-    }
+    public get_or_borrow_Requisition() {}
 
     /**
      * 有参构方法
