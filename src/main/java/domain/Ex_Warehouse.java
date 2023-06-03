@@ -4,15 +4,15 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 /**
- *用户实体类
+ *出库实体类
  */
 public class Ex_Warehouse implements Serializable {
-    private String ex_warehouse_id;//(PK)
-    private String ex_order_id;
-    private String warehouse_id;//(FK)
-    private String requisition_id;//(FK)
-    private String notes;
-    private DateTime date;
+    private String ex_warehouse_id;//出库登记表id(PK)
+    private String ex_order_id;//出库物品清单id
+    private String warehouse_id;//仓库编号id(FK)
+    private String requisition_id;//领用/借用申请单id(FK)
+    private String notes;//备注
+    private DateTime date;//出库日期
 
     /**
      *无参构造方法

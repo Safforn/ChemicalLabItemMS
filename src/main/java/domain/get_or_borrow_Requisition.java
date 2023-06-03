@@ -6,23 +6,21 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- *用户实体类
+ *领用/借用申请实体类
  */
 public class get_or_borrow_Requisition implements Serializable {
-    private String get_or_borrow_requisition_id;//(PK)
-    private String get_or_borrow_order_id;//
+    private String get_or_borrow_requisition_id;//领用/借用申请表id(PK)
+    private String get_or_borrow_order_id;//领用/借用申请物品清单id
     private String applicant_user_id;//申领人(FK)
     private String approval_user_id;//审批人(FK)
     private String purpose;//领用用途
-    private String position;//
-    private String waste_reason;//
-    private DateTime requisition_date;//
-    private Date borrow_date;
-    private Date return_date;
-    private int state;//
-    private String type;
+    private DateTime requisition_date;//申请提交时间
+    private Date borrow_date;//借用/领用日期
+    private Date return_date;//归还日期
+    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
+    private String type;//类型（借用/领用）
     private String approval_opinions;//审批意见
-    private DateTime approval_date;//
+    private DateTime approval_date;//审批的时间
 
     /**
      *无参构造方法
@@ -37,8 +35,6 @@ public class get_or_borrow_Requisition implements Serializable {
      * @param applicant_user_id
      * @param approval_user_id
      * @param purpose
-     * @param waste_reason
-     * @param position
      * @param state
      * @param type
      * @param borrow_date
@@ -47,14 +43,12 @@ public class get_or_borrow_Requisition implements Serializable {
      * @param approval_opinions
      * @param approval_date
      */
-    public get_or_borrow_Requisition(String get_or_borrow_requisition_id, String get_or_borrow_order_id, String applicant_user_id, String approval_user_id, String purpose, String position, String waste_reason, DateTime requisition_date, Date borrow_date, Date return_date, int state, String type, String approval_opinions, DateTime approval_date) {
+    public get_or_borrow_Requisition(String get_or_borrow_requisition_id, String get_or_borrow_order_id, String applicant_user_id, String approval_user_id, String purpose, DateTime requisition_date, Date borrow_date, Date return_date, int state, String type, String approval_opinions, DateTime approval_date) {
         this.get_or_borrow_requisition_id = get_or_borrow_requisition_id;
         this.get_or_borrow_order_id = get_or_borrow_order_id;
         this.applicant_user_id = applicant_user_id;
         this.approval_user_id = approval_user_id;
         this.purpose = purpose;
-        this.position = position;
-        this.waste_reason = waste_reason;
         this.requisition_date = requisition_date;
         this.borrow_date = borrow_date;
         this.return_date = return_date;
@@ -102,22 +96,6 @@ public class get_or_borrow_Requisition implements Serializable {
 
     public void setPurpose(String purpose) {
         this.purpose = purpose;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getWaste_reason() {
-        return waste_reason;
-    }
-
-    public void setWaste_reason(String waste_reason) {
-        this.waste_reason = waste_reason;
     }
 
     public DateTime getRequisition_date() {

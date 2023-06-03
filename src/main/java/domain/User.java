@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    private String user_id;//(PK)
+    private String user_id;//用户id(PK)
     private String account;//账号
     private String email;//电子邮件
     private String password;//密码

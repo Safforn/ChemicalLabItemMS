@@ -2,13 +2,13 @@ package domain;
 import java.io.Serializable;
 
 /**
- *用户实体类
+ *仓库实体类
  */
 public class Warehouse implements Serializable {
     private String warehouse_id;//仓库id（PK）
     private String warehouse_keeper_user_id;//仓库管理员id（FK）
     private String name;//姓名
-    private int level;//等级
+    private int level;//火灾危险性类别等级（甲-乙-丙-丁-戊-普通）甲最高（管理最严格） 戊最低 普通仓库存放其他一般物品
 
    /**
     *无参构造方法

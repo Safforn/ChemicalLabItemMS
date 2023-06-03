@@ -2,11 +2,11 @@ package domain;
 
 import java.io.Serializable;
 /**
- *用户实体类
+ *催还单实体类
  */
 public class Reminder implements Serializable {
-     private String id;//(PK)
-     private String get_or_borrow_requisition_id;//(FK)
+     private String id;//催还单id(PK)
+     private String get_or_borrow_requisition_id;//借用申请表id(FK)
 
     /**
      *无参构造方法

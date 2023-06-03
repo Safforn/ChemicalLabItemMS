@@ -3,13 +3,13 @@ package domain;
 import java.io.Serializable;
 
 /**
- *用户实体类
+ *身份表实体类
  */
 public class Identity implements Serializable {
 
-    private String identity_id;//(PK)
-    private String user_id;//(FK)
-    private int identity;
+    private String identity_id;//身份表id(PK)
+    private String user_id;//用户id(FK)
+    private int identity;//身份（审批人员、实验室管理员、仓库管理员、领用借用申请人、废弃物管理员）
 
     /**
      *无参构造方法

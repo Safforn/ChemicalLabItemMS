@@ -4,21 +4,21 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 /**
- *用户实体类
+ *废弃物申请实体类
  */
 public class Waste_Requisition implements Serializable {
 
-    private String waste_requisition_id;//(PK)
-    private String waste_order_id;//
+    private String waste_requisition_id;//废弃申请表id(PK)
+    private String waste_order_id;//废弃物品清单id
     private String requisition_user_id;//申请人(FK)
     private String approval_user_id;//审批人(FK)
     private String waste_user_id;//废弃物管理员(FK)
-    private String waste_reason;//
-    private String position;//
-    private int state;//
-    private DateTime requisition_date;//
+    private String waste_reason;//废弃原因
+    private String position;//废弃物存放位置
+    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
+    private DateTime requisition_date;//申请提交时间
     private String approval_opinions;//审批意见
-    private DateTime approval_date;//
+    private DateTime approval_date;//审批时间
 
     /**
      *无参构造方法

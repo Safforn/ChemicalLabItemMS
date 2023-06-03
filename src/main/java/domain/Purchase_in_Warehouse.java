@@ -2,20 +2,19 @@ package domain;
 import java.io.Serializable;
 import org.joda.time.DateTime;
 /**
- *用户实体类
+ *采购入库实体类
  */
 public class Purchase_in_Warehouse implements Serializable {
-    private String purchase_in_warehouse_id;//入库登记表id（PK）
+    private String purchase_in_warehouse_id;//采购入库登记表id（PK）
     private String warehouse_id;//仓库编号（FK）
-    private String purchase_in_order_id;//采购清单表头，用于归类该清单内采购的物品行
-    private String purchase_order_id;//被入库的采购清单id（FK）
+    private String purchase_in_order_id;//采购入库物品清单的表头，用于归类标识该清单内采购入库的物品行
+    private String purchase_order_id;//被入库的采购物品清单id（FK）
     private String notes;//备注
     private DateTime date;//入库时间
     /**
      *无参构造方法
      */
-    public Purchase_in_Warehouse() {
-    }
+    public Purchase_in_Warehouse() {}
 
     /**
      * 有参构方法

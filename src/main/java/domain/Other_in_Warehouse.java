@@ -4,14 +4,14 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 /**
- *用户实体类
+ *其他入库实体类
  */
 public class Other_in_Warehouse implements Serializable {
-    private String other_in_warehouse_id;//(PK)
-    private String other_in_order_id;
-    private String warehouse_id;//(FK)
-    private String notes;
-    private DateTime date;
+    private String other_in_warehouse_id;//其他入库登记表id(PK)
+    private String other_in_order_id;//其他入库物品清单
+    private String warehouse_id;//仓库编号id(FK)
+    private String notes;//备注
+    private DateTime date;//入库时间
 
     /**
      *无参构造方法

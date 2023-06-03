@@ -3,15 +3,15 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 
 /**
- *用户实体类
+ *借用入库实体类
  */
 public class Borrow_in_Warehouse implements Serializable {
-    private String borrow_in_warehouse_id;//(PK)
-    private String borrow_in_order_id;
-    private String warehouse_id;//(FK)
-    private String get_or_borrow_order_id;//(FK)
-    private String notes;
-    private DateTime date;
+    private String borrow_in_warehouse_id;//借用入库登记表id(PK)
+    private String borrow_in_order_id; //借用入库物品清单id
+    private String warehouse_id;//仓库编号id(FK)
+    private String get_or_borrow_order_id;//领用借用申请清单id(FK)
+    private String notes; //备注
+    private DateTime date; //入库日期
 
     /**
      *无参构造方法

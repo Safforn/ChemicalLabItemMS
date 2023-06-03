@@ -3,21 +3,21 @@ package domain;
 import java.io.Serializable;
 import java.util.Date;
 /**
- *用户实体类
+ *物品实体类
  */
 public class Object implements Serializable {
 
-    private String object_id;//(PK)
-    private String name;//
-    private String specification;//
+    private String object_id;//物品id(PK)
+    private String name;//物品名称
+    private String specification;//规格型号
     private float quantity;//数量
-    private String unit;//单位
-    private String classification;//
-    private float price ;//
+    private String unit;//包装单位
+    private String classification;//分类
+    private float price ;//单价
     private Date expiration_time;//过期时间
-    private float lower_limit;//
-    private float upper_limit;//
-    private String notes;//
+    private float lower_limit;//警戒下限
+    private float upper_limit;//警戒上限
+    private String notes;//备注
 
     /**
      *无参构造方法

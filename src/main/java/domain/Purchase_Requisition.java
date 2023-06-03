@@ -5,19 +5,19 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 
 /**
- *用户实体类
+ *采购申请实体类
  */
 public class Purchase_Requisition implements Serializable {
 
-    private String purchase_requsition_id;//(PK)
-    private String purchase_order_id;//
+    private String purchase_requisition_id;//采购申请表id(PK)
+    private String purchase_order_id;//采购申请物品清单id
     private String approval_user_id;//审批人id（FK）
     private String requisition_user_id;//申请人id（FK）
-    private int state;//
+    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
     private String purpose;//申请用途
-    private DateTime requisition_date;//
+    private DateTime requisition_date;//申请提交时间
     private String approval_opinions;//审批意见
-    private DateTime approval_date;//
+    private DateTime approval_date;//审批时间
 
 
     /**
@@ -28,7 +28,7 @@ public class Purchase_Requisition implements Serializable {
 
     /**
      * 有参构方法
-     * @param purchase_requsition_id
+     * @param purchase_requisition_id
      * @param purchase_order_id
      * @param state
      * @param purpose
@@ -38,8 +38,8 @@ public class Purchase_Requisition implements Serializable {
      * @param requisition_user_id
      * @param approval_user_id
      */
-    public Purchase_Requisition(String purchase_requsition_id, String purchase_order_id, int state, String purpose, DateTime requisition_date, String approval_opinions, DateTime approval_date, String requisition_user_id, String approval_user_id) {
-        this.purchase_requsition_id = purchase_requsition_id;
+    public Purchase_Requisition(String purchase_requisition_id, String purchase_order_id, int state, String purpose, DateTime requisition_date, String approval_opinions, DateTime approval_date, String requisition_user_id, String approval_user_id) {
+        this.purchase_requisition_id = purchase_requisition_id;
         this.purchase_order_id = purchase_order_id;
         this.state = state;
         this.purpose = purpose;
@@ -50,12 +50,12 @@ public class Purchase_Requisition implements Serializable {
         this.approval_user_id = approval_user_id;
     }
 
-    public String getPurchase_requsition_id() {
-        return purchase_requsition_id;
+    public String getPurchase_requisition_id() {
+        return purchase_requisition_id;
     }
 
-    public void setPurchase_requsition_id(String purchase_requsition_id) {
-        this.purchase_requsition_id = purchase_requsition_id;
+    public void setPurchase_requisition_id(String purchase_requisition_id) {
+        this.purchase_requisition_id = purchase_requisition_id;
     }
 
     public String getPurchase_order_id() {
