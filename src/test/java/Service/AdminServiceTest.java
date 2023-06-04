@@ -2,9 +2,7 @@ package Service;
 
 import domain.Order;
 import org.junit.Test;
-import service.AdminService;
-import service.impl.AdminServiceImpl;
-import util.UuidUtil;
+import service.service_temp.AdminService;
 
 public class AdminServiceTest {
     private AdminService adminService = new AdminServiceImpl();

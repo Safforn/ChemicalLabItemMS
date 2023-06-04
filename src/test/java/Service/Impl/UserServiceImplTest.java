@@ -4,9 +4,7 @@ package Service.Impl;
 import domain.Order;
 import domain.User;
 import org.junit.Test;
-import service.UserService;
-import service.impl.UserServiceImpl;
-import util.UuidUtil;
+import service.service_temp.UserService;
 
 public class UserServiceImplTest {
     UserService service = new UserServiceImpl();

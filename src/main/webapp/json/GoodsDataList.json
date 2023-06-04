@@ -2,12 +2,12 @@
 	"gid":"1",
 	"name":"手机",
 	"type":"数码",
-	"price":2999.0,
+	"price":9999.0,
 	"picture":"images/shuma_1.jpg",
-	"num":8,
+	"num":0,
 	"description":"智能手机拍照游戏官方正品",
 	"location":"货架A",
-	"rentorbuy":2
+	"rentorbuy":null
 },
 {
 	"gid":"10",
@@ -48,7 +48,7 @@
 	"type":"数码",
 	"price":59.0,
 	"picture":"images/shuma_5.jpg",
-	"num":15,
+	"num":7,
 	"description":"静音无声键盘机械",
 	"location":"货架A",
 	"rentorbuy":2
@@ -85,6 +85,17 @@
 	"description":" 27英寸曲面显示器高清",
 	"location":"货架A",
 	"rentorbuy":2
+},
+{
+	"gid":"18",
+	"name":"硬盘",
+	"type":"数码",
+	"price":100.0,
+	"picture":null,
+	"num":10,
+	"description":"硬盘",
+	"location":"货架A",
+	"rentorbuy":22
 },
 {
 	"gid":"2",
@@ -173,4 +184,26 @@
 	"description":"衬衫短袖女设计感小众",
 	"location":"货架B",
 	"rentorbuy":2
+},
+{
+	"gid":"good1",
+	"name":"ewr",
+	"type":"食品",
+	"price":101.0,
+	"picture":null,
+	"num":101,
+	"description":"阿八八八",
+	"location":"书包",
+	"rentorbuy":0
+},
+{
+	"gid":"goods011",
+	"name":"甜甜花酿鸡",
+	"type":"食品",
+	"price":100.0,
+	"picture":null,
+	"num":5,
+	"description":"好吃不贵",
+	"location":"肚子里",
+	"rentorbuy":12
 }]

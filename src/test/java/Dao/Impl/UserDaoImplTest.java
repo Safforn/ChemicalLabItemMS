@@ -1,8 +1,8 @@
 package Dao.Impl;
 
 
-import dao.UserDao;
-import dao.impl.UserDaoImpl;
+import dao.dao_temp.UserDao;
+import dao.dao_temp.impl.UserDaoImpl;
 import domain.User;
 import org.junit.Test;
 

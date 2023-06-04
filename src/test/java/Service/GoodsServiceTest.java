@@ -2,8 +2,7 @@ package Service;
 
 import domain.Goods;
 import org.junit.Test;
-import service.GoodsService;
-import service.impl.GoodsServiceImpl;
+import service.service_temp.GoodsService;
 
 import static org.junit.Assert.*;
 

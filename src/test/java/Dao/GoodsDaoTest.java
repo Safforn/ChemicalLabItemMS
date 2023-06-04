@@ -1,7 +1,7 @@
 package Dao;
 
-import dao.GoodsDao;
-import dao.impl.GoodsDaoImpl;
+import dao.dao_temp.GoodsDao;
+import dao.dao_temp.impl.GoodsDaoImpl;
 import domain.Goods;
 import org.junit.Test;
 

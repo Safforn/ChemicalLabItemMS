@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+
+    <title>采购申请表</title>
+    <meta name="keywords" >
+    <meta name="description">
+
+    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+
+    <link href="css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=2.2.0" rel="stylesheet">
+
+</head>
+
+<body>
+<div id="wrapper">
+    <!-- 侧边栏 -->
+    <div id="left_sidebar"></div>
+
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <!--头部-->
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="form_basic.html#"><i class="fa fa-bars"></i> </a>
+                    <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                        <div class="form-group">
+                            <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
+                        </div>
+                    </form>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message"><a href="index.html" title="返回首页"><i class="fa fa-home"></i></a></span>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                            <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="img/a7.jpg">
+                                    </a>
+                                    <div class="media-body">
+                                        <small class="pull-right">46小时前</small>
+                                        <strong>小四</strong> 项目已处理完结
+                                        <br>
+                                        <small class="text-muted">3天前 2014.11.8</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="img/a4.jpg">
+                                    </a>
+                                    <div class="media-body ">
+                                        <small class="pull-right text-navy">25小时前</small>
+                                        <strong>国民岳父</strong> 这是一条测试信息
+                                        <br>
+                                        <small class="text-muted">昨天</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="mailbox.html">
+                                        <i class="fa fa-envelope"></i>  <strong> 查看所有消息</strong>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                            <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <li>
+                                <a href="mailbox.html">
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> 您有16条未读消息
+                                        <span class="pull-right text-muted small">4分钟前</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="profile.html">
+                                    <div>
+                                        <i class="fa fa-qq fa-fw"></i> 3条新回复
+                                        <span class="pull-right text-muted small">12分钟钱</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="notifications.html">
+                                        <strong>查看所有 </strong>
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="login.html">
+                            <i class="fa fa-sign-out"></i> 退出
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+        <!--标题-->
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>采购申请表</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="index.html">主页</a>
+                    </li>
+                    <li>
+                        <a>表单</a>
+                    </li>
+                    <li>
+                        <strong>采购表单</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+        <!--表单本体-->
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title" >
+                            <label>采购表单</label>
+                            <div class="ibox-tools">
+<!--右上角的收起-->
+<!--                                    <a class="collapse-link">-->
+<!--                                        <i class="fa fa-chevron-up"></i>-->
+<!--                                    </a>-->
+<!--右上角的小扳手-->
+<!--                                    <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">-->
+<!--                                        <i class="fa fa-wrench"></i>-->
+<!--                                    </a>-->
+<!--右上角的小扳手选项-->
+<!--                                    <ul class="dropdown-menu dropdown-user">-->
+<!--                                        <li><a href="form_basic.html#">选项1</a>-->
+<!--                                        </li>-->
+<!--                                        <li><a href="form_basic.html#">选项2</a>-->
+<!--                                        </li>-->
+<!--                                    </ul>-->
+<!--右上角的叉-->
+<!--                                    <a class="close-link">-->
+<!--                                        <i class="fa fa-times"></i>-->
+<!--                                    </a>-->
+                            </div>
+                        </div>
+
+                        <!--填 采购申请 基本信息的表单-->
+                        <div class="ibox-content">
+                            <form method="get" class="form-horizontal">
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">采购申请表编号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" disabled="" placeholder="不可编辑，提交时系统自动生成" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">采购物品清单编号</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" disabled="" placeholder="不可编辑，提交时系统自动生成" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">申请人</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" placeholder="直接提取登录状态" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">采购用途</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control input-lg m-b" name="saysths" rows="3"
+                                                  cols="30" wrap="soft" style="resize:none;"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">申请提交日期</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" placeholder="后台生成" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">申请当前状态</label>
+
+                                    <div class="col-lg-10">
+                                        <input type="text" disabled="" placeholder="初始未提交，后续后台控制" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">审批人</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text" disabled="" placeholder="后台生成" class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">审批意见</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control input-lg m-b" name="saysths" rows="3"
+                                                  cols="30" wrap="soft" style="resize:none;"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">审批日期</label>
+
+                                    <div class="col-sm-10">
+                                        <input type="text"  placeholder="后台生成" class="form-control">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!--填 采购物品信息的可编辑表单-->
+                        <div class="ibox-title">
+                            <h5>采购物品清单</h5>
+                            <!-- 折叠表单按钮 -->
+<!--                            <div class="ibox-tools">  -->
+<!--                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>-->
+<!--                            </div>-->
+                        </div>
+
+                        <div class="ibox-content">
+                            <div class="">
+                                <!--fnClickAddRow()函数在本页最下面-->
+                                <a onclick="fnClickAddRow();" href="javascript:void(0);" class="btn btn-primary ">添加行</a>
+                            </div>
+                            <table class="table table-striped table-bordered table-hover " id="editable">
+                                <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>采购物品名称</th>
+                                    <th>数量</th>
+                                    <th>单位</th>
+                                    <th>备注</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!--留了5行的示例数据，可删除-->
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="center"></td>
+                                    <td class="center"></td>
+                                </tr>
+                                <tr class="gradeC">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="center"></td>
+                                    <td class="center"></td>
+                                </tr>
+                                <tr class="gradeA">
+                                    <td>Trident</td>
+                                    <td>Internet Explorer 5.5
+                                    </td>
+                                    <td>Win 95+</td>
+                                    <td class="center">5.5</td>
+                                    <td class="center">A</td>
+                                </tr>
+                                <tr class="gradeA">
+                                    <td>Trident</td>
+                                    <td>Internet Explorer 6
+                                    </td>
+                                    <td>Win 98+</td>
+                                    <td class="center">6</td>
+                                    <td class="center">A</td>
+                                </tr>
+                                <tr class="gradeA">
+                                    <td>Trident</td>
+                                    <td>Internet Explorer 7</td>
+                                    <td>Win XP SP2+</td>
+                                    <td class="center">7</td>
+                                    <td class="center">A</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <!-- 底部按钮组 -->
+                        <div class="ibox-content">
+                            <form method="get" class="form-horizontal">
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-4 col-sm-offset-2" style="margin-left: 1000px">
+                                        <button id="btn-save-requisition" class="btn btn-primary" type="submit">保存</button>
+                                        <button id="btn-submit-requisition" class="btn btn-primary" type="submit">提交</button>
+                                        <button id="btn-cancel-requisition" class="btn btn-white" type="submit">取消</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js?v=3.4.0"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="js/plugins/jeditable/jquery.jeditable.js"></script>
+
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="js/hplus.js?v=2.2.0"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+
+<!-- iCheck -->
+<script src="js/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+    });
+</script>
+
+<!-- Page-Level Scripts -->
+<script>
+    $(document).ready(function () {
+        $('.dataTables-example').dataTable();
+
+        /* Init DataTables */
+        var oTable = $('#editable').dataTable();
+
+        /* Apply the jEditable handlers to the table */
+        oTable.$('td').editable('../example_ajax.php', {
+            "callback": function (sValue, y) {
+                var aPos = oTable.fnGetPosition(this);
+                oTable.fnUpdate(sValue, aPos[0], aPos[1]);
+            },
+            "submitdata": function (value, settings) {
+                return {
+                    "row_id": this.parentNode.getAttribute('id'),
+                    "column": oTable.fnGetPosition(this)[2]
+                };
+            },
+
+            "width": "90%",
+            "height": "100%"
+        });
+
+
+    });
+
+    // 让 点击的该行 可编辑
+    function fnClickAddRow() {
+        $('#editable').dataTable().fnAddData([
+            "New ID",
+            "New Name",
+            "New num",
+            "New unit",  // 单位
+            "New notes"]);
+    }
+</script>
+
+<!-- 导入left_sidebar -->
+<script>
+    $(function () {
+        $.get("left_sidebar.html",function (data) {
+            $("#left_sidebar").html(data);
+        });
+    });
+</script>
+
+</body>
+
+</html>

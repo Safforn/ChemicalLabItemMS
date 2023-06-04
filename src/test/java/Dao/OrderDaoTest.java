@@ -1,7 +1,7 @@
 package Dao;
 
-import dao.OrderDao;
-import dao.impl.OrderDaoImpl;
+import dao.dao_temp.OrderDao;
+import dao.dao_temp.impl.OrderDaoImpl;
 import domain.Order;
 import org.junit.Test;
 import util.UuidUtil;
