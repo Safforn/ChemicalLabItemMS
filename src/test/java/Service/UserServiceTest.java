@@ -1,8 +1,7 @@
 package Service;
 
 import org.junit.jupiter.api.Test;
-import service.UserService;
-import service.impl.UserServiceImpl;
+import service.service_temp.UserService;
 
 import static org.junit.jupiter.api.Assertions.*;
 

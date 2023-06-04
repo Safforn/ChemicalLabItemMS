@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>后台管理</title>
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <!-- 侧边栏 -->
+    <link rel="stylesheet" href="../css/demo.css">
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <link rel="stylesheet" href="../css/sky-mega-menu.css">
+    <link rel="stylesheet" href="../css/sky-mega-menu-red.css">
+
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!--日历图标样式-->
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/moment.js/2.24.0/moment-with-locales.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+
+    <!--导入布局js，共享header和footer-->
+    <script type="text/javascript" src="../js/include.js"></script>
+    <script src="../js/getParameter.js"></script>
+
+</head>
+
+<body>
+<!--引入头部-->
+<div id="header"></div>
+
+<!--侧边栏-->
+<div class="body-left">
+    <aside>
+        <!-- mega menu -->
+        <ul class="sky-mega-menu sky-mega-menu-pos-left sky-mega-menu-anim-scale sky-mega-menu-response-to-switcher">
+            <li>
+                <a href="admin.html"><i class="fa fa-dashboard" id="goods-but"></i>货物详情</a>
+            </li>
+            <li>
+                <a href="admin_rent.html"><i class="fa fa-dashboard" id="rent-but"></i>租赁详情</a>
+            </li>
+            <li>
+                <a href="admin_buy.html"><i class="fa fa-thumb-tack" id="buy-but"></i>购买详情</a>
+            </li>
+            <li>
+                <a href="admin_addtowarehouse.html"><i class="fa fa-thumb-tack" id="add-but"></i>入库单详情</a>
+            </li>
+            <li>
+                <a href="admin_exwarehouse.html"><i class="fa fa-thumb-tack" id="ex-but"></i>出库单详情</a>
+            </li>
+        </ul>
+        <!--/ mega menu -->
+    </aside>
+</div>
+
+
+<div class="body-right-admin">
+    <!--货物管理-->
+    <div class="body-right-table-goods">
+        <div class="fixed-table-toolbar">
+
+
+            <div>
+                <div class="pull-left search" style="float: left; margin-left: 2%">
+                    <input id="search-keyword" class="form-control" placeholder="请输入货物名称或类型查询">
+
+                </div>
+
+                <div class="columns columns-left btn-group pull-left" style="float: left">
+                    <button id="search-button" type="button" class="btn btn-primary"
+                            style="background-color: #ff884a; border-color: #f4e0d0">查询</button>
+                </div>
+            </div>
+
+
+            <!-- 按钮触发模态框 -->
+            <div class="columns columns-right btn-group pull-right" style="margin-right: 2%">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"
+                        style="background-color: #ff884a; border-color: #f4e0d0">新增货物</button>
+            </div>
+
+        <!-- 新增数据表单弹窗 -->
+        <form action="admin.html" method="post" class="form-horizontal" role="form" id="addGoodsForm">
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel">
+                                新增货物
+                            </h4>
+                        </div>
+                        <div class="modal-body" style="height: 100%;">
+
+                            <div class="form-group">
+                                <label for="gid" class="col-sm-3 control-label">货物编号</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="gid" id="gid"
+                                           placeholder="请输入货物编号">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name" class="col-sm-3 control-label">货物名称</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="name" id="name"
+                                           placeholder="请输入货物名称">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="type" class="col-sm-3 control-label">货物类型</label>
+                                <div class="col-sm-7">
+                                    <select data-placeholder="选择类型..." class="form-control" name="type" id="type">
+                                        <option value="">请选择货物类型</option>
+                                        <option value="数码" hassubinfo="true">数码</option>
+                                        <option value="食品" hassubinfo="true">食品</option>
+                                        <option value="衣服" hassubinfo="true">衣服</option>
+                                        <option value="其他" hassubinfo="true">其他</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="price" class="col-sm-3 control-label">货物价格</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control"  name="price" id="price"
+                                           placeholder="请输入货物价格">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="num" class="col-sm-3 control-label">货物数量</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control"  name="num" id="num"
+                                           placeholder="请输入货物数量">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="description" class="col-sm-3 control-label">说明</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="description" id="description"
+                                           placeholder="请输入货物说明">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="location" class="col-sm-3 control-label">存储位置</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="location" id="location"
+                                           placeholder="请输入货物存储位置">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rentorbuy" class="col-sm-3 control-label">交易方式</label>
+                                <div class="col-sm-7">
+                                    <select class="form-control" name="rentorbuy" id="rentorbuy">
+                                        <option value="">data-placeholder="请选择交易方式"</option>
+                                        <option value="11" hassubinfo="true">不可租赁-不可出售</option>
+                                        <option value="12" hassubinfo="true">不可租赁-可出售</option>
+                                        <option value="21" hassubinfo="true">可租赁-不可出售</option>
+                                        <option value="22" hassubinfo="true">可租赁-可出售</option>
+
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <input type="submit" class="btn btn-primary" id="submit" value="保存"/>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- 修改数据表单弹窗 -->
+        <form method="post" class="form-horizontal" role="form" id="updateGoodsForm">
+            <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4 class="modal-title" id="updateModalLabel">
+                                修改项目
+                            </h4>
+                        </div>
+
+                        <div class="modal-body" style="height: 100%;">
+
+                            <div class="form-group">
+                                <label for="update_gid" class="col-sm-3 control-label">货物编号</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="update_gid" id="update_gid" readonly="readonly"
+                                           placeholder="请输入货物编号">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="update_name" class="col-sm-3 control-label">货物名称</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="update_name" id="update_name"
+                                           placeholder="请输入货物名称">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="update_type" class="col-sm-3 control-label">货物类型</label>
+                                <div class="col-sm-7">
+                                    <select data-placeholder="选择类型..." class="form-control" name="update_type" id="update_type">
+                                        <option value="数码" hassubinfo="true">数码</option>
+                                        <option value="食品" hassubinfo="true">食品</option>
+                                        <option value="衣服" hassubinfo="true">衣服</option>
+                                        <option value="其他" hassubinfo="true">其他</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="update_price" class="col-sm-3 control-label">货物价格</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control"  name="update_price" id="update_price"
+                                           placeholder="请输入货物价格">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="update_picture" class="col-sm-3 control-label">图片地址</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control"  name="update_picture" id="update_picture"
+                                           placeholder="请输入图片地址">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="update_num" class="col-sm-3 control-label">货物数量</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control"  name="update_num" id="update_num"
+                                           placeholder="请输入货物数量">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="update_description" class="col-sm-3 control-label">说明</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="update_description" id="update_description"
+                                           placeholder="请输入货物说明">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="update_location" class="col-sm-3 control-label">存储位置</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="update_location" id="update_location"
+                                           placeholder="请输入货物存储位置">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="update_rentorbuy" class="col-sm-3 control-label">交易方式</label>
+                                <div class="col-sm-7">
+                                    <select class="form-control" name="update_rentorbuy" id="update_rentorbuy">
+                                        <option value="11" hassubinfo="true">不可租赁-不可出售</option>
+                                        <option value="12" hassubinfo="true">不可租赁-可出售</option>
+                                        <option value="21" hassubinfo="true">可租赁-不可出售</option>
+                                        <option value="22" hassubinfo="true">可租赁-可出售</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--   end modal-body  -->
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <input type="submit" class="btn btn-primary" id="updateGoods" value="更新"/>
+                        </div>
+
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+        </form>
+
+        <!-- 查看详细数据表单弹窗 -->
+        <form action="#" method="post" class="form-horizontal" role="form">
+            <div class="modal fade" id="checkModal" tabindex="-1" role="dialog" aria-labelledby="checkModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                ×
+                            </button>
+                            <h4 class="modal-title" id="checkModalLabel">
+                                查看项目
+                            </h4>
+                        </div>
+
+                        <div class="modal-body" style="height: 100%;">
+
+                            <div class="form-group">
+                                <label for="check_gid" class="col-sm-3 control-label">货物编号</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="check_gid" id="check_gid" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="check_name" class="col-sm-3 control-label">货物名称</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="check_name" id="check_name" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="check_type" class="col-sm-3 control-label">货物类型</label>
+                                <div class="col-sm-7">
+                                    <select data-placeholder="选择类型..." class="form-control" name="check_type" id="check_type" disabled="disabled">
+                                        <option value="数码" hassubinfo="true">数码</option>
+                                        <option value="食品" hassubinfo="true">食品</option>
+                                        <option value="衣服" hassubinfo="true">衣服</option>
+                                        <option value="其他" hassubinfo="true">其他</option>>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="check_price" class="col-sm-3 control-label">货物价格</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control"  name="check_price" id="check_price" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="check_picture" class="col-sm-3 control-label">图片地址</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control"  name="check_picture" id="check_picture" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="check_num" class="col-sm-3 control-label">货物数量</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control"  name="check_num" id="check_num" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="check_description" class="col-sm-3 control-label">说明</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="check_description" id="check_description" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="check_location" class="col-sm-3 control-label">存储位置</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="check_location" id="check_location" readonly="readonly">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="check_rentorbuy" class="col-sm-3 control-label">交易方式</label>
+                                <div class="col-sm-7">
+                                    <select class="form-control" name="check_rentorbuy" id="check_rentorbuy" disabled="disabled">
+                                        <option value="11" hassubinfo="true">不可租赁-不可出售</option>
+                                        <option value="12" hassubinfo="true">不可租赁-可出售</option>
+                                        <option value="21" hassubinfo="true">可租赁-不可出售</option>
+                                        <option value="22" hassubinfo="true">可租赁-可出售</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal -->
+            </div>
+        </form>
+
+    </div>
+
+    <div>
+        <table id="myTable" class="table table-hover"></table>
+    </div>
+
+</div>
+</div>
+</body>
+
+<script type="text/javascript">
+    function load() {
+        $('#myTable').bootstrapTable("destroy").bootstrapTable({
+            url: 'admin/search',               //从后台获取数据时，可以是json数组，也可以是json对象
+            dataType: "json",
+            method: 'get',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: true,                        //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: true,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            pageNumber: 1,                      //初始化加载第一页，默认第一页
+            pageSize: 5,                        //每页的记录行数（*）
+            pageList: [5, 10, 25, 50],          //可供选择的每页的行数（*）
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            uniqueId: "gid",                    //每一行的唯一标识，一般为主键列
+            showToggle: false,                  //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                  //是否显示父子表
+            idField: 'gid',                     //指定主键
+            singleSelect: true,                 //开启单选,想要获取被选中的行数据必须要有该参数
+            responseHandler:function (res) {
+                console.log(res)
+                res.data = eval('(' + res.data + ')')
+                $("#myTable").bootstrapTable('load', {data:res.data})
+                return res.data;
+            },
+            //得到查询的参数
+            queryParams: function (params) {
+                //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+                var query_params = {
+                    rows: params.limit,                         //页面大小
+                    page: (params.offset / params.limit) + 1,   //页码
+                    sort: params.sort,      //排序列名
+                    sortOrder: params.order, //排位命令（desc，asc）
+
+                    //查询框中的参数传递给后台
+                    search_kw: $('#search-keyword').val(), // 请求时向服务端传递的参数
+                };
+                return query_params;
+            },
+            columns: [
+                {
+                    checkbox:true  //第一列显示复选框
+                }, {
+                    field: 'gid',  //返回数据rows数组中的每个字典的键名与此处的field值要保持一致
+                    title: '编号',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'name',
+                    title: '名称',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'type',
+                    title: '类型',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'price',
+                    title: '价格',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'picture',
+                    title: '图片地址',
+                    align: 'center',
+                    valign: 'middle'
+                },{
+                    field: 'num',
+                    title: '数量',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'description',
+                    title: '货物说明',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'location',
+                    title: '地点',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'rentorbuy',
+                    title: '租赁或购买',
+                    align: 'center',
+                    valign: 'middle'
+                }, {
+                    field: 'operate',
+                    title: '操作',
+                    width: 120,
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: actionFormatter,
+                }],
+        });
+    }  // end function load()
+
+    //操作栏的格式化,value代表当前单元格中的值，row代表当前行数据，index表示当前行的下标
+    function actionFormatter(value, row, index) {
+        var id = index;
+        var data = JSON.stringify(row);
+        var result = "";
+        result += "<a href='javascript:;' class='btn btn-xs green' onclick=\"ViewById('" + row + "','" + id + "')\" " +
+                    "title='查看'><span class='glyphicon glyphicon-search'></span></a>";
+        result += "<a href='javascript:;' class='btn btn-xs blue' onclick=\"EditViewById('" + row + "','" + id + "')\" " +
+                    "title='编辑'><span class='glyphicon glyphicon-pencil'></span></a>";
+        result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"DeleteById('" + row + "','" + id + "')\" " +
+                    "title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
+        return result;
+    }
+
+    //getData方法获取全部页面数据后，将data转为json对象，使用index当前行号作为下标获取对应数据
+    function EditViewById(row, index){
+        var data = JSON.stringify($("#myTable").bootstrapTable('getData')); //获取全部数据
+        var data_json = JSON.parse(data); //data_json和data_json2一样都是json对象
+        //console.log(data_json);
+        $("#update_gid").val(data_json[index].gid);
+        $("#update_name").val(data_json[index].name);
+        $("#update_type").val(data_json[index].type);
+        $("#update_price").val(data_json[index].price);
+        $("#update_picture").val(data_json[index].picture);
+        $("#update_num").val(data_json[index].num);
+        $("#update_description").val(data_json[index].description);
+        $("#update_location").val(data_json[index].location);
+        $("#update_rentorbuy").val(data_json[index].rentorbuy);
+
+        //弹出修改表单（非模态框）
+        $('#updateModal').modal('show')
+    }
+
+    //查看货物详情弹窗
+    function ViewById(row, index){
+        var data = JSON.stringify($("#myTable").bootstrapTable('getData')); //获取全部数据
+        var data_json = JSON.parse(data); //data_json和data_json2一样都是json对象
+        console.log(data_json);
+        $("#check_gid").val(data_json[index].gid);
+        $("#check_name").val(data_json[index].name);
+        $("#check_type").val(data_json[index].type);
+        $("#check_price").val(data_json[index].price);
+        $("#check_picture").val(data_json[index].picture);
+        $("#check_num").val(data_json[index].num);
+        $("#check_description").val(data_json[index].description);
+        $("#check_location").val(data_json[index].location);
+        $("#check_rentorbuy").val(data_json[index].rentorbuy);
+
+        //弹出修改表单（非模态框）
+        $('#checkModal').modal('show');
+    }
+
+    //点击操作的x按钮删除当前行的数据
+    function DeleteById(row, index){
+        var data = JSON.stringify($("#myTable").bootstrapTable('getData')); //获取全部数据
+        var data_json = JSON.parse(data); //data_json和data_json2一样都是json对象
+        //console.log(data_json);
+        var gid = data_json[index].gid;
+        var obj = $("#myTable");
+        var ids = $.map(obj.bootstrapTable('getSelections'), function (row) {
+            return row.ID;
+        });
+        //obj.bootstrapTable('removeByUniqueId', gid);
+        obj.bootstrapTable('remove', { field:'gid', values: gid });  //删除一行
+
+        $.post("admin/deleteGoods", {gid : gid}, function () {  //通知后端删除数据
+            load();  // 重新加载表格页面
+        });
+    }
+
+
+    // 入口函数
+    $(function () {
+
+        load();
+
+        // 新增货物 提交按钮
+        var submitWork = document.getElementById("submit");
+        submitWork.onclick = function () {
+            $.post("admin/addGoods", $("#addGoodsForm").serialize(), function () {
+                load();
+            })
+        }
+
+        String.prototype.removeSubString = function (s) {
+            // 删除字符串当中的指定子串
+            let splitArray = this.split(s)
+            return splitArray.join('')
+        }
+
+        $("#updateGoods").click(function () {
+            $.post("admin/updateGoods", $("#updateGoodsForm").serialize().removeSubString("update_"), function () {
+                alert('  ')
+                load()
+            })
+        })
+        $('#datetimepicker2').datetimepicker({
+            format: 'YYYY-MM-DD hh:mm',
+            locale: moment.locale('zh-cn')
+        });
+
+        $("#search-button").click(function () {
+            var keyword = $('#search-keyword').val();
+            $.post("admin/searchByKeyword",{keyword: keyword},function (data){
+                console.log(data.data);
+                //$('#search-keyword').val('');
+                $('#myTable').bootstrapTable('refresh', {url: 'admin/searchByKeyword'});
+            })
+        })
+
+
+        $("#myTable").bootstrapTable('hideColumn','picture');
+
+        $("#myTable").bootstrapTable('hideColumn','expressid');
+
+    });
+
+
+
+</script>
+
+</html>

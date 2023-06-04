@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>订单</title>
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <!-- 侧边栏 -->
+    <link rel="stylesheet" href="../css/demo.css">
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <link rel="stylesheet" href="../css/sky-mega-menu.css">
+    <link rel="stylesheet" href="../css/sky-mega-menu-red.css">
+    <link rel="stylesheet" href="../css/order.css">
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-table/1.11.1/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery-3.3.1.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+    <!--导入布局js，共享header和footer-->
+    <script type="text/javascript" src="../js/include.js"></script>
+    <script src="../js/getParameter.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        var price;
+        function getOrderType() {
+            var search = location.search;
+            var type = search.split("=")[1].split('&')[0]
+            //type = 0:购买 type = 1:租赁
+            if (type == 0) {
+                $("#lease").css("display", "none")
+                $("#leaseInput").css("display", "none")
+            }
+
+        }
+
+        function checkname() {
+            var name = $("#name").val()
+            if (name == null || name == '') {
+                $("#name").css("border", "1px solid red")
+            }
+            return name
+        }
+        function checkaddress() {
+            var address = $("#address").val()
+            if (address == null || address == '') {
+                $("#address").css("border", "1px solid red")
+            }
+            return address
+        }
+        function checkphone() {
+            var phone = $("#phone").val()
+            var reg = /^\d{11}$/;
+            if (!reg.test(phone)) {
+                $("#phone").css("border", "1px solid red")
+            }
+            return phone
+        }
+        function countPrice(num) {
+            var search = location.search;
+            var type = search.split("=")[1].split('&')[0]
+            if (type == 0) {
+                var pric = num * price;
+                $("#price").val(pric)
+            }
+            else {
+                var day = parseInt($("#endtime").val())
+                alert(day)
+                alert(typeof day)
+                var pric = num * price * 0.05 * day;
+                $("#price").val(pric)
+            }
+        }
+        function checknum() {
+            var num = $("#num").val()
+            if (num == null || num == '' || num <= 0) {
+                $("#num").css("border", "1px solid red")
+            }
+            countPrice(parseInt(num));
+
+            return num
+        }
+        $(function () {
+            getOrderType();
+            var search = location.search;
+            $("#gid").val(search.split('=')[2])
+            $("#type").val(search.split('=')[1].split('&')[0])
+            $.get('goods/getPrice', {gid:search.split('=')[2]}, function (pri) {
+                price = pri.data;
+            })
+            // $("#moneyForm").submit(function () {
+            $("#commit").click(function (){
+                if (checkaddress() && checkname() && checknum() && checkphone()) {
+                    console.log($("#orderForm").serialize())
+                    $.post("user/leaseOrBuy", $("#orderForm").serialize(), function (data) {
+                        alert(data.errorMsg)
+                        console.log(data)
+                        if (data.flag) {
+                            // location.href = "goods_detail.html?gid=" + $("#gid").val()
+                        }
+                    })
+                }
+                else {
+                    alert("请输入合法信息")
+                }
+            });
+
+            $("#username").blur(checkname)
+            $("#address").blur(checkaddress)
+            $("#num").blur(checknum)
+            $("#phone").blur(checkphone)
+
+        })
+    </script>
+</head>
+<body>
+    <!--引入头部-->
+    <div id="header"></div>
+    <div class="body">
+
+        <div class="text">
+            <ul>
+                <li>货物id :</li>
+                <li>收货人姓名 :</li>
+                <li>收货地址 :</li>
+                <li>手机号 :</li>
+                <li>数量 :</li>
+                <div id="lease">
+                    <li>开始时间 :</li>
+                    <li>租赁时间 :</li>
+                </div>
+                <li>当前价格 :</li>
+
+            </ul>
+        </div>
+        <div class="input">
+            <form id="orderForm"  action="" method="post" accept-charset="utf-8">
+                <input id="gid" name="gid" type="text" autocomplete="off" readonly="readonly"></br>
+                <input id="name" name="username" type="text" placeholder="请输入收货人姓名" autocomplete="off"></br>
+                <input id="address" name="location" type="text" placeholder="请输入收货地址" autocomplete="off"></br>
+                <input id="phone" name="usertelephone" type="text" placeholder="请输入手机号" autocomplete="off"></br>
+                <input id="num" name="num" type="number" placeholder="请选择数量" autocomplete="off"></br>
+<!--                            <span class="tb-stock" id="J_Stock">-->
+<!--                                <a href="javascript:reduce(0);" title="减1" hidefocus class="tb-reduce">-</a>-->
+<!--                                <input id="J_IptAmount" type="text" class="tb-text" value="1"   maxlength="8" title="请输入购买量"/>-->
+<!--                                <a href="javascript:add(0);" hidefocus class="tb-increase" title="加1">+</a>件-->
+<!--                            </span></br>-->
+                <div id="leaseInput">
+                    <input id="starttime" name="starttime" type="date"placeholder="请选择开始时间" autocomplete="off"></br>
+                    <input id="endtime" name="renttime" type="number"placeholder="请选择租赁时长" autocomplete="off"></br>
+<!--                    <div id="leacePrice" class="price"></div>-->
+                    <input id="type" name="type" hidden="hidden">
+                </div>
+
+                <input id="price" name="price" type="text" readonly="readonly"><br>
+                <div class="submit_btn">
+                    <input type="button" class="submit_btn" value="提交订单" data-toggle="modal" data-target="#myModal" id="submit_btn">
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 新增数据表单弹窗 -->
+    <form id="moneyForm" method="post" class="form-horizontal" role="form">
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            ×
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            请扫描二维码付款
+                        </h4>
+                    </div>
+                    <div class="modal-body" style="height: 300px;">
+                        <div class="weixin">
+                            <img src="images/weixin.jpg" alt="微信二维码">
+                        </div>
+                        <div class="zhifubao">
+                            <img src="images/zhifubao.jpg" alt="支付宝二维码">
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="commit">提交订单</button>
+<!--                        <input type="submit" class="btn btn-primary"value="提交订单"/>-->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+    <div id="footer"></div>
+</body>
+</html>

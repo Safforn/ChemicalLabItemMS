@@ -1,8 +1,5 @@
 $(function () {
-    $.get("header.html",function (data) {
-        $("#header").html(data);
-    });
-    $.get("footer.html",function (data) {
-        $("#footer").html(data);
+    $.get("left_sidebar.html",function (data) {
+        $("#left_sidebar").html(data);
     });
 });
