@@ -174,11 +174,11 @@
                                     <div class="col-sm-10">
 
                                         <div class="radio" style="display: inline-block">
-                                            <label><input type="radio" checked="true" value="option1" id="type-use" name="optionsRadios">
+                                            <label><input type="radio" checked="true" value="option1" id="type-use" name="optionsRadios" onclick="use_checked()">
                                                 领用</label>
                                         </div>
                                         <div class="radio" style="display: inline-block; margin-left: 20px;">
-                                            <label><input type="radio" value="option2" id="type-borrow" name="optionsRadios">
+                                            <label><input type="radio" value="option2" id="type-borrow" name="optionsRadios" onclick="borrow_checked()">
                                                 借用</label>
                                         </div>
                                     </div>
@@ -346,17 +346,28 @@
 <script>
     $(function () {
 
-        $("#approval-1").css("display", "none")
-        $("#approval-2").css("display", "none")
-        $("#approval-3").css("display", "none")
+
+
+        // $("#approval-1").css("display", "none")
+        // $("#approval-2").css("display", "none")
+        // $("#approval-3").css("display", "none")
 
         $.get("left_sidebar.html",function (data) {
             $("#left_sidebar").html(data);
         });
 
-
+        use_checked();
+        // borrow_checked();
 
     });
+
+    function use_checked() {
+        $("#end_time").attr("disabled", true)
+    }
+    function borrow_checked() {
+        $("#end_time").attr("disabled", false)
+    }
+
 
     $(document).ready(function () {
         $('.i-checks').iCheck({

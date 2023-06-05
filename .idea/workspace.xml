@@ -10,23 +10,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="更新了实体类的注释">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_purchase_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_purchase_in_warehouse.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Object.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Item.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Object_Entry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Object_Entry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/domain_temp/ResultInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/domain_temp/ResultInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="LAZ" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -60,6 +68,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/webapp/front-end-res-lib" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.17" />
@@ -79,6 +89,17 @@
     </key>
   </component>
   <component name="RunManager" selected="Maven.ChemicalLabItemMS">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ChemicalLabItemMS" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />

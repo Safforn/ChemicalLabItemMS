@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  *物品实体类
  */
-public class Object implements Serializable {
+public class Item implements Serializable {
 
     private String object_id;//物品id(PK)
     private String name;//物品名称
@@ -22,7 +22,7 @@ public class Object implements Serializable {
     /**
      *无参构造方法
      */
-    public Object() {
+    public Item() {
     }
 
     /**
@@ -39,7 +39,7 @@ public class Object implements Serializable {
      * @param expiration_time
      * @param notes
      */
-    public Object(String object_id, String name, float lower_limit, float upper_limit, String specification, String classification, float price, float quantity, String unit, Date expiration_time, String notes) {
+    public Item(String object_id, String name, float lower_limit, float upper_limit, String specification, String classification, float price, float quantity, String unit, Date expiration_time, String notes) {
         this.object_id = object_id;
         this.name = name;
         this.lower_limit = lower_limit;
