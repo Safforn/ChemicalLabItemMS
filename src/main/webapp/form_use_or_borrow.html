@@ -340,17 +340,31 @@
 
 <!-- iCheck -->
 <script src="js/plugins/iCheck/icheck.min.js"></script>
+
+
+<!-- 导入left_sidebar -->
 <script>
+    $(function () {
+
+        $("#approval-1").css("display", "none")
+        $("#approval-2").css("display", "none")
+        $("#approval-3").css("display", "none")
+
+        $.get("left_sidebar.html",function (data) {
+            $("#left_sidebar").html(data);
+        });
+
+
+
+    });
+
     $(document).ready(function () {
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
             radioClass: 'iradio_square-green',
         });
     });
-</script>
-
 <!-- Page-Level Scripts -->
-<script>
     $(document).ready(function () {
         $('.dataTables-example').dataTable();
 
@@ -388,29 +402,6 @@
     }
 </script>
 
-<!-- 导入left_sidebar -->
-<script>
-    $(function () {
-        $.get("left_sidebar.html",function (data) {
-            $("#left_sidebar").html(data);
-        });
-
-            <!-- 获取当前用户身份，
-                 有审批权限则设置为 “”
-                 没有则设置为“none”
-            -->
-        $.get("user/findOne", {}, function (data) {
-            var msg = "欢迎回来 " + data.name;
-
-            $("#approval-1").css("display", "none")
-            $("#approval-2").css("display", "none")
-            $("#approval-3").css("display", "none")
-
-        })
-
-    });
-
-</script>
 
 </body>
 
