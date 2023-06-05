@@ -326,6 +326,16 @@
 <script src="js/plugins/pace/pace.min.js"></script>
 
 <!-- Page-Level Scripts -->
+
+<!-- 导入left_sidebar -->
+<script>
+  $(function () {
+    $.get("left_sidebar.html",function (data) {
+      $("#left_sidebar").html(data);
+    });
+  });
+</script>
+
 <script>
   $(document).ready(function () {
     $('.dataTables-example').dataTable();
@@ -389,16 +399,6 @@
   setInterval("document.getElementById('dateTime').innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');", 1000);
 </script>
 
-
-
-<!-- 导入left_sidebar -->
-<script>
-  $(function () {
-    $.get("left_sidebar.html",function (data) {
-      $("#left_sidebar").html(data);
-    });
-  });
-</script>
 
 </body>
 

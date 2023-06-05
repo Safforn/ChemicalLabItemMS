@@ -9,9 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="修改表单页面">
+    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="更新了实体类的注释">
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_purchase_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_purchase_in_warehouse.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="LAZ" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -55,12 +60,6 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/webapp/front-end-res-lib" />
-    <property name="node.js.detected.package.eslint" value="true" />
-    <property name="node.js.detected.package.tslint" value="true" />
-    <property name="node.js.path.for.package.eslint" value="project" />
-    <property name="node.js.path.for.package.tslint" value="project" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.17" />
@@ -224,6 +223,7 @@
       <workItem from="1685771714405" duration="5544000" />
       <workItem from="1685777299983" duration="306000" />
       <workItem from="1685897456684" duration="1052000" />
+      <workItem from="1685924081606" duration="921000" />
     </task>
     <task id="LOCAL-00001" summary="添加GoodsService及其实现，实体类Date-&gt;String">
       <created>1655902015448</created>
@@ -246,21 +246,7 @@
       <option name="project" value="LOCAL" />
       <updated>1685777451475</updated>
     </task>
-    <task id="LOCAL-00004" summary="合并master">
-      <created>1685921563268</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1685921563268</updated>
-    </task>
-    <task id="LOCAL-00005" summary="修改表单页面">
-      <created>1685924558356</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1685924558356</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,9 +268,7 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="添加GoodsService及其实现，实体类Date-&gt;String" />
     <MESSAGE value="更新了实体类的注释" />
-    <MESSAGE value="合并master" />
-    <MESSAGE value="修改表单页面" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改表单页面" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新了实体类的注释" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
