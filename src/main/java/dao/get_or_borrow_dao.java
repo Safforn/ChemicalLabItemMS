@@ -47,5 +47,5 @@ public interface get_or_borrow_dao {
      * 审批人查询所有 已提交 未审批 的申请单
      * @return
      */
-    List<get_or_borrow_Requisition> searchTableWhichApproved();
+    List<get_or_borrow_Requisition> searchTableByState(int state);
 }
