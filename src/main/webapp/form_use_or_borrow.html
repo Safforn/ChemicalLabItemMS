@@ -195,8 +195,9 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">领用/借用用途</label>
                                     <div class="col-sm-10">
-                                        <textarea id="purpose" class="form-control input-lg m-b" name="saysths" rows="3"
-                                                  cols="30" wrap="soft" style="resize:none;"></textarea>
+                                        <input type="text" id="purpose" class="form-control input-lg m-b" name="saysths" rows="3"
+                                                  cols="30" wrap="soft" style="resize:none;">
+
                                     </div>
                                 </div>
 
@@ -340,8 +341,69 @@
 
 <!-- iCheck -->
 <script src="js/plugins/iCheck/icheck.min.js"></script>
+<script>
+    //领用用途校验
+    let purposeElement = document.getElementById("purpose");
+    purposeElement.onblur = checkPurpose;
+    function checkPurpose() {
+        let purpose = purposeElement.value.trim();
+        var purpose_reg = /^[\s\S]*.*[^\s][\s\S]*$/;
+        var flag = purpose_reg.test(purpose);
+        if (flag) {
+            //账号合法
+            purposeElement.style.border = "";
+        } else {
+            //账号非法,加一个红色边框
+            purposeElement.style.border = "1px solid red";
+        }
+        return flag;
+    }
 
+    //开始日期校验
+    let startElement = document.getElementById("start_time");
+    startElement.onblur = checkStart;
+    function checkStart() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //January is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {dd = '0' + dd;}
+        if (mm < 10) {mm = '0' + mm;}
+        var today = yyyy + '-' + mm + '-' + dd;
+        //alert(today);
+        let start_time = startElement.value.trim();
+        //alert(start_time);
+        var start_time_reg =/^[\s\S]*.*[^\s][\s\S]*$/;
+        var flag = start_time_reg.test(start_time);
+        if (flag&&start_time>=today) {
+            //账号合法
+            startElement.style.border = "";
+        } else {
+            //账号非法,加一个红色边框
+            startElement.style.border = "1px solid red";
+        }
+        return flag;
+    }
 
+    //结束日期校验
+    let endElement = document.getElementById("end_time");
+    endElement.onblur = checkEnd;
+    function checkEnd() {
+        let start_time = startElement.value.trim();
+        let end_time = endElement.value.trim();
+        var end_time_reg =/^[\s\S]*.*[^\s][\s\S]*$/;
+        var flag = end_time_reg.test(end_time);
+        if (flag&&start_time<=end_time) {
+            //账号合法
+            endElement.style.border = "";
+        } else {
+            //账号非法,加一个红色边框
+            endElement.style.border = "1px solid red";
+        }
+        return flag;
+    }
+
+</script>
 <!-- 导入left_sidebar -->
 <script>
     $(function () {
