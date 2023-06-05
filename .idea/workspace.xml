@@ -9,9 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="合并master">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/webContexts.xml" afterDir="false" />
+    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="修改表单页面">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" afterDir="false" />
     </list>
@@ -255,7 +253,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685921563268</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="修改表单页面">
+      <created>1685924558356</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1685924558356</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -278,7 +283,8 @@
     <MESSAGE value="添加GoodsService及其实现，实体类Date-&gt;String" />
     <MESSAGE value="更新了实体类的注释" />
     <MESSAGE value="合并master" />
-    <option name="LAST_COMMIT_MESSAGE" value="合并master" />
+    <MESSAGE value="修改表单页面" />
+    <option name="LAST_COMMIT_MESSAGE" value="修改表单页面" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

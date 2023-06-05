@@ -394,19 +394,22 @@
         $.get("left_sidebar.html",function (data) {
             $("#left_sidebar").html(data);
         });
+
+            <!-- 获取当前用户身份，
+                 有审批权限则设置为 “”
+                 没有则设置为“none”
+            -->
+        $.get("user/findOne", {}, function (data) {
+            var msg = "欢迎回来 " + data.name;
+
+            $("#approval-1").css("display", "none")
+            $("#approval-2").css("display", "none")
+            $("#approval-3").css("display", "none")
+
+        })
+
     });
 
-    $(function () {
-        <!-- 获取当前用户身份，
-             有审批权限则设置为 “”
-             没有则设置为“none”
-        -->
-
-        document.getElementById("approval-1").style.display = "";
-        document.getElementById("approval-2").style.display = "";
-        document.getElementById("approval-3").style.display = "";
-
-    })
 </script>
 
 </body>
