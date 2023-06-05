@@ -23,21 +23,50 @@
     <div class="middle-box text-center loginscreen   animated fadeInDown">
         <div>
             <div>
-
                 <h1 class="logo-name">666</h1>
-
             </div>
             <h3>欢迎注册</h3>
-            <p>创建一个化工实验室账户</p>
+            <h2>创建一个化工实验室账户</h2>
             <form class="m-t" role="form" action="login.html">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="请输入用户名" required="">
+                <div>
+                    <tr>
+                        <label for="status">身份:</label>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" id="status" name="status" value="负责人">负责人
+                        </td>
+                        <td>
+                            <input type="radio" name="status" value="审批人"> 审批人
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="radio" name="status" value="仓库管理员"> 仓库管理员
+                        </td>
+                        <td>
+                            <input type="radio" name="status" value="用户" checked> 用户
+                        </td>
+                    </tr>
+
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="请输入密码" required="">
+                    <input type="text" id="account" class="form-control" placeholder="请输入账号" required="">
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="请再次输入密码" required="">
+                    <input type="password" id="password" class="form-control" placeholder="请输入密码" required="">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="repassword" class="form-control" placeholder="请再次输入密码" required="">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="name" class="form-control" placeholder="请输入真实姓名" required="">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="email" class="form-control" placeholder="请输入电子邮箱" required="">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="phonenumber" class="form-control" placeholder="请输入手机号" required="">
                 </div>
                 <div class="form-group text-left">
                     <div class="checkbox i-checks">
@@ -57,17 +86,147 @@
     <!-- Mainly scripts -->
     <script src="js/jquery-2.1.1.min.js"></script>
     <script src="js/bootstrap.min.js?v=3.4.0"></script>
-    <!-- iCheck -->
-    <script src="js/plugins/iCheck/icheck.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('.i-checks').iCheck({
-                checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
-            });
-        });
-    </script>
+        //1. 验证账号是否符合规则
+        //1.1 获取账号的输入框
+        let accountElement = document.getElementById("account");
+        //1.2 绑定onblur事件 失去焦点
+        accountElement.onblur = checkAccount;
+        function checkAccount() {
+            //1.2 获取账号值
+            let account = accountElement.value.trim();
+            //1.3 定义正则
+            var account_reg = /^\w{6,12}$/;
+            //1.4 判断，给出提示信息
+            var flag = account_reg.test(account);
+            if (flag) {
+                //账号合法
+                accountElement.style.border = "";
+            } else {
+                //账号非法,加一个红色边框
+                accountElement.style.border = "1px solid red";
+            }
+            return flag;
+        }
 
-</body>
+        //2. 验证密码是否符合规则
+        let passwordElement = document.getElementById("password");
+        passwordElement.onblur = checkPassword;
+        function checkPassword() {
+            var password = passwordElement.value.trim();  //获取值
+            var reg_password = /^\w{8,20}$/  //单词类型\w，8-20用{}
+            var flag = reg_password.test(password);
+            if(flag) {
+                //校验通过
+                passwordElement.style.border = "";
+            } else {
+                //校验失败
+                passwordElement.style.border = "1px solid red";
+            }
+            return flag;
+        }
+
+        //3. 验证再次输入的密码是否符合规则
+        let repasswordElement = document.getElementById("repassword");
+        repasswordElement.onblur = checkRepassword;
+        function checkRepassword() {
+            var password = passwordElement.value.trim();
+            var repassword = repasswordElement.value.trim();
+            if(password == repassword&&password!=null) {
+                //校验通过
+                repasswordElement.style.border = "";
+            } else {
+                //校验失败
+                repasswordElement.style.border = "1px solid red";
+            }
+            return flag;
+        }
+
+        //4. 验证姓名是否符合规则
+        let nameElement = document.getElementById("name");
+        nameElement.onblur = checkName;
+        function checkName() {
+            var name = nameElement.value.trim();  //获取值
+            var reg_name = /^\w{1,10}$/  //单词类型\w，1-10用{}
+            var flag = reg_name.test(name);
+            if(flag) {
+                //校验通过
+                nameElement.style.border = "";
+            } else {
+                //校验失败
+                nameElement.style.border = "1px solid red";
+            }
+            return flag;
+        }
+
+        //5. 校验邮箱
+        let emailElement = document.getElementById("email");
+        emailElement.onblur = checkEmail;
+        function checkEmail() {
+            var email = emailElement.value.trim();   //获取值
+            var reg_email = /^\w+@\w+\.\w+$/  //单词类型\w，8-20用{}
+            var flag = reg_email.test(email);
+            if (flag) {
+                //校验通过
+                emailElement.style.border = "";
+            } else {
+                //校验失败
+                emailElement.style.border = "1px solid red";
+            }
+            return flag;
+        }
+
+        //6. 验证手机号是否符合规则
+        let phonenumberElement = document.getElementById("phonenumber");
+        phonenumberElement.onblur = checkTel;
+        function checkTel() {
+            var phonenumber = phonenumberElement.value.trim();   //获取值
+            var reg_phonenumber = /^1[0-9]{10}$/
+            var flag = reg_phonenumber.test(phonenumber);
+            if(flag) {
+                //校验通过
+                phonenumberElement.style.border = "";
+            } else {
+                //校验失败
+                phonenumberElement.style.border = "1px solid red";
+            }
+            return flag;
+        }
+
+        // // 当表单提交时,调用所有的校验方法
+        // $("#registerForm").submit(function () { //function（）没有返回值，或者返回为true，说明校验成功，提交；否则不提交
+        //     // 1. 发送数据到服务器,通过ajax异步发送
+        //     if (checkUsername() && checkPassword() && checkEmail() && checkTel()) {
+        //         // 校验通过，发送ajax请求，异步提交表单的数据
+        //         $.post("user/regist", $("#registerForm").serialize(), function (data) {
+        //             // 处理服务器响应的结果:从服务器响应的data格式： {flag:true,errorMsg:"注册失败"}
+        //             if (data.flag) {
+        //                 //注册成功，跳转成功页面
+        //                 location.href = "register_ok.html";
+        //             } else {
+        //                 //注册失败,给errorMsg添加提示信息
+        //                 $("#errorMsg").html(data.errorMsg);
+        //             }
+        //         });
+        //     }
+        //     // 2. 不能使用表单跳转页面，表单通过action提交页面是一种同步方式：return false就可以不让跳转。
+        //     // return checkUserName() && checkPassword() && checkUserName();
+        //     return false;
+        // });
+
+    </script>
+    <!-- iCheck -->
+<!--    <script src="js/plugins/iCheck/icheck.min.js"></script>-->
+<!--    <script>-->
+<!--        $(document).ready(function () {-->
+<!--            $('.i-checks').iCheck({-->
+<!--                checkboxClass: 'icheckbox_square-green',-->
+<!--                radioClass: 'iradio_square-green',-->
+<!--            });-->
+<!--        });-->
+<!--    </script>-->
+
+
+//</body>
 
 </html>
