@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 
 <head>
 
@@ -30,18 +30,11 @@
         <!--头部-->
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-                <div class="navbar-header">
-                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="form_basic.html#"><i class="fa fa-bars"></i> </a>
-                    <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
-                        <div class="form-group">
-                            <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
-                        </div>
-                    </form>
-                </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
                         <span class="m-r-sm text-muted welcome-message"><a href="index.html" title="返回首页"><i class="fa fa-home"></i></a></span>
                     </li>
+<!--  ---------------------------  邮箱及信息提示部分  -------------------------------------------------  -->
                     <li class="dropdown">
                         <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
                             <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
@@ -117,7 +110,7 @@
                             </li>
                         </ul>
                     </li>
-
+<!--    -----------------------------------------------------------------------------------------       -->
 
                     <li>
                         <a href="login.html">
@@ -156,27 +149,6 @@
 
                         <div class="ibox-title" >
                             <label>领用/借用表单</label>
-                            <div class="ibox-tools">
-                                <!--右上角的收起-->
-                                <!--                                    <a class="collapse-link">-->
-                                <!--                                        <i class="fa fa-chevron-up"></i>-->
-                                <!--                                    </a>-->
-                                <!--右上角的小扳手-->
-                                <!--                                    <a class="dropdown-toggle" data-toggle="dropdown" href="form_basic.html#">-->
-                                <!--                                        <i class="fa fa-wrench"></i>-->
-                                <!--                                    </a>-->
-                                <!--右上角的小扳手选项-->
-                                <!--                                    <ul class="dropdown-menu dropdown-user">-->
-                                <!--                                        <li><a href="form_basic.html#">选项1</a>-->
-                                <!--                                        </li>-->
-                                <!--                                        <li><a href="form_basic.html#">选项2</a>-->
-                                <!--                                        </li>-->
-                                <!--                                    </ul>-->
-                                <!--右上角的叉-->
-                                <!--                                    <a class="close-link">-->
-                                <!--                                        <i class="fa fa-times"></i>-->
-                                <!--                                    </a>-->
-                            </div>
                         </div>
 
                         <!--填 领用/借用申请 基本信息的表单-->
@@ -186,14 +158,14 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">领用/借用申请表编号</label>
                                     <div class="col-sm-10">
-                                        <input type="text" disabled="" placeholder="不可编辑，提交时系统自动生成" class="form-control">
+                                        <input id="use_or_borrow_id" type="text" disabled="" placeholder="不可编辑，提交时系统自动生成" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">领用/借用物品清单编号</label>
                                     <div class="col-sm-10">
-                                        <input type="text" disabled="" placeholder="不可编辑，提交时系统自动生成" class="form-control">
+                                        <input id="use_or_borrow_order_id" type="text" disabled="" placeholder="不可编辑，提交时系统自动生成" class="form-control">
                                     </div>
                                 </div>
 
@@ -216,14 +188,14 @@
                                     <label class="col-sm-2 control-label">申请人</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" placeholder="直接提取登录状态" class="form-control">
+                                        <input id="applicant" type="text" disabled="" placeholder="直接提取登录状态" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">领用/借用用途</label>
                                     <div class="col-sm-10">
-                                        <textarea class="form-control input-lg m-b" name="saysths" rows="3"
+                                        <textarea id="purpose" class="form-control input-lg m-b" name="saysths" rows="3"
                                                   cols="30" wrap="soft" style="resize:none;"></textarea>
                                     </div>
                                 </div>
@@ -232,7 +204,7 @@
                                     <label class="col-sm-2 control-label">借用开始日期</label>
 
                                     <div class="col-sm-10">
-                                        <input type="date" placeholder="" class="form-control layer-date" id="start">
+                                        <input type="date" placeholder="" class="form-control layer-date" id="start_time">
                                     </div>
                                 </div>
 
@@ -240,7 +212,7 @@
                                     <label class="col-sm-2 control-label">借用结束日期</label>
 
                                     <div class="col-sm-10">
-                                        <input type="date" placeholder="" class="form-control layer-date" id="end">
+                                        <input type="date" placeholder="" class="form-control layer-date" id="end_time">
                                     </div>
                                 </div>
 
@@ -248,36 +220,36 @@
                                     <label class="col-sm-2 control-label">申请提交日期</label>
 
                                     <div class="col-sm-10">
-                                        <input type="text" placeholder="后台生成" class="form-control">
+                                        <input id="submit_time" type="text" disabled="" placeholder="后台生成" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-lg-2 control-label">申请当前状态</label>
                                     <div class="col-lg-10">
-                                        <input type="text" disabled="" placeholder="初始未提交，后续后台控制" class="form-control">
+                                        <input id="state" type="text" disabled="" placeholder="初始未提交，后续后台控制" class="form-control">
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="approval-1">
                                     <label class="col-sm-2 control-label">审批人</label>
                                     <div class="col-sm-10">
-                                        <input type="text" disabled="" placeholder="后台生成" class="form-control">
+                                        <input id="approved_by" type="text" disabled="" placeholder="后台生成" class="form-control">
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="approval-2">
                                     <label class="col-sm-2 control-label">审批意见</label>
                                     <div class="col-sm-10">
-                                        <textarea class="form-control input-lg m-b" name="saysths" rows="3"
+                                        <textarea id="opinion" class="form-control input-lg m-b" name="saysths" rows="3"
                                                   cols="30" wrap="soft" style="resize:none;"></textarea>
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="approval-3">
                                     <label class="col-sm-2 control-label">审批日期</label>
                                     <div class="col-sm-10">
-                                        <input type="text"  placeholder="后台生成" class="form-control">
+                                        <input id="approval_time" type="text" disabled="" placeholder="后台生成" class="form-control">
                                     </div>
                                 </div>
                             </form>
@@ -316,34 +288,12 @@
                                     <td class="center"></td>
                                     <td class="center"></td>
                                 </tr>
-                                <tr class="gradeC">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="center"></td>
-                                    <td class="center"></td>
-                                </tr>
                                 <tr class="gradeA">
                                     <td>Trident</td>
                                     <td>Internet Explorer 5.5
                                     </td>
                                     <td>Win 95+</td>
                                     <td class="center">5.5</td>
-                                    <td class="center">A</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 6
-                                    </td>
-                                    <td>Win 98+</td>
-                                    <td class="center">6</td>
-                                    <td class="center">A</td>
-                                </tr>
-                                <tr class="gradeA">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 7</td>
-                                    <td>Win XP SP2+</td>
-                                    <td class="center">7</td>
                                     <td class="center">A</td>
                                 </tr>
                                 </tbody>
@@ -405,12 +355,12 @@
         $('.dataTables-example').dataTable();
 
         /* Init DataTables */
-        var oTable = $('#editable').dataTable();
+        let oTable = $('#editable').dataTable();
 
         /* Apply the jEditable handlers to the table */
         oTable.$('td').editable('../example_ajax.php', {
             "callback": function (sValue, y) {
-                var aPos = oTable.fnGetPosition(this);
+                let aPos = oTable.fnGetPosition(this);
                 oTable.fnUpdate(sValue, aPos[0], aPos[1]);
             },
             "submitdata": function (value, settings) {
@@ -445,6 +395,18 @@
             $("#left_sidebar").html(data);
         });
     });
+
+    $(function () {
+        <!-- 获取当前用户身份，
+             有审批权限则设置为 “”
+             没有则设置为“none”
+        -->
+
+        document.getElementById("approval-1").style.display = "";
+        document.getElementById("approval-2").style.display = "";
+        document.getElementById("approval-3").style.display = "";
+
+    })
 </script>
 
 </body>
