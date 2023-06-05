@@ -12,10 +12,16 @@ public interface get_or_borrow_service {
     void createTable(get_or_borrow_Requisition table);
 
     /**
-     * 更新申请单
+     * 申请人修改申请单
      * @param table
      */
-    void updateTable(get_or_borrow_Requisition table);
+    void changeTable(get_or_borrow_Requisition table);
+
+    /**
+     * 审批人审批申请单
+     * @param table
+     */
+    void approvalTable(get_or_borrow_Requisition table);
 
     /**
      * 删除申请单

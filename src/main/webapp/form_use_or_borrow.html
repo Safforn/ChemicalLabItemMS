@@ -391,9 +391,9 @@
     function checkEnd() {
         let start_time = startElement.value.trim();
         let end_time = endElement.value.trim();
-        var end_time_reg =/^[\s\S]*.*[^\s][\s\S]*$/;
-        var flag = end_time_reg.test(end_time);
-        if (flag&&start_time<=end_time) {
+        // var end_time_reg =/^[\s\S]*.*[^\s][\s\S]*$/;
+        // var flag = end_time_reg.test(end_time);
+        if (start_time<=end_time) {
             //账号合法
             endElement.style.border = "";
         } else {
@@ -419,7 +419,6 @@
         });
 
         use_checked();
-        // borrow_checked();
 
     });
 

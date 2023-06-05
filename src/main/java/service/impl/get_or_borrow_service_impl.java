@@ -19,7 +19,12 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
     }
 
     @Override
-    public void updateTable(get_or_borrow_Requisition table) {
+    public void changeTable(get_or_borrow_Requisition table) {
+
+    }
+
+    @Override
+    public void approvalTable(get_or_borrow_Requisition table) {
 
     }
 
