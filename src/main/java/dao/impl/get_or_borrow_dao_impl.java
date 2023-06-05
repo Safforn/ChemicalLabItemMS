@@ -30,7 +30,7 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
     }
 
     @Override
-    public void updateTable(get_or_borrow_Requisition table) {
+    public void updateTableByApplicant(get_or_borrow_Requisition table) {
         String sql = "update get_or_borrow_requisition set get_or_borrow_requisition_id = ?, " +
                 "get_or_borrow_order_id = ?, approval_user_id = ?, purpose = ?, requisition_date = ?, " +
                 "borrow_date = ?, return_date = ?,state = ?, type = ?," +
@@ -51,16 +51,42 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
     }
 
     @Override
+    public void updateTableByApproval(get_or_borrow_Requisition table) {
+        String sql = "update get_or_borrow_requisition set get_or_borrow_requisition_id = ?, " +
+                "get_or_borrow_order_id = ?, approval_user_id = ?, purpose = ?, requisition_date = ?, " +
+                "borrow_date = ?, return_date = ?,state = ?, type = ?," +
+                "applicant_user_id = ?, approval_opinions = ?, approval_date = ?, applicant_user_id = ?, approval_opinions = ?, " +
+                "approval_date = ?) ";
+        template.update(sql,
+                table.getGet_or_borrow_requisition_id(),
+                table.getGet_or_borrow_order_id(),
+                table.getApproval_user_id(),
+                table.getPurpose(),
+                table.getRequisition_date(),
+                table.getBorrow_date(),
+                table.getReturn_date(),
+                table.getState(),
+                table.getType(),
+                table.getApplicant_user_id(),
+                table.getApproval_opinions(),
+                table.getApproval_date(),
+                table.getApproval_user_id(),
+                table.getApproval_opinions(),
+                table.getApproval_date());
+
+    }
+
+    @Override
     public void deleteTable(String tableId) {
         String sql = "DELETE from get_or_borrow_requisition where get_or_borrow_requisition_id = ?";
         template.update(sql, tableId);
     }
 
-    @Override
-    public void submitTable(String tableId) {
-        String sql = "update get_or_borrow_requisition set state = 1 where get_or_borrow_requisition_id = ?";
-        template.update(sql, tableId);
-    }
+//    @Override
+//    public void submitTable(String tableId) {
+//        String sql = "update get_or_borrow_requisition set state = 1 where get_or_borrow_requisition_id = ?";
+//        template.update(sql, tableId);
+//    }
 
     @Override
     public get_or_borrow_Requisition searchTableById(String tableId) {

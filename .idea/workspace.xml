@@ -10,14 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="更新了实体类的注释">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/object_entry_dao_impl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/object_entry_dao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Object_Entry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Object_Entry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/domain_temp/ResultInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/domain_temp/ResultInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/get_or_borrow_dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/get_or_borrow_dao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

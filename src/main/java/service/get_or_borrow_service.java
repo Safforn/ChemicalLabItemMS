@@ -5,6 +5,7 @@ import domain.get_or_borrow_Requisition;
 import java.util.List;
 
 public interface get_or_borrow_service {
+    void createOrUpdate(get_or_borrow_Requisition table);
     /**
      * 新建申请单
      * @param table
@@ -29,11 +30,11 @@ public interface get_or_borrow_service {
      */
     void deleteTable(String tableId);
 
-    /**
-     * 提交申请单
-     * @param tableId
-     */
-    void submitTable(String tableId);
+//    /**
+//     * 提交申请单
+//     * @param tableId
+//     */
+//    void submitTable(String tableId);
 
     /**
      * 根据id查询单个申请单

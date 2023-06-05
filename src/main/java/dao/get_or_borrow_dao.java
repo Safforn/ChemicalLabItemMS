@@ -12,10 +12,16 @@ public interface get_or_borrow_dao {
     void createTable(get_or_borrow_Requisition table);
 
     /**
-     * 更新申请单
+     * 申请人更新申请单
      * @param table
      */
-    void updateTable(get_or_borrow_Requisition table);
+    void updateTableByApplicant(get_or_borrow_Requisition table);
+
+    /**
+     * 审批人更新申请单
+     * @param table
+     */
+    void updateTableByApproval(get_or_borrow_Requisition table);
 
     /**
      * 删除申请单
@@ -23,11 +29,11 @@ public interface get_or_borrow_dao {
      */
     void deleteTable(String tableId);
 
-    /**
-     * 提交申请单
-     * @param tableId
-     */
-    void submitTable(String tableId);
+//    /**
+//     * 提交申请单
+//     * @param tableId
+//     */
+//    void submitTable(String tableId);
 
     /**
      * 根据id查询单个申请单
