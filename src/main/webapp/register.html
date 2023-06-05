@@ -147,7 +147,7 @@
         nameElement.onblur = checkName;
         function checkName() {
             var name = nameElement.value.trim();  //获取值
-            var reg_name = /^\w{1,10}$/  //单词类型\w，1-10用{}
+            var reg_name = /^[\s\S]*.*[^\s][\s\S]*$/  //单词类型\w，1-10用{}
             var flag = reg_name.test(name);
             if(flag) {
                 //校验通过
