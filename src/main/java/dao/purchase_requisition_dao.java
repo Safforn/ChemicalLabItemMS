@@ -5,7 +5,7 @@ import domain.get_or_borrow_Requisition;
 
 import java.util.List;
 
-public interface pruchase_requisition_dao {
+public interface purchase_requisition_dao {
     /**
      * 新建申请单
      * @param table

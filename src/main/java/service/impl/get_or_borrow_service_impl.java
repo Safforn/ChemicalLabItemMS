@@ -38,7 +38,7 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
          * 新增物品列表
          * 系统填写：申请单id，物品单id，提交时间
          */
-        table.setApproval_date(DateTime.parse(time));
+        table.setRequisition_date(DateTime.parse(time));
         table.setGet_or_borrow_requisition_id(UuidUtil.getUuid());
         String orderId = UuidUtil.getUuid();
         table.setGet_or_borrow_order_id(orderId);
@@ -61,6 +61,8 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
 
     @Override
     public void deleteTable(String tableId) {
+        get_or_borrow_Requisition get_or_borrow_requisition = getOrBorrowDao.searchTableById(tableId);
+        objectEntryDao.deleteEntryByOrder(get_or_borrow_requisition.getGet_or_borrow_order_id());
         getOrBorrowDao.deleteTable(tableId);
     }
 
@@ -70,8 +72,10 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
 //    }
 
     @Override
-    public get_or_borrow_Requisition searchTableById(String tableId) {
-        return getOrBorrowDao.searchTableById(tableId);
+    public template_order searchTableById(String tableId) {
+        get_or_borrow_Requisition table = getOrBorrowDao.searchTableById(tableId);
+        List<Object_Entry> order = objectEntryDao.search(table.getGet_or_borrow_order_id());
+        return new template_order(table, order);
     }
 
     @Override

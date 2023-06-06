@@ -1,15 +1,14 @@
 package dao.impl;
 
-import dao.pruchase_requisition_dao;
+import dao.purchase_requisition_dao;
 import domain.Purchase_Requisition;
-import domain.get_or_borrow_Requisition;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import util.JDBCUtils;
 
 import java.util.List;
 
-public class purchase_requisition_dao_impl implements pruchase_requisition_dao {
+public class purchase_requisition_dao_impl implements purchase_requisition_dao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
 
     @Override

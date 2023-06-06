@@ -9,13 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/pruchase_requisition_dao.java" afterDir="false" />
+    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="更新采购、领用dao层功能">
+      <change afterPath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/service/purchase_requisition_service.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/get_or_borrow_dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/get_or_borrow_dao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/get_or_borrow_and_order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/template_order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/pruchase_requisition_dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/purchase_requisition_dao.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" afterDir="false" />
     </list>
@@ -293,7 +292,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685955280415</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="更新采购、领用dao层功能">
+      <created>1686015910191</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1686015910191</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -316,7 +322,8 @@
     <MESSAGE value="添加GoodsService及其实现，实体类Date-&gt;String" />
     <MESSAGE value="更新了实体类的注释" />
     <MESSAGE value="更新了领用&amp;借用申请表的校验" />
-    <option name="LAST_COMMIT_MESSAGE" value="更新了领用&amp;借用申请表的校验" />
+    <MESSAGE value="更新采购、领用dao层功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新采购、领用dao层功能" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
