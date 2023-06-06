@@ -2,7 +2,11 @@ package service.impl;
 
 import dao.get_or_borrow_dao;
 import dao.impl.get_or_borrow_dao_impl;
+import dao.impl.object_entry_dao_impl;
+import dao.object_entry_dao;
+import domain.Object_Entry;
 import domain.get_or_borrow_Requisition;
+import domain.get_or_borrow_and_order;
 import org.joda.time.DateTime;
 import service.get_or_borrow_service;
 import util.UuidUtil;
@@ -12,21 +16,24 @@ import java.util.List;
 
 public class get_or_borrow_service_impl implements get_or_borrow_service {
     private get_or_borrow_dao getOrBorrowDao = new get_or_borrow_dao_impl();
+    private object_entry_dao objectEntryDao = new object_entry_dao_impl();
     private SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String time = sfd.format(new java.util.Date());
 
     @Override
-    public void createOrUpdate(get_or_borrow_Requisition table) {
+    public void createOrUpdate(get_or_borrow_and_order tando) {
+        get_or_borrow_Requisition table = tando.getTable();
+        List<Object_Entry> order = tando.getOrder();
         if (table.getGet_or_borrow_requisition_id().length() == 0) {
-            changeTable(table);
+            createTable(table, order);
         }
         else {
-            changeTable(table);
+            changeTable(table, order);
         }
     }
 
     @Override
-    public void createTable(get_or_borrow_Requisition table) {
+    public void createTable(get_or_borrow_Requisition table, List<Object_Entry> order) {
         /**
          * 新增物品列表
          * 系统填写：申请单id，物品单id，提交时间
@@ -36,11 +43,14 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
         String orderId = UuidUtil.getUuid();
         table.setGet_or_borrow_order_id(orderId);
         getOrBorrowDao.createTable(table);
+        objectEntryDao.addEntry(order, orderId);
     }
 
     @Override
-    public void changeTable(get_or_borrow_Requisition table) {
+    public void changeTable(get_or_borrow_Requisition table, List<Object_Entry> order) {
         getOrBorrowDao.updateTableByApplicant(table);
+        objectEntryDao.deleteEntryByOrder(table.getGet_or_borrow_order_id());
+        objectEntryDao.addEntry(order, table.getGet_or_borrow_order_id());
     }
 
     @Override
