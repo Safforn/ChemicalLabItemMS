@@ -23,4 +23,6 @@ public interface object_entry_dao {
      * @param orderId
      */
     void deleteEntryByOrder(String orderId);
+
+    List<Object_Entry> search(String orderId);
 }

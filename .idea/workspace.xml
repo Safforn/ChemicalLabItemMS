@@ -11,10 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="更新了实体类的注释">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/get_or_borrow_dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/get_or_borrow_dao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,7 +28,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="TSR" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -87,17 +83,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Maven.ChemicalLabItemMS">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ChemicalLabItemMS" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -272,7 +257,14 @@
       <option name="project" value="LOCAL" />
       <updated>1685954851389</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="更新领用、借用审批功能service">
+      <created>1685965588291</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1685965588291</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -295,7 +287,8 @@
     <MESSAGE value="添加GoodsService及其实现，实体类Date-&gt;String" />
     <MESSAGE value="更新了实体类的注释" />
     <MESSAGE value="实现领用借用动态控制" />
-    <option name="LAST_COMMIT_MESSAGE" value="实现领用借用动态控制" />
+    <MESSAGE value="更新领用、借用审批功能service" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新领用、借用审批功能service" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

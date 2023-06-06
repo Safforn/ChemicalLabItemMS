@@ -2,6 +2,7 @@ package dao.impl;
 
 import dao.object_entry_dao;
 import domain.Object_Entry;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import util.JDBCUtils;
 
@@ -32,5 +33,11 @@ public class object_entry_dao_impl implements object_entry_dao {
     public void deleteEntryByOrder(String orderId) {
         String sql = "delete from object_entry where order_id = ?";
         template.update(sql, orderId);
+    }
+
+    @Override
+    public List<Object_Entry> search(String orderId) {
+        String sql = "select * from object_entry where order_id = ?";
+        return template.query(sql, new BeanPropertyRowMapper<Object_Entry>(Object_Entry.class), orderId);
     }
 }
