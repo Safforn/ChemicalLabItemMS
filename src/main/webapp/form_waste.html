@@ -207,8 +207,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">废弃原因</label>
                                         <div class="col-sm-10">
-                                            <textarea class="form-control input-lg m-b" name="saysths" rows="3"
-                                                      cols="30" wrap="soft" style="resize:none;"></textarea>
+                                            <input id="reason" type="text" class="form-control input-lg m-b">
                                         </div>
                                     </div>
 
@@ -216,7 +215,7 @@
                                         <label class="col-sm-2 control-label">废弃物要存放的位置</label>
 
                                         <div class="col-sm-10">
-                                            <input type="text" placeholder="自己填" class="form-control">
+                                            <input id="location" type="text" placeholder="自己填" class="form-control">
                                         </div>
                                     </div>
 
@@ -248,8 +247,8 @@
                                         <label class="col-sm-2 control-label">审批意见</label>
 
                                         <div class="col-sm-10">
-                                            <textarea class="form-control input-lg m-b" name="saysths" rows="3"
-                                                      cols="30" wrap="soft" style="resize:none;"></textarea>
+                                            <input id="views" class="form-control input-lg m-b" name="saysths" rows="3"
+                                                      cols="30" wrap="soft" style="resize:none;">
                                         </div>
                                     </div>
 
@@ -370,6 +369,59 @@
 
     <!-- iCheck -->
     <script src="js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        //废弃原因校验
+        let reasonElement = document.getElementById("reason");
+        reasonElement.onblur = checkReason;
+        function checkReason() {
+            let reason = reasonElement.value.trim();
+            var reason_reg = /^[\s\S]*.*[^\s][\s\S]*$/;
+            var flag = reason_reg.test(reason);
+            if (flag) {
+                //账号合法
+                reasonElement.style.border = "";
+            } else {
+                //账号非法,加一个红色边框
+                reasonElement.style.border = "1px solid red";
+            }
+            return flag;
+        }
+
+        //存放位置校验
+        let locationElement = document.getElementById("location");
+        locationElement.onblur = checkLocation;
+        function checkLocation() {
+            let location = locationElement.value.trim();
+            var location_reg = /^[\s\S]*.*[^\s][\s\S]*$/;
+            var flag = location_reg.test(location);
+            if (flag) {
+                //账号合法
+                locationElement.style.border = "";
+            } else {
+                //账号非法,加一个红色边框
+                locationElement.style.border = "1px solid red";
+            }
+            return flag;
+        }
+
+        //审批意见校验
+        let viewsElement = document.getElementById("views");
+        viewsElement.onblur = checkViews;
+        function checkViews() {
+            let views = viewsElement.value.trim();
+            var views_reg = /^[\s\S]*.*[^\s][\s\S]*$/;
+            var flag = views_reg.test(views);
+            if (flag) {
+                //账号合法
+                viewsElement.style.border = "";
+            } else {
+                //账号非法,加一个红色边框
+                viewsElement.style.border = "1px solid red";
+            }
+            return flag;
+        }
+
+    </script>
     <script>
         $(document).ready(function () {
             $('.i-checks').iCheck({
