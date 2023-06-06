@@ -153,7 +153,7 @@
 
                         <!--填 领用/借用申请 基本信息的表单-->
                         <div class="ibox-content">
-                            <form method="get" class="form-horizontal">
+                            <form method="get" class="form-horizontal" id="orderForm">
 
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">领用/借用申请表编号</label>
@@ -174,11 +174,11 @@
                                     <div class="col-sm-10">
 
                                         <div class="radio" style="display: inline-block">
-                                            <label><input type="radio" checked="true" value="option1" id="type-use" name="optionsRadios" onclick="use_checked()">
+                                            <label><input type="radio" checked="true" value="use" id="type-use" name="optionsRadios" onclick="use_checked()">
                                                 领用</label>
                                         </div>
                                         <div class="radio" style="display: inline-block; margin-left: 20px;">
-                                            <label><input type="radio" value="option2" id="type-borrow" name="optionsRadios" onclick="borrow_checked()">
+                                            <label><input type="radio" value="borrow" id="type-borrow" name="optionsRadios" onclick="borrow_checked()">
                                                 借用</label>
                                         </div>
                                     </div>
@@ -195,7 +195,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">领用/借用用途</label>
                                     <div class="col-sm-10">
-                                        <input type="text" id="purpose" class="form-control input-lg m-b" name="saysths" rows="3"
+                                        <input type="text" id="purpose" class="form-control input-lg m-b" name="purpose" rows="3"
                                                   cols="30" wrap="soft" style="resize:none;">
 
                                     </div>
@@ -205,7 +205,7 @@
                                     <label class="col-sm-2 control-label">借用开始日期</label>
 
                                     <div class="col-sm-10">
-                                        <input type="date" placeholder="" class="form-control layer-date" id="start_time">
+                                        <input type="date" placeholder="" class="form-control layer-date" id="start_time" name="start_time">
                                     </div>
                                 </div>
 
@@ -213,7 +213,7 @@
                                     <label class="col-sm-2 control-label">借用结束日期</label>
 
                                     <div class="col-sm-10">
-                                        <input type="date" placeholder="" class="form-control layer-date" id="end_time">
+                                        <input type="date" placeholder="" class="form-control layer-date" id="end_time" name="end_time">
                                     </div>
                                 </div>
 
@@ -242,7 +242,7 @@
                                 <div class="form-group" id="approval-2">
                                     <label class="col-sm-2 control-label">审批意见</label>
                                     <div class="col-sm-10">
-                                        <textarea id="opinion" class="form-control input-lg m-b" name="saysths" rows="3"
+                                        <textarea id="opinion" class="form-control input-lg m-b" name="opinions" rows="3"
                                                   cols="30" wrap="soft" style="resize:none;"></textarea>
                                     </div>
                                 </div>
@@ -308,9 +308,9 @@
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group">
                                     <div class="col-sm-4 col-sm-offset-2" style="margin-left: 1000px">
-                                        <button id="btn-save-requisition" class="btn btn-primary" type="submit">保存</button>
-                                        <button id="btn-submit-requisition" class="btn btn-primary" type="submit">提交</button>
-                                        <button id="btn-cancel-requisition" class="btn btn-white" type="submit">取消</button>
+                                        <button id="btn-save-requisition" class="btn btn-primary" type="button">保存</button>
+                                        <button id="btn-submit-requisition" class="btn btn-primary" type="button">提交</button>
+                                        <button id="btn-cancel-requisition" class="btn btn-white" type="button">取消</button>
                                     </div>
                                 </div>
                             </form>
@@ -403,6 +403,7 @@
         return flag;
     }
 
+
 </script>
 <!-- 导入left_sidebar -->
 <script>
@@ -413,6 +414,10 @@
 
         use_checked();
 
+        $("#btn-save-requisition").click(function () {
+            console.log($("#orderForm").serialize())
+            console.log($("#editable").serialize())
+        });
     });
 
     function use_checked() {

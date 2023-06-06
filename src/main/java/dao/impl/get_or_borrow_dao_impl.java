@@ -14,13 +14,13 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
     @Override
     public void createTable(get_or_borrow_Requisition table) {
         String sql = "insert into get_or_borrow_requisition(get_or_borrow_requisition_id, " +
-                                 "get_or_borrow_order_id, approval_user_id, purpose, requisition_date, " +
+                                 "get_or_borrow_order_id, applicant_user_id, purpose, requisition_date, " +
                                  "borrow_date, return_date,state, type) " +
                                  "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         template.update(sql,
                 table.getGet_or_borrow_requisition_id(),
                 table.getGet_or_borrow_order_id(),
-                table.getApproval_user_id(),
+                table.getApplicant_user_id(),
                 table.getPurpose(),
                 table.getRequisition_date(),
                 table.getBorrow_date(),
@@ -32,14 +32,14 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
     @Override
     public void updateTable(get_or_borrow_Requisition table) {
         String sql = "update get_or_borrow_requisition set get_or_borrow_requisition_id = ?, " +
-                "get_or_borrow_order_id = ?, approval_user_id = ?, purpose = ?, requisition_date = ?, " +
+                "get_or_borrow_order_id = ?, applicant_user_id = ?, purpose = ?, requisition_date = ?, " +
                 "borrow_date = ?, return_date = ?,state = ?, type = ?," +
-                "applicant_user_id = ?, approval_opinions = ?, approval_date = ?, applicant_user_id = ?, approval_opinions = ?, " +
+                "applicant_user_id = ?, approval_user_id = ?, approval_opinions = ?, " +
                 "approval_date = ?) ";
         template.update(sql,
                 table.getGet_or_borrow_requisition_id(),
                 table.getGet_or_borrow_order_id(),
-                table.getApproval_user_id(),
+                table.getApplicant_user_id(),
                 table.getPurpose(),
                 table.getRequisition_date(),
                 table.getBorrow_date(),
@@ -47,8 +47,6 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
                 table.getState(),
                 table.getType(),
                 table.getApplicant_user_id(),
-                table.getApproval_opinions(),
-                table.getApproval_date(),
                 table.getApproval_user_id(),
                 table.getApproval_opinions(),
                 table.getApproval_date());
