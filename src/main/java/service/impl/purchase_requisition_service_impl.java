@@ -39,14 +39,20 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
         table.setPurchase_requisition_id(UuidUtil.getUuid());
         String orderId = UuidUtil.getUuid();
         table.setPurchase_order_id(orderId);
-        purchaseRequisitionDao.createTable(table);
+        for (Object_Entry object_entry : order) {
+            object_entry.setObject_entry_id(UuidUtil.getUuid());
+        }
         objectEntryDao.addEntry(order, orderId);
+        purchaseRequisitionDao.createTable(table);
     }
 
     @Override
     public void changeTable(Purchase_Requisition table, List<Object_Entry> order) {
         purchaseRequisitionDao.updateTable(table);
         objectEntryDao.deleteEntryByOrder(table.getPurchase_order_id());
+        for (Object_Entry object_entry : order) {
+            object_entry.setObject_entry_id(UuidUtil.getUuid());
+        }
         objectEntryDao.addEntry(order, table.getPurchase_order_id());
     }
 

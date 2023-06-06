@@ -38,14 +38,20 @@ public class waste_requisition_service_impl implements waste_requisition_service
         table.setRequisition_date(DateTime.parse(time));
         String orderId = UuidUtil.getUuid();
         table.setWaste_order_id(orderId);
-        wasteRequisitionDao.createTable(table);
+        for (Object_Entry object_entry : order) {
+            object_entry.setObject_entry_id(UuidUtil.getUuid());
+        }
         objectEntryDao.addEntry(order, orderId);
+        wasteRequisitionDao.createTable(table);
     }
 
     @Override
     public void changeTable(Waste_Requisition table, List<Object_Entry> order) {
         wasteRequisitionDao.updateTable(table);
         objectEntryDao.deleteEntryByOrder(table.getWaste_order_id());
+        for (Object_Entry object_entry : order) {
+            object_entry.setObject_entry_id(UuidUtil.getUuid());
+        }
         objectEntryDao.addEntry(order, table.getWaste_order_id());
     }
 

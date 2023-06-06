@@ -42,14 +42,20 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
         table.setGet_or_borrow_requisition_id(UuidUtil.getUuid());
         String orderId = UuidUtil.getUuid();
         table.setGet_or_borrow_order_id(orderId);
-        getOrBorrowDao.createTable(table);
+        for (Object_Entry object_entry : order) {
+            object_entry.setObject_entry_id(UuidUtil.getUuid());
+        }
         objectEntryDao.addEntry(order, orderId);
+        getOrBorrowDao.createTable(table);
     }
 
     @Override
     public void changeTable(get_or_borrow_Requisition table, List<Object_Entry> order) {
         getOrBorrowDao.updateTable(table);
         objectEntryDao.deleteEntryByOrder(table.getGet_or_borrow_order_id());
+        for (Object_Entry object_entry : order) {
+            object_entry.setObject_entry_id(UuidUtil.getUuid());
+        }
         objectEntryDao.addEntry(order, table.getGet_or_borrow_order_id());
     }
 
