@@ -207,8 +207,8 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">采购用途</label>
                                     <div class="col-sm-10">
-                                        <textarea class="form-control input-lg m-b" name="saysths" rows="3"
-                                                  cols="30" wrap="soft" style="resize:none;"></textarea>
+                                        <input id="purpose" class="form-control input-lg m-b" name="saysths" rows="3"
+                                                  cols="30" wrap="soft" style="resize:none;"></input>
                                     </div>
                                 </div>
 
@@ -239,8 +239,8 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">审批意见</label>
                                     <div class="col-sm-10">
-                                        <textarea class="form-control input-lg m-b" name="saysths" rows="3"
-                                                  cols="30" wrap="soft" style="resize:none;"></textarea>
+                                        <input id="views" class="form-control input-lg m-b" name="saysths" rows="3"
+                                                  cols="30" wrap="soft" style="resize:none;"></input>
                                     </div>
                                 </div>
 
@@ -266,11 +266,11 @@
                         <div class="ibox-content">
                             <div class="">
                                 <!--fnClickAddRow()函数在本页最下面-->
-                                <a onclick="fnClickAddRow();" href="javascript:void(0);" class="btn btn-primary ">添加行</a>
+                                <a onclick="fnClickAddRow();" class="btn btn-primary ">添加行</a>
                             </div>
                             <table class="table table-striped table-bordered table-hover " id="editable">
                                 <thead>
-                                <tr>
+/                                <tr>
                                     <th>编号</th>
                                     <th>采购物品名称</th>
                                     <th>数量</th>
@@ -281,41 +281,39 @@
                                 <tbody>
                                 <!--留了5行的示例数据，可删除-->
                                 <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="center"></td>
-                                    <td class="center"></td>
+                                    <td class="tab_id"></td>
+                                    <td class="tab_name"></td>
+                                    <td class="tab_num"></td>
+                                    <td class="tab_unit"></td>
+                                    <td class="tab_msg"></td>
                                 </tr>
-                                <tr class="gradeC">
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="center"></td>
-                                    <td class="center"></td>
+                                <tr>
+                                    <td class="tab_id"></td>
+                                    <td class="tab_name"></td>
+                                    <td class="tab_num"></td>
+                                    <td class="tab_unit"></td>
+                                    <td class="tab_msg"></td>
                                 </tr>
-                                <tr class="gradeA">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 5.5
-                                    </td>
-                                    <td>Win 95+</td>
-                                    <td class="center">5.5</td>
-                                    <td class="center">A</td>
+                                <tr>
+                                    <td class="tab_id"></td>
+                                    <td class="tab_name"></td>
+                                    <td class="tab_num"></td>
+                                    <td class="tab_unit"></td>
+                                    <td class="tab_msg"></td>
                                 </tr>
-                                <tr class="gradeA">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 6
-                                    </td>
-                                    <td>Win 98+</td>
-                                    <td class="center">6</td>
-                                    <td class="center">A</td>
+                                <tr>
+                                    <td class="tab_id"></td>
+                                    <td class="tab_name"></td>
+                                    <td class="tab_num"></td>
+                                    <td class="tab_unit"></td>
+                                    <td class="tab_msg"></td>
                                 </tr>
-                                <tr class="gradeA">
-                                    <td>Trident</td>
-                                    <td>Internet Explorer 7</td>
-                                    <td>Win XP SP2+</td>
-                                    <td class="center">7</td>
-                                    <td class="center">A</td>
+                                <tr>
+                                    <td class="tab_id"></td>
+                                    <td class="tab_name"></td>
+                                    <td class="tab_num"></td>
+                                    <td class="tab_unit"></td>
+                                    <td class="tab_msg"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -360,6 +358,43 @@
 <script src="js/plugins/pace/pace.min.js"></script>
 
 <!-- iCheck -->
+<script>
+    //领用用途校验
+    let purposeElement = document.getElementById("purpose");
+    purposeElement.onblur = checkPurpose;
+    function checkPurpose() {
+        let purpose = purposeElement.value.trim();
+        var purpose_reg = /^[\s\S]*.*[^\s][\s\S]*$/;
+        var flag = purpose_reg.test(purpose);
+        if (flag) {
+            //账号合法
+            purposeElement.style.border = "";
+        } else {
+            //账号非法,加一个红色边框
+            purposeElement.style.border = "1px solid red";
+        }
+        return flag;
+    }
+
+    //审批意见校验
+    let viewsElement = document.getElementById("views");
+    viewsElement.onblur = checkViews;
+    function checkViews() {
+        let views = viewsElement.value.trim();
+        var views_reg = /^[\s\S]*.*[^\s][\s\S]*$/;
+        var flag = views_reg.test(views);
+        if (flag) {
+            //账号合法
+            viewsElement.style.border = "";
+        } else {
+            //账号非法,加一个红色边框
+            viewsElement.style.border = "1px solid red";
+        }
+        return flag;
+    }
+
+</script>
+
 <script src="js/plugins/iCheck/icheck.min.js"></script>
 <script>
     $(document).ready(function () {

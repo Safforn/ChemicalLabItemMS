@@ -147,6 +147,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.8</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -162,7 +168,7 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
-                    <path>/travel</path>
+                    <path>/clims</path>
                 </configuration>
             </plugin>
             <plugin>
