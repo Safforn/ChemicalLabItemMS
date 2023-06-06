@@ -1,30 +1,31 @@
 package service;
 
 import domain.Object_Entry;
+import domain.Purchase_Requisition;
 import domain.get_or_borrow_Requisition;
 import domain.template_order;
 
 import java.util.List;
 
-public interface get_or_borrow_service {
+public interface purchase_requisition_service {
     void createOrUpdate(template_order tando);
     /**
      * 新建申请单
      * @param table
      */
-    void createTable(get_or_borrow_Requisition table, List<Object_Entry> order);
+    void createTable(Purchase_Requisition table, List<Object_Entry> order);
 
     /**
      * 申请人修改申请单
      * @param table
      */
-    void changeTable(get_or_borrow_Requisition table, List<Object_Entry> order);
+    void changeTable(Purchase_Requisition table, List<Object_Entry> order);
 
     /**
      * 审批人审批申请单
      * @param table
      */
-    void approvalTable(get_or_borrow_Requisition table);
+    void approvalTable(Purchase_Requisition table);
 
     /**
      * 删除申请单
@@ -50,11 +51,11 @@ public interface get_or_borrow_service {
      * @param userId
      * @return
      */
-    List<get_or_borrow_Requisition> searchTableByUser(String userId);
+    List<Purchase_Requisition> searchTableByUser(String userId);
 
     /**
      * 审批人查询所有 已提交 未审批 的申请单
      * @return
      */
-    List<get_or_borrow_Requisition> searchTableByState(int state);
+    List<Purchase_Requisition> searchTableByState(int state);
 }
