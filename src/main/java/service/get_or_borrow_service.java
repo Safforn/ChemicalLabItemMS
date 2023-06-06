@@ -2,12 +2,12 @@ package service;
 
 import domain.Object_Entry;
 import domain.get_or_borrow_Requisition;
-import domain.get_or_borrow_and_order;
+import domain.template_order;
 
 import java.util.List;
 
 public interface get_or_borrow_service {
-    void createOrUpdate(get_or_borrow_and_order tando);
+    void createOrUpdate(template_order tando);
     /**
      * 新建申请单
      * @param table
