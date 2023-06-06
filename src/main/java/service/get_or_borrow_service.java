@@ -1,22 +1,24 @@
 package service;
 
+import domain.Object_Entry;
 import domain.get_or_borrow_Requisition;
+import domain.get_or_borrow_and_order;
 
 import java.util.List;
 
 public interface get_or_borrow_service {
-    void createOrUpdate(get_or_borrow_Requisition table);
+    void createOrUpdate(get_or_borrow_and_order tando);
     /**
      * 新建申请单
      * @param table
      */
-    void createTable(get_or_borrow_Requisition table);
+    void createTable(get_or_borrow_Requisition table, List<Object_Entry> order);
 
     /**
      * 申请人修改申请单
      * @param table
      */
-    void changeTable(get_or_borrow_Requisition table);
+    void changeTable(get_or_borrow_Requisition table, List<Object_Entry> order);
 
     /**
      * 审批人审批申请单

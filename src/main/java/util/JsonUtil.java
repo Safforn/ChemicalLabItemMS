@@ -6,8 +6,9 @@ import java.io.*;
 
 public class JsonUtil {
 
-    static String filePath = "E:\\GitHub\\WebLab\\src\\main\\webapp\\json\\";
-
+//    static String filePath = "E:\\GitHub\\WebLab\\src\\main\\webapp\\json\\";
+    //tsr
+    static String filePath = "E:\\program\\课设\\ChemicalLabItemMS\\src\\main\\webapp\\json\\";
     private JsonUtil() {}
 
     private static String getSpaceOrTab(int tabNum) {
