@@ -24,5 +24,10 @@ public interface object_entry_dao {
      */
     void deleteEntryByOrder(String orderId);
 
+    /**
+     * 获取订单
+     * @param orderId
+     * @return
+     */
     List<Object_Entry> search(String orderId);
 }
