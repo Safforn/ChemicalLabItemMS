@@ -18,38 +18,40 @@
 
 </head>
 
+
 <body class="gray-bg">
 
-    <div class="middle-box text-center loginscreen  animated fadeInDown">
-        <div>
-            <div><h1 class="logo-name">666</h1></div>
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+    <div>
+        <div><h1 class="logo-name">666</h1></div>
 
-            <h3>欢迎使用 化工实验室管理系统</h3>
+        <h3>欢迎使用 化工实验室管理系统</h3>
 
-            <form class="m-t" role="form" action="index.html">
-                <div class="form-group">
-                    <input id="account" type="email" class="form-control" placeholder="账号" required="">
-                </div>
-                <div class="form-group">
-                    <input id="password"type="password" class="form-control" placeholder="密码" required="">
-                </div>
-                <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
-                <p class="text-muted text-center"> <a href="login.html#"><small>忘记密码？</small></a> | <a href="register.html">注册一个新账号</a>
-                </p>
+        <form id="loginForm" class="m-t" role="form" action="" method="post" accept-charset="utf-8">
+            <div class="form-group">
+                <input id="account" class="form-control" placeholder="账号" required="">
+            </div>
+            <div class="form-group">
+                <input id="password" type="password" class="form-control" placeholder="密码" required="">
+            </div>
+            <button type="submit" class="btn btn-primary block full-width m-b">登 录</button>
+            <p class="text-muted text-center"> <a href=""><small>忘记密码？</small></a> | <a href="register.html">注册一个新账号</a>
+            </p>
 
-            </form>
-        </div>
+        </form>
     </div>
+</div>
 
-    <!-- Mainly scripts -->
-    <script src="js/jquery-2.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js?v=3.4.0"></script>
-    <script>
-        let accountElement = document.getElementById("account");
-        accountElement.onblur = checkAccount;
-        function checkAccount() {
+<!-- Mainly scripts -->
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js?v=3.4.0"></script>
+
+<script>
+    let accountElement = document.getElementById("account");
+    accountElement.onblur = checkAccount;
+    function checkAccount() {
         let account = accountElement.value.trim();
-        var account_reg = /^\w{6,12}$/;
+        var account_reg = /^\w{3,12}$/;
         var flag = account_reg.test(account);
         if (flag){
             accountElement.style.border = "";
@@ -59,22 +61,50 @@
         return flag;
     }
 
-        let passwordElement = document.getElementById("password");
-        passwordElement.onblur = checkPassword;
-        function checkPassword() {
-            var password = passwordElement.value.trim();  //获取值
-            var reg_password = /^\w{8,20}$/  //单词类型\w，8-20用{}
-            var flag = reg_password.test(password);
-            if(flag) {
-                //校验通过
-                passwordElement.style.border = "";
-            } else {
-                //校验失败
-                passwordElement.style.border = "1px solid red";
-            }
-            return flag;
+    let passwordElement = document.getElementById("password");
+    passwordElement.onblur = checkPassword;
+    function checkPassword() {
+        var password = passwordElement.value.trim();  //获取值
+        var reg_password = /^\w{3,20}$/  //单词类型\w，8-20用{}
+        var flag = reg_password.test(password);
+        if(flag) {
+            //校验通过
+            passwordElement.style.border = "";
+        } else {
+            //校验失败
+            passwordElement.style.border = "1px solid red";
         }
-    </script>
+        return flag;
+    }
+
+    $(function () {
+        $("#loginForm").submit(function () {
+            var account = accountElement.value.trim();
+            var password = passwordElement.value.trim();  //获取值
+            var front_end_data = "account="+$("#account").val()+"&password="+$("#password").val()
+            if (checkAccount() && checkPassword()) {
+                $.post("user/login", front_end_data, function (data) {
+                    if (data.flag) {
+                        console.log(data.data);
+                        //TODO: 身份识别，跳转至各自界面
+                        if(data.data === "admin")
+                            location.href = "index.html";
+                        else
+                            location.href = "register.html";
+                    } else {
+                        $("#errorMsg").html(data.errorMsg);
+                        alert(data.errorMsg);
+                    }
+                })
+            }
+            return false
+        });
+
+        $("#account").blur(checkAccount);
+        $("#password").blur(checkPassword);
+    })
+</script>
+
 </body>
 
 </html>

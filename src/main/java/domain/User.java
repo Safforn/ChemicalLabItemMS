@@ -39,6 +39,22 @@ public class User implements Serializable {
         this.phonenumber = phonenumber;
     }
 
+    public User(String account, String password) {
+        this.account = account;
+        this.password = password;
+    }
+
+    //TODO: 调试用代码，显示User对象全部信息
+    public void print() {
+        System.out.println("输出User对象信息:\n"+
+                           "user_id="+user_id+
+                           "|account="+account+
+                           "|password="+password+
+                           "|email="+email+
+                           "|name="+name+
+                           "|phonenumber="+phonenumber);
+    }
+
     public String getUser_id() {
         return user_id;
     }

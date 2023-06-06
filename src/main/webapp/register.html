@@ -96,7 +96,7 @@
             //1.2 获取账号值
             let account = accountElement.value.trim();
             //1.3 定义正则
-            var account_reg = /^\w{6,12}$/;
+            var account_reg = /^\w{3,12}$/;
             //1.4 判断，给出提示信息
             var flag = account_reg.test(account);
             if (flag) {
@@ -114,7 +114,7 @@
         passwordElement.onblur = checkPassword;
         function checkPassword() {
             var password = passwordElement.value.trim();  //获取值
-            var reg_password = /^\w{8,20}$/  //单词类型\w，8-20用{}
+            var reg_password = /^\w{3,20}$/  //单词类型\w，8-20用{}
             var flag = reg_password.test(password);
             if(flag) {
                 //校验通过
