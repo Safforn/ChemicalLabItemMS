@@ -14,14 +14,17 @@ public class purchase_requisition_dao_impl implements purchase_requisition_dao {
     @Override
     public boolean createTable(Purchase_Requisition table) {
         String sql = "insert into purchase_requisition(purchase_requisition_id," +
-                     "purchase_order_id, requisition_user_id, state, purpose, requisition_date)" +
+                                                "purchase_order_id, " +
+                                                "requisition_user_id, " +
+                                                "state, purpose, requisition_date)" +
                      "values(?, ?, ?, ?, ?, ?)";
         try {
             template.update(sql,
                     table.getPurchase_requisition_id(),
                     table.getPurchase_order_id(),
-                    table.getPurchase_requisition_id(),
+                    table.getRequisition_user_id(),
                     table.getState(),
+                    table.getPurpose(),
                     table.getRequisition_date());
             return true;
         } catch (Exception e) {
@@ -39,8 +42,9 @@ public class purchase_requisition_dao_impl implements purchase_requisition_dao {
             template.update(sql,
                     table.getPurchase_requisition_id(),
                     table.getPurchase_order_id(),
-                    table.getPurchase_requisition_id(),
+                    table.getRequisition_user_id(),
                     table.getState(),
+                    table.getPurpose(),
                     table.getRequisition_date(),
                     table.getApproval_user_id(),
                     table.getApproval_opinions(),

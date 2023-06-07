@@ -124,7 +124,7 @@
         </div>
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-lg-10">
-                <h2>废弃申请</h2>
+                <h2>采购申请</h2>
 
             </div>
             <div class="col-lg-2">
@@ -137,7 +137,7 @@
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h5>废弃申请表</h5>
+                            <h5>采购申请表</h5>
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
@@ -153,7 +153,7 @@
 
                                             <div class="ibox-content">
                                                 <div class="">
-                                                    <a onclick="fnClickAddRow();" href="javascript:void(0);" class="btn btn-primary ">新建废弃申请</a>
+                                                    <a onclick="fnClickAddRow();" href="javascript:void(0);" class="btn btn-primary ">新建采购申请</a>
                                                     <button type="button" id="batch-edit-btn" class="btn btn-primary ">批量编辑</button>
                                                     <button type="button" id="batch-save-btn" class="btn btn-primary ">批量保存</button>
                                                 </div>
@@ -266,16 +266,16 @@
 </script>
 <script>
     const dataSet = [
-        ['id', 'aaa', 'bb', '30', 'xxxx-xx','30', '1'],
-        ['id1', 'aaa1', 'cc', '20', 'xxxx-xx','30', '2'],
-        ['id2', 'aaa', 'bb', '30', 'xxxx-xx','30', '3'],
-        ['id3', 'aaa1', 'cc', '20', 'xxxx-xx','30', '0'],
-        ['id4', 'aaa', 'bb', '30', 'xxxx-xx','30', '1'],
-        ['id5', 'aaa1', 'cc', '20', 'xxxx-xx','30', '2'],
-        ['id6', 'aaa', 'bb', '30', 'xxxx-xx','30', '3'],
-        ['id7', 'aaa1', 'cc', '20', 'xxxx-xx','30', '0'],
-        ['id8', 'aaa', 'bb', '30', 'xxxx-xx','30', '3'],
-        ['id9', 'aaa1', 'cc', '20', 'xxxx-xx','30', '2'],
+        ['id', 'aaa', 'bb', '30', 'xxxx-xx', '1'],
+        ['id1', 'aaa1', 'cc', '20', 'xxxx-xx', '2'],
+        ['id2', 'aaa', 'bb', '30', 'xxxx-xx', '3'],
+        ['id3', 'aaa1', 'cc', '20', 'xxxx-xx', '0'],
+        ['id4', 'aaa', 'bb', '30', 'xxxx-xx', '1'],
+        ['id5', 'aaa1', 'cc', '20', 'xxxx-xx', '2'],
+        ['id6', 'aaa', 'bb', '30', 'xxxx-xx', '3'],
+        ['id7', 'aaa1', 'cc', '20', 'xxxx-xx', '0'],
+        ['id8', 'aaa', 'bb', '30', 'xxxx-xx', '3'],
+        ['id9', 'aaa1', 'cc', '20', 'xxxx-xx', '2'],
     ];
     const dataSets = [
         ['aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
@@ -302,26 +302,22 @@
                 data:dataSet,
                 columns:[
                     {
-                        'field': "waste_requisition_id",
-                        'title': '废弃申请表编号',
+                        'field': "purchase_requisition_id",
+                        'title': '采购申请表编号',
                         'defaultContent' : ""
                     }, {
-                        'field': "waste_order_id",
-                        'title': '废弃物品清单编号',
+                        'field': "purchase_order_id",
+                        'title': '采购物品清单编号',
                         'defaultContent' : ""
                     }, {
-                        'field': "waste_user_id",
+                        'field': "requisition_user_id",
                         'title': '申请人',
                         'defaultContent' : ""
                     }, {
-                        'field': "waste_reason",
-                        'title': '废弃原因',
+                        'field': "purpose",
+                        'title': '采购用途',
                         'defaultContent' : ""
                     }, {
-                        'field': "waste_position",
-                        'title': '废弃物存放位置',
-                        'defaultContent' : ""
-                    },{
                         'field': "requisition_date",
                         'title': '申请提交日期',
                         'defaultContent' : ""
@@ -346,7 +342,7 @@
                         sTitle: '操作',
                         sDefaultContent : "<button class='submit-btn btn btn-primary btn-xs' type='button' >提交</button>"+
                             "<button class='edit-btn btn btn-primary btn-xs' type='button' style='margin-left: 10px'>编辑</button>"  +
-                            "<button class='list-btn btn btn-primary btn-xs' type='button' style='margin-left: 10px'>物品清单</button>"+
+                        "<button class='list-btn btn btn-primary btn-xs' type='button' style='margin-left: 10px'>物品清单</button>"+
                             "<button class='delete btn btn-default btn-xs' style='margin-left: 10px'>删除</button>",
                         sClass: 'text-center',
                         "data" : null,
@@ -443,7 +439,6 @@
                         'field': "notes",
                         'title': '备注',
                         'defaultContent' : "",
-                        width:150,
                         'sClass': 'text-center'
                     }, {
                         field: "operate",
@@ -487,12 +482,12 @@
                 }
             });
 
-            //点击物品清单
+            // 点击 物品清单
             $("table tbody").on("click",".list-btn",function (){
                 // $('#listTable').dataTable().api().draw();
                 // $('#listTable').dataTable().reload();
                 var tds=$(this).parents("tr").children();
-                var arr = tds[6].innerText;
+                var arr = tds[5].innerText;
                 console.log(arr);
                 if(arr==='已提交'||arr==='审核通过'){
                     $('.list-edit-btn').attr('disabled',true);
@@ -508,13 +503,13 @@
                 $('#updateModal').modal('show');
             })
 
-            //点击提交按钮
+            // 点击 提交 按钮
             $("table tbody").on("click",".submit-btn",function (){
                 var tds=$(this).parents("tr").children();
-                var arr = tds[6].innerText;
+                var arr = tds[5].innerText;
                 console.log(arr);
                 if(arr==='未提交'||arr==='审核未通过'){
-                    tds[6].innerText = '已提交';
+                    tds[5].innerText = '已提交';
                     $(this).attr('disabled',true);
                     tds.find('.edit-btn').attr('disabled',true);
                     //提交的代码
@@ -535,7 +530,7 @@
                 var tds=$(this).parents("tr").children();
                 $.each(tds, function(i,val){
                     var jqob=$(val);
-                    if(i<=2||i>4 ){return true;}//跳过第1项 序号,按钮
+                    if(i<=2||i>3 ){return true;}//跳过第1项 序号,按钮
                     var txt=jqob.text();
                     var put=$("<input type='text' style='width: 80px'>");
                     put.val(txt);
@@ -582,7 +577,7 @@
                 $(this).toggleClass("list-save-btn");
             });
 
-            //物品清单修改保存
+            //  物品清单修改保存
             $("#listTable tbody").on("click",".list-save-btn",function(){
                 var row=listtable.row($(this).parents("tr"));
                 var tds=$(this).parents("tr").children();
@@ -627,21 +622,23 @@
                 $('#listTable').dataTable().fnDeleteRow($(this).closest('tr')[0]);
             });
 
+
+            // 根据 申请当前状态，设置按钮是否可用
             $("#table tbody tr").each(function () {
                 var a = $(this).children();//获取每一行
-                var arr =a[6].innerText;//取得第六列的值
+                var arr = a[5].innerText;//取得第六列的值
                 if(arr==='0'){
-                    a[6].innerText = '未提交';
+                    a[5].innerText = '未提交';
                 }else if(arr==='1'){
-                    a[6].innerText = '已提交';
+                    a[5].innerText = '已提交';
                     a.find('.submit-btn').attr('disabled',true);
                     a.find('.edit-btn').attr('disabled',true);
                 }else if(arr==='2'){
-                    a[6].innerText = '审核通过';
+                    a[5].innerText = '审核通过';
                     a.find('.submit-btn').attr('disabled',true);
                     a.find('.edit-btn').attr('disabled',true);
                 }else if(arr==='3'){
-                    a[6].innerText = '审核未通过';
+                    a[5].innerText = '审核未通过';
                 }
             })
         });
@@ -656,7 +653,7 @@
     function fnClickAddRow() {
         $('#table').dataTable().fnAddData([
             "", "", "", "",
-            "", "", "未提交", "", "",
+            "", "未提交", "", "", "",
             "", ""]);}
     function listfnClickAddRow() {
         $('#listTable').dataTable().fnAddData([

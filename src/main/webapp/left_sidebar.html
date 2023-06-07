@@ -35,8 +35,7 @@
                 <li>
                     <a href="index.html#"><i class="fa fa-edit"></i> <span class="nav-label">表单</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li><a href="test_center_form.html">个人中心测试页面</a></li>
-                        <li><a href="form_use_or_borrow.html">采购申请表</a></li>
+                        <li><a href="form_purchase.html">采购申请表</a></li>
                         <li><a href="form_use_or_borrow.html">领用/借用申请表</a></li>
                         <li><a href="form_waste.html">废弃物品申请表</a></li>
                         <li><a href="form_purchase_in_warehouse.html">采购入库表</a></li>
@@ -63,7 +62,5 @@
         $.get("user/findOne", {}, function (data) {
             $("#span_username").html(data.name)
             $("#span_user_id").html(data.account)
-            //$("#login").css("display", "inline")
-            //$("#login_out").css("display", "none")
         })
     </script>

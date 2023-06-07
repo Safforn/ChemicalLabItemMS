@@ -51,6 +51,20 @@ public class Purchase_Requisition implements Serializable {
         this.approval_user_id = approval_user_id;
     }
 
+    //TODO: 调试用代码，显示User对象全部信息
+    public void print() {
+        System.out.println("输出Purchase_Requisition对象信息:\n"+
+                "purchase_requisition_id="+purchase_requisition_id+
+                "|purchase_order_id="+purchase_order_id+
+                "|state="+state+
+                "|purpose="+purpose+
+                "|requisition_date="+requisition_date+
+                "|approval_opinions="+approval_opinions+
+                "|approval_date="+approval_date+
+                "|requisition_user_id="+requisition_user_id+
+                "|approval_user_id="+approval_user_id);
+    }
+
     public String getPurchase_requisition_id() {
         return purchase_requisition_id;
     }
