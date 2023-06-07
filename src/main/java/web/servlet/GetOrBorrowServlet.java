@@ -3,11 +3,8 @@ package web.servlet;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.*;
 import org.apache.commons.beanutils.BeanUtils;
-import service.UserService;
 import service.get_or_borrow_service;
-import service.impl.UserServiceImpl;
 import service.impl.get_or_borrow_service_impl;
-import web.servlet.BaseServlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -43,10 +40,11 @@ public class GetOrBorrowServlet extends BaseServlet {
         List<Object_Entry> object_entries = new ArrayList<>();
         template_order to = new template_order(get_or_borrow_requisition, object_entries);
 
-        // 显示前端传回的数据
+        // TODO: 调试，显示前端传回的数据
 //        System.out.println("GetOrBorrowServlet: "+user.getAccount()+"|"+
 //                user.getPassword()+"|"+user.getName()+"|"+
 //                user.getEmail()+"|"+user.getPhonenumber());
+
         service.createOrUpdate(to);
         ResultInfo info = new ResultInfo();
         // 4. 响应结果
@@ -71,7 +69,8 @@ public class GetOrBorrowServlet extends BaseServlet {
         String tableId = request.getParameter("tableId");
         // 调用service删除
         service.deleteTable(tableId);
-        // TODO: 更新前端表格页面，这个好像不需要做，前端会自动删除（加个"确认删除"的弹窗），只需要把tableId传给后端即可
+        // TODO: 更新前端表格页面，这个好像不需要做，前端会自动删除（加个"确认删除"的弹窗）
+        //  只需要把tableId传给后端即可
 
     }
     /**

@@ -13,13 +13,14 @@ import service.purchase_requisition_service;
 import util.UuidUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+
+import static util.UuidUtil.getCurrentTime;
 
 public class purchase_requisition_service_impl implements purchase_requisition_service {
     private purchase_requisition_dao purchaseRequisitionDao = new purchase_requisition_dao_impl();
     private object_entry_dao objectEntryDao = new object_entry_dao_impl();
-    private SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String time = sfd.format(new java.util.Date());
 
     @Override
     public boolean createOrUpdate(template_order tando) {
@@ -40,7 +41,7 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
      * @return
      */
     private boolean createTable(Purchase_Requisition table, List<Object_Entry> order) {
-        table.setRequisition_date(DateTime.parse(time));
+        table.setRequisition_date(getCurrentTime());
         table.setPurchase_requisition_id(UuidUtil.getUuid());
         String orderId = UuidUtil.getUuid();
         table.setPurchase_order_id(orderId);
@@ -71,7 +72,7 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
 
     @Override
     public boolean approvalTable(Purchase_Requisition table) {
-        table.setApproval_date(DateTime.parse(time));
+        table.setRequisition_date(getCurrentTime());
         return purchaseRequisitionDao.updateTable(table);
     }
 

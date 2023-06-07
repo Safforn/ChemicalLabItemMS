@@ -1,7 +1,5 @@
 package domain;
 
-import org.joda.time.DateTime;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,13 +12,13 @@ public class get_or_borrow_Requisition implements Serializable {
     private String applicant_user_id;//申领人(FK)
     private String approval_user_id;//审批人(FK)
     private String purpose;//领用用途
-    private DateTime requisition_date;//申请提交时间
+    private Date requisition_date;//申请提交时间
     private Date borrow_date;//借用/领用日期
     private Date return_date;//归还日期
     private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
     private int type;//类型（借用/领用）
     private String approval_opinions;//审批意见
-    private DateTime approval_date;//审批的时间
+    private Date approval_date;//审批的时间
 
     /**
      *无参构造方法
@@ -42,7 +40,7 @@ public class get_or_borrow_Requisition implements Serializable {
      * @param approval_opinions
      * @param approval_date
      */
-    public get_or_borrow_Requisition(String get_or_borrow_requisition_id, String get_or_borrow_order_id, String applicant_user_id, String approval_user_id, String purpose, DateTime requisition_date, Date borrow_date, Date return_date, int state, int type, String approval_opinions, DateTime approval_date) {
+    public get_or_borrow_Requisition(String get_or_borrow_requisition_id, String get_or_borrow_order_id, String applicant_user_id, String approval_user_id, String purpose, Date requisition_date, Date borrow_date, Date return_date, int state, int type, String approval_opinions, Date approval_date) {
         this.get_or_borrow_requisition_id = get_or_borrow_requisition_id;
         this.get_or_borrow_order_id = get_or_borrow_order_id;
         this.applicant_user_id = applicant_user_id;
@@ -97,11 +95,11 @@ public class get_or_borrow_Requisition implements Serializable {
         this.purpose = purpose;
     }
 
-    public DateTime getRequisition_date() {
+    public Date getRequisition_date() {
         return requisition_date;
     }
 
-    public void setRequisition_date(DateTime requisition_date) {
+    public void setRequisition_date(Date requisition_date) {
         this.requisition_date = requisition_date;
     }
 
@@ -145,11 +143,11 @@ public class get_or_borrow_Requisition implements Serializable {
         this.approval_opinions = approval_opinions;
     }
 
-    public DateTime getApproval_date() {
+    public Date getApproval_date() {
         return approval_date;
     }
 
-    public void setApproval_date(DateTime approval_date) {
+    public void setApproval_date(Date approval_date) {
         this.approval_date = approval_date;
     }
 }

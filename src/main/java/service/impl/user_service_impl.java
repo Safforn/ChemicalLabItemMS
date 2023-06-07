@@ -4,12 +4,9 @@ import dao.UserDao;
 import dao.impl.UserDaoImpl;
 import domain.User;
 import service.UserService;
-import util.UuidUtil;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
-public class UserServiceImpl implements UserService {
+
+public class user_service_impl implements UserService {
 
     private UserDao userDao = new UserDaoImpl();
     /**

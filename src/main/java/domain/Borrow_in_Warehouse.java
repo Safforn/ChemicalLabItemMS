@@ -1,6 +1,6 @@
 package domain;
-import org.joda.time.DateTime;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *借用入库实体类
@@ -11,7 +11,7 @@ public class Borrow_in_Warehouse implements Serializable {
     private String warehouse_id;//仓库编号id(FK)
     private String get_or_borrow_order_id;//领用借用申请清单id(FK)
     private String notes; //备注
-    private DateTime date; //入库日期
+    private Date date; //入库日期
 
     /**
      *无参构造方法
@@ -28,7 +28,7 @@ public class Borrow_in_Warehouse implements Serializable {
      * @param borrow_in_order_id
      * @param get_or_borrow_order_id
      */
-    public Borrow_in_Warehouse(String borrow_in_warehouse_id, String notes, DateTime date, String warehouse_id, String borrow_in_order_id, String get_or_borrow_order_id) {
+    public Borrow_in_Warehouse(String borrow_in_warehouse_id, String notes, Date date, String warehouse_id, String borrow_in_order_id, String get_or_borrow_order_id) {
         this.borrow_in_warehouse_id = borrow_in_warehouse_id;
         this.notes = notes;
         this.date = date;
@@ -53,11 +53,11 @@ public class Borrow_in_Warehouse implements Serializable {
         this.notes = notes;
     }
 
-    public DateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

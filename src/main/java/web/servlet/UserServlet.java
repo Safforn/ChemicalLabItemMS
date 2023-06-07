@@ -5,8 +5,7 @@ import domain.ResultInfo;
 import domain.User;
 import org.apache.commons.beanutils.BeanUtils;
 import service.UserService;
-import service.impl.UserServiceImpl;
-import web.servlet.BaseServlet;
+import service.impl.user_service_impl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,13 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.Map;
 
 @WebServlet("/user/*") // /user/add /user/find
 public class UserServlet extends BaseServlet {
     //声明 UserService 业务对象
-    private UserService service = new UserServiceImpl();
+    private UserService service = new user_service_impl();
 
     public void regist(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
@@ -121,7 +119,7 @@ public class UserServlet extends BaseServlet {
         //将 user 写回客户端
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json;charset=utf-8");
-        mapper.writeValue(response.getOutputStream(),user);
+        mapper.writeValue(response.getOutputStream(), user);
     }
 }
 

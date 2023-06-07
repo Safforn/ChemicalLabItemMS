@@ -3,6 +3,7 @@ package domain;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  *采购申请实体类
@@ -15,9 +16,9 @@ public class Purchase_Requisition implements Serializable {
     private String requisition_user_id;//申请人id（FK）
     private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
     private String purpose;//申请用途
-    private DateTime requisition_date;//申请提交时间
+    private Date requisition_date;//申请提交时间
     private String approval_opinions;//审批意见
-    private DateTime approval_date;//审批时间
+    private Date approval_date;//审批时间
 
 
     /**
@@ -38,7 +39,7 @@ public class Purchase_Requisition implements Serializable {
      * @param requisition_user_id
      * @param approval_user_id
      */
-    public Purchase_Requisition(String purchase_requisition_id, String purchase_order_id, int state, String purpose, DateTime requisition_date, String approval_opinions, DateTime approval_date, String requisition_user_id, String approval_user_id) {
+    public Purchase_Requisition(String purchase_requisition_id, String purchase_order_id, int state, String purpose, Date requisition_date, String approval_opinions, Date approval_date, String requisition_user_id, String approval_user_id) {
         this.purchase_requisition_id = purchase_requisition_id;
         this.purchase_order_id = purchase_order_id;
         this.state = state;
@@ -82,11 +83,11 @@ public class Purchase_Requisition implements Serializable {
         this.purpose = purpose;
     }
 
-    public DateTime getRequisition_date() {
+    public Date getRequisition_date() {
         return requisition_date;
     }
 
-    public void setRequisition_date(DateTime requisition_date) {
+    public void setRequisition_date(Date requisition_date) {
         this.requisition_date = requisition_date;
     }
 
@@ -98,11 +99,11 @@ public class Purchase_Requisition implements Serializable {
         this.approval_opinions = approval_opinions;
     }
 
-    public DateTime getApproval_date() {
+    public Date getApproval_date() {
         return approval_date;
     }
 
-    public void setApproval_date(DateTime approval_date) {
+    public void setApproval_date(Date approval_date) {
         this.approval_date = approval_date;
     }
 

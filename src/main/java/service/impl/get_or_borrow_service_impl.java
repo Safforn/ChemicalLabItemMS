@@ -10,27 +10,22 @@ import domain.Object_Entry;
 import domain.Reminder;
 import domain.get_or_borrow_Requisition;
 import domain.template_order;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import service.get_or_borrow_service;
 import util.UuidUtil;
 
-import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import static util.UuidUtil.getCurrentTime;
 
 public class get_or_borrow_service_impl implements get_or_borrow_service {
     private get_or_borrow_dao getOrBorrowDao = new get_or_borrow_dao_impl();
     private object_entry_dao objectEntryDao = new object_entry_dao_impl();
     private reminder_dao reminderDao = new reminder_dao_impl();
-    private SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String time = sfd.format(new java.util.Date());
 
     @Override
     public boolean createOrUpdate(template_order tando) {
         get_or_borrow_Requisition table = (get_or_borrow_Requisition) tando.getTable();
         List<Object_Entry> order = tando.getOrder();
-        System.out.println("serviceimpl"+table.getGet_or_borrow_requisition_id());
         if (table.getGet_or_borrow_requisition_id() == null) {
             return createTable(table, order);
         }
@@ -44,10 +39,7 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
          * 新增物品列表
          * 系统填写：申请单id，物品单id，提交时间
          */
-        DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.println("datatime"+DateTime.parse(time, format));
-        table.setRequisition_date(DateTime.parse(time,format));
-
+        table.setRequisition_date(getCurrentTime());
         table.setGet_or_borrow_requisition_id(UuidUtil.getUuid());
         String orderId = UuidUtil.getUuid();
         table.setGet_or_borrow_order_id(orderId);
@@ -79,7 +71,7 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
 
     @Override
     public boolean approvalTable(get_or_borrow_Requisition table) {
-        table.setApproval_date(DateTime.parse(time));
+        table.setApproval_date(getCurrentTime());
         return getOrBorrowDao.updateTable(table);
     }
 

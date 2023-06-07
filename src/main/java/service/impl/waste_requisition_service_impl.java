@@ -34,7 +34,7 @@ public class waste_requisition_service_impl implements waste_requisition_service
 
     private boolean createTable(Waste_Requisition table, List<Object_Entry> order) {
         table.setWaste_requisition_id(UuidUtil.getUuid());
-        table.setRequisition_date(DateTime.parse(time));
+//        table.setRequisition_date(DateTime.parse(time));
         String orderId = UuidUtil.getUuid();
         table.setWaste_order_id(orderId);
         for (Object_Entry object_entry : order) {
@@ -45,7 +45,7 @@ public class waste_requisition_service_impl implements waste_requisition_service
 
     private boolean changeTable(Waste_Requisition table, List<Object_Entry> order) {
         if (!wasteRequisitionDao.updateTable(table)) {
-            return  false;
+            return false;
         }
         if (!objectEntryDao.deleteEntryByOrder(table.getWaste_order_id())) {
             return false;
@@ -58,7 +58,7 @@ public class waste_requisition_service_impl implements waste_requisition_service
 
     @Override
     public boolean approvalTable(Waste_Requisition table) {
-        table.setApproval_date(DateTime.parse(time));
+//        table.setApproval_date(DateTime.parse(time));
         return wasteRequisitionDao.updateTable(table);
     }
 

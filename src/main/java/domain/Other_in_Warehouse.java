@@ -3,6 +3,8 @@ package domain;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.Date;
+
 /**
  *其他入库实体类
  */
@@ -11,7 +13,7 @@ public class Other_in_Warehouse implements Serializable {
     private String other_in_order_id;//其他入库物品清单
     private String warehouse_id;//仓库编号id(FK)
     private String notes;//备注
-    private DateTime date;//入库时间
+    private Date date;//入库时间
 
     /**
      *无参构造方法
@@ -27,7 +29,7 @@ public class Other_in_Warehouse implements Serializable {
      * @param warehouse_id
      * @param other_in_order_id
      */
-    public Other_in_Warehouse(String other_in_warehouse_id, String notes, DateTime date, String warehouse_id, String other_in_order_id) {
+    public Other_in_Warehouse(String other_in_warehouse_id, String notes, Date date, String warehouse_id, String other_in_order_id) {
         this.other_in_warehouse_id = other_in_warehouse_id;
         this.notes = notes;
         this.date = date;
@@ -51,11 +53,11 @@ public class Other_in_Warehouse implements Serializable {
         this.notes = notes;
     }
 
-    public DateTime getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(DateTime date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

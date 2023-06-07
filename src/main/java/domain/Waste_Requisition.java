@@ -3,6 +3,8 @@ package domain;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.Date;
+
 /**
  *废弃物申请实体类
  */
@@ -16,9 +18,9 @@ public class Waste_Requisition implements Serializable {
     private String waste_reason;//废弃原因
     private String position;//废弃物存放位置
     private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
-    private DateTime requisition_date;//申请提交时间
+    private Date requisition_date;//申请提交时间
     private String approval_opinions;//审批意见
-    private DateTime approval_date;//审批时间
+    private Date approval_date;//审批时间
 
     /**
      *无参构造方法
@@ -40,7 +42,7 @@ public class Waste_Requisition implements Serializable {
      * @param approval_opinions
      * @param approval_date
      */
-    public Waste_Requisition(String waste_requisition_id, String waste_order_id, String requisition_user_id, String approval_user_id, String waste_user_id, String waste_reason, String position, int state, DateTime requisition_date, String approval_opinions, DateTime approval_date) {
+    public Waste_Requisition(String waste_requisition_id, String waste_order_id, String requisition_user_id, String approval_user_id, String waste_user_id, String waste_reason, String position, int state, Date requisition_date, String approval_opinions, Date approval_date) {
         this.waste_requisition_id = waste_requisition_id;
         this.waste_order_id = waste_order_id;
         this.requisition_user_id = requisition_user_id;
@@ -118,11 +120,11 @@ public class Waste_Requisition implements Serializable {
         this.state = state;
     }
 
-    public DateTime getRequisition_date() {
+    public Date getRequisition_date() {
         return requisition_date;
     }
 
-    public void setRequisition_date(DateTime requisition_date) {
+    public void setRequisition_date(Date requisition_date) {
         this.requisition_date = requisition_date;
     }
 
@@ -134,11 +136,11 @@ public class Waste_Requisition implements Serializable {
         this.approval_opinions = approval_opinions;
     }
 
-    public DateTime getApproval_date() {
+    public Date getApproval_date() {
         return approval_date;
     }
 
-    public void setApproval_date(DateTime approval_date) {
+    public void setApproval_date(Date approval_date) {
         this.approval_date = approval_date;
     }
 }

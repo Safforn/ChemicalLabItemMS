@@ -1,6 +1,5 @@
 package dao.impl;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import dao.borrow_in_dao;
 import domain.Borrow_in_Warehouse;
 import org.springframework.jdbc.core.JdbcTemplate;

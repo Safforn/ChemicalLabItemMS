@@ -23,7 +23,7 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
                     table.getGet_or_borrow_order_id(),
                     table.getApplicant_user_id(),
                     table.getPurpose(),
-                    table.getRequisition_date(),
+                    table.getRequisition_date(),  // 格式化
                     table.getBorrow_date(),
                     table.getReturn_date(),
                     table.getState(),

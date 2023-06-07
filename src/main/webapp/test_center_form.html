@@ -274,12 +274,12 @@
         ['aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu1'],
         ['aaa2', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu2'],
         ['aaa3', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu3'],
-        ['aaa4', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu4'],
-        ['aaa5', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu5'],
-        ['aaa6', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu6'],
-        ['aaa7', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu7'],
-        ['aaa8', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu8'],
-        ['aaa9', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu9']
+        ['aaa4', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu4']
+        // ['aaa5', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu5'],
+        // ['aaa6', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu6'],
+        // ['aaa7', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu7'],
+        // ['aaa8', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu8'],
+        // ['aaa9', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu9']
     ];
     $(document).ready(function() {
         $(function(){
@@ -410,8 +410,9 @@
                     }
                 });
                 var data = row.data();
+                alert("data="+data);
                 $.ajax({
-                    "url":"getorborrow/createOrUpdateItems", //TODO:
+                    "url":"getorborrow/createOrUpdateItems",
                     "data":data,  //发送给后端的数据
                     "type":"post",
                     "error":function(){
