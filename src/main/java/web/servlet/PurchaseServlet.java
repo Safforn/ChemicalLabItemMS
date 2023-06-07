@@ -39,9 +39,9 @@ public class PurchaseServlet extends BaseServlet {
             e.printStackTrace();
         }
 
-        // TODO: 调试，显示前端传回的数据
-        purchase_requisition.print();
+        purchase_requisition.print();  // 调试，显示前端传回的数据
 
+        // TODO: 前端表格里的物品清单数据还没传进来
         List<Object_Entry> object_entries = new ArrayList<>();
         template_order to = new template_order(purchase_requisition, object_entries);
         service.createOrUpdate(to);
@@ -79,7 +79,7 @@ public class PurchaseServlet extends BaseServlet {
             ServletException, IOException {
         //从 session 中获取登录用户
         Object user = request.getSession().getAttribute("user");
-        System.out.println("purchase findone="+((User)user).getUser_id());
+        //System.out.println("purchase findone="+((User)user).getUser_id());
         //将 user 写回客户端
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json;charset=utf-8");

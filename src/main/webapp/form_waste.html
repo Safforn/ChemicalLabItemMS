@@ -159,6 +159,14 @@
 
 
 <!--初始化代码-->
+<!-- 导入header -->
+<script>
+    $(function () {
+        $.get("header.html",function (data) {
+            $("#header").html(data);
+        });
+    });
+</script>
 <script>
     $(function () {
         $.get("left_sidebar.html",function (data) {
@@ -416,13 +424,13 @@
                 var arr = tds[6].innerText;
                 console.log(arr);
                 if(arr==='未提交'||arr==='审核未通过'){
-                    tds[6].innerText = '已提交';
-                    $(this).attr('disabled',true);
-                    tds.find('.edit-btn').attr('disabled',true);
+
                     //提交的代码
                     if(confirm('确认提交申请？')){
                         //点击确认
-
+                        tds[6].innerText = '已提交';
+                        $(this).attr('disabled',true);
+                        tds.find('.edit-btn').attr('disabled',true);
                     }else{
                         //点击取消
 

@@ -185,10 +185,17 @@
 <!--<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>-->
 <!--<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>-->
 
+
 <!-- Page-Level Scripts -->
-
-
 <!--初始化代码-->
+<!-- 导入header -->
+<script>
+    $(function () {
+        $.get("header.html",function (data) {
+            $("#header").html(data);
+        });
+    });
+</script>
 <script>
     $(function () {
         $.get("left_sidebar.html",function (data) {

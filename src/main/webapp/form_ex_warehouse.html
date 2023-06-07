@@ -180,6 +180,14 @@
 
 
 <!--初始化代码-->
+<!-- 导入header -->
+<script>
+    $(function () {
+        $.get("header.html",function (data) {
+            $("#header").html(data);
+        });
+    });
+</script>
 <script>
     $(function () {
         $.get("left_sidebar.html",function (data) {

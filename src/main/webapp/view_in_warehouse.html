@@ -3,94 +3,45 @@
 
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
 
-    <title>查看入库单</title>
-    <meta name="keywords">
-    <meta name="description">
-    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css?v=2.2.0" rel="stylesheet">
+  <title>查看出库单</title>
+  <meta name="keywords">
+  <meta name="description">
+
+  <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+  <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+  <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+  <link href="css/animate.css" rel="stylesheet">
+  <link href="css/style.css?v=2.2.0" rel="stylesheet">
 
 </head>
 
 <body>
-  <div id="wrapper">
-    <!-- 侧边栏 -->
-    <div id="left_sidebar"></div>
-    <div id="page-wrapper" class="gray-bg dashbard-1">
+<div id="wrapper">
+  <!-- 侧边栏 -->
+  <div id="left_sidebar"></div>
 
-      <!--头部-->
-      <div id="header"></div>
-      <!--标题-->
-      <div class="row wrapper border-bottom white-bg page-heading">
+  <div id="page-wrapper" class="gray-bg dashbard-1">
+    <!--头部-->
+    <div id="header"></div>
+    <div class="row wrapper border-bottom white-bg page-heading">
       <div class="col-lg-10">
         <h2>查看入库单</h2>
-        <ol class="breadcrumb">
-          <li>
-            <a href="index.html">主页</a>
-          </li>
-          <li>
-            <a>表单</a>
-          </li>
-          <li>
-            <strong>查看入库单</strong>
-          </li>
-        </ol>
+
       </div>
       <div class="col-lg-2">
 
       </div>
     </div>
-      <!--表单本体-->
-      <div class="wrapper wrapper-content animated fadeInRight">
+    <div class="wrapper wrapper-content animated fadeInRight">
+      <!--                所有表单元素  -->
       <div class="row">
         <div class="col-lg-12">
           <div class="ibox float-e-margins">
-            <div class="ibox-title">
-              <h5>入库单</h5>
-              <div class="ibox-tools">
-                <a class="collapse-link">
-                  <i class="fa fa-chevron-up"></i>
-                </a>
-              </div>
-            </div>
             <div class="ibox-content">
               <form method="get" class="form-horizontal">
-                <div class="form-group">
-                  <label class="col-lg-2 control-label">入库单id</label>
-
-                  <div class="col-lg-10">
-                    <p class="form-control-static">id</p>
-                  </div>
-                </div>
-                <div class="hr-line-dashed"></div>
-                <div class="form-group">
-                  <label class="col-lg-2 control-label">仓库</label>
-
-                  <div class="col-lg-10">
-                    <p class="form-control-static">仓库</p>
-                  </div>
-                </div>
-                <div class="hr-line-dashed"></div>
-                <div class="form-group">
-                  <label class="col-sm-2 control-label">备注</label>
-                  <div class="col-sm-10">
-                    <textarea class="form-control input-lg m-b" readonly name="saysths" rows="5" cols="30" wrap="soft" style="resize:none;">备注</textarea>
-                  </div>
-                </div>
-                <div class="hr-line-dashed"></div>
-                <div class="form-group">
-                  <label class="col-lg-2 control-label">时间</label>
-
-                  <div class="col-lg-10">
-                    <p class="form-control-static">时间</p>
-                  </div>
-                </div>
-                <div class="hr-line-dashed"></div>
                 <div class="form-group">
                   <div class="row">
                     <div class="col-lg-12">
@@ -105,37 +56,8 @@
                         </div>
                         <div class="ibox-content">
 
-                          <table class="table table-striped table-bordered table-hover dataTables-example">
-                            <thead>
-                            <tr>
-                              <th>物品id</th>
-                              <th>物品名称</th>
-                              <th>规格</th>
-                              <th>数量</th>
-                              <th>包装单位</th>
-                              <th>分类</th>
-                              <th>单价</th>
-                              <th>过期时间</th>
-                              <th>警戒上限</th>
-                              <th>警戒下限</th>
-                              <th>备注</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr class="gradeX">
-                              <td>id</td>
-                              <td>物品</td>
-                              <td>规格</td>
-                              <td class="center">4</td>
-                              <td class="center">包装单位</td>
-                              <td class="center">分类</td>
-                              <td class="center">10.0</td>
-                              <td class="center">xxxx-xx-xx</td>
-                              <td class="center">300</td>
-                              <td class="center">30</td>
-                              <td class="center">备注</td>
-                            </tr>
-                            </tbody>
+                          <table id=exTable class="table table-striped table-bordered table-hover dataTables-example">
+
                           </table>
 
                         </div>
@@ -143,13 +65,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="hr-line-dashed"></div>
-                <div class="hr-line-dashed"></div>
-                <div class="form-group">
-                  <div class="col-sm-4 col-sm-offset-2">
-                    <button class="btn btn-primary" type="submit">返回</button>
-                  </div>
-                </div>
+
               </form>
             </div>
           </div>
@@ -157,108 +73,228 @@
       </div>
     </div>
 
-    </div>
+    <!-- 数据表单弹窗 -->
+    <form method="post" class="form-horizontal" role="form" id="updateGoodsForm">
+      <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width: 1400px">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                ×
+              </button>
+              <h4 class="modal-title" id="updateModalLabel">
+                物品清单
+              </h4>
+            </div>
+
+            <div class="form-group">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="ibox float-e-margins">
+                    <div class="ibox-content">
+
+                      <table id=listTable class="table table-striped table-bordered table-hover dataTables-example">
+
+                      </table>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+
+    </form>
+
+
   </div>
-  <!-- Mainly scripts -->
-  <script src="js/jquery-2.1.1.min.js"></script>
-  <script src="js/bootstrap.min.js?v=3.4.0"></script>
-  <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-  <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+</div>
 
-  <!-- Custom and plugin javascript -->
-  <script src="js/hplus.js?v=2.2.0"></script>
-  <script src="js/plugins/pace/pace.min.js"></script>
 
-  <!-- iCheck -->
-  <script src="js/plugins/iCheck/icheck.min.js"></script>
-  <!-- Data Tables -->
-  <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
-  <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
-  <!-- Custom and plugin javascript -->
-  <script src="js/hplus.js?v=2.2.0"></script>
-  <script src="js/plugins/pace/pace.min.js"></script>
 
-  <!-- Page-Level Scripts -->
+<!-- Mainly scripts -->
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js?v=3.4.0"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-  <!-- 导入header -->
-  <script>
-    $(function () {
-      $.get("header.html",function (data) {
-        $("#header").html(data);
-      });
+<!-- Custom and plugin javascript -->
+<script src="js/hplus.js?v=2.2.0"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+
+<!-- iCheck -->
+<script src="js/plugins/iCheck/icheck.min.js"></script>
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="js/hplus.js?v=2.2.0"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+
+<!-- Page-Level Scripts -->
+<!-- 导入header -->
+<script>
+  $(function () {
+    $.get("header.html",function (data) {
+      $("#header").html(data);
     });
-  </script>
-
-  <!-- 导入left_sidebar -->
-  <script>
-    $(function () {
-      $.get("left_sidebar.html",function (data) {
-        $("#left_sidebar").html(data);
-      });
-    });
-  </script>
-
-  <script>
-    $(document).ready(function () {
-      $('.dataTables-example').dataTable();
-
-      /* Init DataTables */
-      var oTable = $('#editable').dataTable();
-
-      /* Apply the jEditable handlers to the table */
-      oTable.$('td').editable('../example_ajax.php', {
-        "callback": function (sValue, y) {
-          var aPos = oTable.fnGetPosition(this);
-          oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-        },
-        "submitdata": function (value, settings) {
-          return {
-            "row_id": this.parentNode.getAttribute('id'),
-            "column": oTable.fnGetPosition(this)[2]
-          };
-       },
-
-        "width": "90%",
-        "height": "100%"
-     });
+  });
+</script>
+<!-- 导入left_sidebar -->
+<script>
+  $(function () {
+    $.get("left_sidebar.html",function (data) {
+      $("#left_sidebar").html(data);
     });
 
-  function fnClickAddRow() {
-    $('#editable').dataTable().fnAddData([
-      "Custom row",
-      "New row",
-      "New row",
-      "New row",
-      "New row"]);
+  });
+</script>
 
-    }
-  </script>
-  <script>
-   $(document).ready(function () {
-      $('.i-checks').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
-      });
+<script>
+  const dataSet = [
+    ['id', 'aaa', 'bb', '30', 'xxxx-xx', '300','data'],
+    ['id1', 'aaa1', 'cc', '20', 'xxxx-xx', '200','note'],
+  ];
+  const dataSets = [
+    ['id', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
+    ['id1', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
+    ['id2', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
+    ['id3', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '2hao', 'beizhu'],
+    ['id4', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '2hao', 'beizhu'],
+    ['id5', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
+    ['id6', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
+    ['id7', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
+    ['id8', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '2hao', 'beizhu'],
+    ['id9', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
+    ['id10', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '2hao', 'beizhu'],
+    ['id11', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
+    ['id12', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
+    ['id13', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '3hao', 'beizhu'],
+    ['id14', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
+    ['id15', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '3hao', 'beizhu'],
+  ];
+  $(document).ready(function (){
+    $('#exTable').DataTable({
+      retrieve: true,
+      data:dataSet,
+      columns:[
+        {
+          'field': "ex_warehouse_id",
+          'title': '入库单id',
+          'defaultContent' : ""
+        }, {
+          'field': "ex_order_id",
+          'title': '入库物品清单id',
+          'defaultContent' : ""
+        }, {
+          'field': "warehouse_id",
+          'title': '仓库编号',
+          'defaultContent' : ""
+        }, {
+          'field': "requisition_id",
+          'title': '申请单id',
+          'defaultContent' : ""
+        }, {
+          'field': "type",
+          'title': '入库类型',
+          'defaultContent' : ""
+        }, {
+          'field': "date",
+          'title': '入库时间',
+          'defaultContent' : ""
+        }, {
+          'field': "notes",
+          'title': '备注',
+          'defaultContent' : ""
+        }, {
+          field: "operate",
+          sTitle: '操作',
+          sDefaultContent : "",
+          sClass: 'text-center',
+          "targets" : 1,//操作按钮目标列
+          "data" : null,
+          "render" : function(data, type,row) {
+            var id = '"' + row.id + '"';
+            var html = "<a href='javascript:void(0);'  class='btn btn-primary btn-xs'  onclick='EditViewById()'></i>物品清单</a>"
+            return html;
+            // formatter: actionFormatter
+          }
+        }]
     });
-  </script>
-  <script>
-    Date.prototype.format = function (fmt) {
-      var o = {
-        "y+": this.getFullYear, //年
-        "M+": this.getMonth() + 1, //月份
-        "d+": this.getDate(), //日
-        "h+": this.getHours(), //小时
-        "m+": this.getMinutes(), //分
-        "s+": this.getSeconds() //秒
-      };
-      if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-      for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-      return fmt;
-    }
-    setInterval("document.getElementById('dateTime').innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');", 1000);
-  </script>
+
+    $('#listTable').DataTable({
+      retrieve: true,
+      data:dataSets,
+      columns:[
+        {
+          'field': "object_id",
+          'title': '物品id',
+          'defaultContent' : ""
+        }, {
+          'field': "name",
+          'title': '物品名称',
+          'defaultContent' : ""
+        }, {
+          'field': "specification",
+          'title': '规格',
+          'defaultContent' : ""
+        }, {
+          'field': "quantity",
+          'title': '数量',
+          'defaultContent' : ""
+        }, {
+          'field': "unit",
+          'title': '包装单位',
+          'defaultContent' : ""
+        }, {
+          'field': "classification",
+          'title': '分类',
+          'defaultContent' : ""
+        }, {
+          'field': "price",
+          'title': '单价',
+          'defaultContent' : ""
+        }, {
+          'field': "expiration_time",
+          'title': '过期时间',
+          'defaultContent' : ""
+        }, {
+          'field': "upper_limit",
+          'title': '警戒上限',
+          'defaultContent' : ""
+        }, {
+          'field': "lower_limit",
+          'title': '警戒下限',
+          'defaultContent' : ""
+        }, {
+          'field': "warehouse_id",
+          'title': '仓库',
+          'defaultContent' : ""
+        }, {
+          'field': "notes",
+          'title': '备注',
+          'defaultContent' : ""
+        }]
+    });
+
+  });
+
+  //getData方法获取全部页面数据后，将data转为json对象，使用index当前行号作为下标获取对应数据
+  function EditViewById(){
+    //弹出修改表单（非模态框）
+    $('#updateModal').modal('show');
+  }
+
+
+</script>
+
+
 </body>
 
 </html>
