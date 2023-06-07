@@ -25,19 +25,18 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
     String time = sfd.format(new java.util.Date());
 
     @Override
-    public void createOrUpdate(template_order tando) {
+    public boolean createOrUpdate(template_order tando) {
         get_or_borrow_Requisition table = (get_or_borrow_Requisition) tando.getTable();
         List<Object_Entry> order = tando.getOrder();
         if (table.getGet_or_borrow_requisition_id().length() == 0) {
-            createTable(table, order);
+            return createTable(table, order);
         }
         else {
-            changeTable(table, order);
+            return changeTable(table, order);
         }
     }
 
-    @Override
-    public void createTable(get_or_borrow_Requisition table, List<Object_Entry> order) {
+    private boolean createTable(get_or_borrow_Requisition table, List<Object_Entry> order) {
         /**
          * 新增物品列表
          * 系统填写：申请单id，物品单id，提交时间
@@ -49,36 +48,39 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
         for (Object_Entry object_entry : order) {
             object_entry.setObject_entry_id(UuidUtil.getUuid());
         }
-        objectEntryDao.addEntry(order, orderId);
-        getOrBorrowDao.createTable(table);
+        return objectEntryDao.addEntry(order, orderId) && getOrBorrowDao.createTable(table);
     }
 
-    @Override
-    public void changeTable(get_or_borrow_Requisition table, List<Object_Entry> order) {
-        getOrBorrowDao.updateTable(table);
-        objectEntryDao.deleteEntryByOrder(table.getGet_or_borrow_order_id());
+    private boolean changeTable(get_or_borrow_Requisition table, List<Object_Entry> order) {
+        if (!getOrBorrowDao.updateTable(table)) {
+            return false;
+        }
+        if (!objectEntryDao.deleteEntryByOrder(table.getGet_or_borrow_order_id())) {
+            return false;
+        }
         for (Object_Entry object_entry : order) {
             object_entry.setObject_entry_id(UuidUtil.getUuid());
         }
-        objectEntryDao.addEntry(order, table.getGet_or_borrow_order_id());
+        if (objectEntryDao.addEntry(order, table.getGet_or_borrow_order_id())) {
 
-        if (table.getType() == 1) {
-            //填写催还单
-            reminderDao.add(new Reminder(UuidUtil.getUuid(), table.getGet_or_borrow_requisition_id()));
+            if (table.getType() == 1) {
+                //填写催还单
+                return reminderDao.add(new Reminder(UuidUtil.getUuid(), table.getGet_or_borrow_requisition_id()));
+            }
         }
+        return false;
     }
 
     @Override
-    public void approvalTable(get_or_borrow_Requisition table) {
+    public boolean approvalTable(get_or_borrow_Requisition table) {
         table.setApproval_date(DateTime.parse(time));
-        getOrBorrowDao.updateTable(table);
+        return getOrBorrowDao.updateTable(table);
     }
 
     @Override
-    public void deleteTable(String tableId) {
+    public boolean deleteTable(String tableId) {
         get_or_borrow_Requisition get_or_borrow_requisition = getOrBorrowDao.searchTableById(tableId);
-        objectEntryDao.deleteEntryByOrder(get_or_borrow_requisition.getGet_or_borrow_order_id());
-        getOrBorrowDao.deleteTable(tableId);
+        return objectEntryDao.deleteEntryByOrder(get_or_borrow_requisition.getGet_or_borrow_order_id()) && getOrBorrowDao.deleteTable(tableId);
     }
 
 //    @Override

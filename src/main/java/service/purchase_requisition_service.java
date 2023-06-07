@@ -8,30 +8,23 @@ import domain.template_order;
 import java.util.List;
 
 public interface purchase_requisition_service {
-    void createOrUpdate(template_order tando);
     /**
-     * 新建申请单
-     * @param table
+     * 创建或修改采购申请单
+     * @param tando
+     * @return
      */
-    void createTable(Purchase_Requisition table, List<Object_Entry> order);
-
-    /**
-     * 申请人修改申请单
-     * @param table
-     */
-    void changeTable(Purchase_Requisition table, List<Object_Entry> order);
-
+    boolean createOrUpdate(template_order tando);
     /**
      * 审批人审批申请单
      * @param table
      */
-    void approvalTable(Purchase_Requisition table);
+    boolean approvalTable(Purchase_Requisition table);
 
     /**
      * 删除申请单
      * @param tableId
      */
-    void deleteTable(String tableId);
+    boolean deleteTable(String tableId);
 
 //    /**
 //     * 提交申请单

@@ -12,51 +12,69 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
 
     @Override
-    public void createTable(get_or_borrow_Requisition table) {
+    public boolean createTable(get_or_borrow_Requisition table) {
         String sql = "insert into get_or_borrow_requisition(get_or_borrow_requisition_id, " +
                                  "get_or_borrow_order_id, applicant_user_id, purpose, requisition_date, " +
                                  "borrow_date, return_date,state, type) " +
                                  "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        template.update(sql,
-                table.getGet_or_borrow_requisition_id(),
-                table.getGet_or_borrow_order_id(),
-                table.getApplicant_user_id(),
-                table.getPurpose(),
-                table.getRequisition_date(),
-                table.getBorrow_date(),
-                table.getReturn_date(),
-                table.getState(),
-                table.getType());
+        try {
+            template.update(sql,
+                    table.getGet_or_borrow_requisition_id(),
+                    table.getGet_or_borrow_order_id(),
+                    table.getApplicant_user_id(),
+                    table.getPurpose(),
+                    table.getRequisition_date(),
+                    table.getBorrow_date(),
+                    table.getReturn_date(),
+                    table.getState(),
+                    table.getType());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public void updateTable(get_or_borrow_Requisition table) {
+    public boolean updateTable(get_or_borrow_Requisition table) {
         String sql = "update get_or_borrow_requisition set get_or_borrow_requisition_id = ?, " +
                 "get_or_borrow_order_id = ?, applicant_user_id = ?, purpose = ?, requisition_date = ?, " +
                 "borrow_date = ?, return_date = ?,state = ?, type = ?," +
                 "applicant_user_id = ?, approval_user_id = ?, approval_opinions = ?, " +
                 "approval_date = ?) ";
-        template.update(sql,
-                table.getGet_or_borrow_requisition_id(),
-                table.getGet_or_borrow_order_id(),
-                table.getApplicant_user_id(),
-                table.getPurpose(),
-                table.getRequisition_date(),
-                table.getBorrow_date(),
-                table.getReturn_date(),
-                table.getState(),
-                table.getType(),
-                table.getApplicant_user_id(),
-                table.getApproval_user_id(),
-                table.getApproval_opinions(),
-                table.getApproval_date());
+        try {
+            template.update(sql,
+                    table.getGet_or_borrow_requisition_id(),
+                    table.getGet_or_borrow_order_id(),
+                    table.getApplicant_user_id(),
+                    table.getPurpose(),
+                    table.getRequisition_date(),
+                    table.getBorrow_date(),
+                    table.getReturn_date(),
+                    table.getState(),
+                    table.getType(),
+                    table.getApplicant_user_id(),
+                    table.getApproval_user_id(),
+                    table.getApproval_opinions(),
+                    table.getApproval_date());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
 
     }
 
     @Override
-    public void deleteTable(String tableId) {
+    public boolean deleteTable(String tableId) {
         String sql = "DELETE from get_or_borrow_requisition where get_or_borrow_requisition_id = ?";
-        template.update(sql, tableId);
+        try {
+            template.update(sql, tableId);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 //    @Override

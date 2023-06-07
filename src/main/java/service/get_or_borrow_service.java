@@ -7,30 +7,24 @@ import domain.template_order;
 import java.util.List;
 
 public interface get_or_borrow_service {
-    void createOrUpdate(template_order tando);
     /**
-     * 新建申请单
-     * @param table
+     * 创建或修改使用申请单
+     * @param tando
+     * @return
      */
-    void createTable(get_or_borrow_Requisition table, List<Object_Entry> order);
-
-    /**
-     * 申请人修改申请单
-     * @param table
-     */
-    void changeTable(get_or_borrow_Requisition table, List<Object_Entry> order);
+    boolean createOrUpdate(template_order tando);
 
     /**
      * 审批人审批申请单
      * @param table
      */
-    void approvalTable(get_or_borrow_Requisition table);
+    boolean approvalTable(get_or_borrow_Requisition table);
 
     /**
      * 删除申请单
      * @param tableId
      */
-    void deleteTable(String tableId);
+    boolean deleteTable(String tableId);
 
 //    /**
 //     * 提交申请单

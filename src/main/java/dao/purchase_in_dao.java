@@ -9,7 +9,7 @@ public interface purchase_in_dao {
      * 新建表单
      * @param table
      */
-    void add(Purchase_in_Warehouse table);
+    boolean add(Purchase_in_Warehouse table);
 
     /**
      * 查询采购订单是否存在

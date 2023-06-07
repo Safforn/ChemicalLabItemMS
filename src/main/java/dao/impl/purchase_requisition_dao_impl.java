@@ -12,39 +12,57 @@ public class purchase_requisition_dao_impl implements purchase_requisition_dao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
 
     @Override
-    public void createTable(Purchase_Requisition table) {
+    public boolean createTable(Purchase_Requisition table) {
         String sql = "insert into purchase_requisition(purchase_requisition_id," +
                      "purchase_order_id, requisition_user_id, state, purpose, requisition_date)" +
                      "values(?, ?, ?, ?, ?, ?)";
-        template.update(sql,
-                table.getPurchase_requisition_id(),
-                table.getPurchase_order_id(),
-                table.getPurchase_requisition_id(),
-                table.getState(),
-                table.getRequisition_date());
+        try {
+            template.update(sql,
+                    table.getPurchase_requisition_id(),
+                    table.getPurchase_order_id(),
+                    table.getPurchase_requisition_id(),
+                    table.getState(),
+                    table.getRequisition_date());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public void updateTable(Purchase_Requisition table) {
+    public boolean updateTable(Purchase_Requisition table) {
         String sql = "update purchase_requisition set purchase_requisition_id = ?," +
                 "purchase_order_id = ?, requisition_user_id = ?, state = ?, purpose = ?, requisition_date = ?," +
                 "approval_user_id = ?, approval_opinions = ?, approval_date = ?";
-        template.update(sql,
-                table.getPurchase_requisition_id(),
-                table.getPurchase_order_id(),
-                table.getPurchase_requisition_id(),
-                table.getState(),
-                table.getRequisition_date(),
-                table.getApproval_user_id(),
-                table.getApproval_opinions(),
-                table.getApproval_date());
+        try {
+            template.update(sql,
+                    table.getPurchase_requisition_id(),
+                    table.getPurchase_order_id(),
+                    table.getPurchase_requisition_id(),
+                    table.getState(),
+                    table.getRequisition_date(),
+                    table.getApproval_user_id(),
+                    table.getApproval_opinions(),
+                    table.getApproval_date());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
     @Override
-    public void deleteTable(String tableId) {
+    public boolean deleteTable(String tableId) {
         String sql = "delete from purchase_requisition where purchase_requisition_id = ?";
-        template.update(sql, tableId);
+        try {
+            template.update(sql, tableId);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

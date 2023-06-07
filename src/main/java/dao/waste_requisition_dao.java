@@ -10,19 +10,19 @@ public interface waste_requisition_dao {
      * 新建申请单
      * @param table
      */
-    void createTable(Waste_Requisition table);
+    boolean createTable(Waste_Requisition table);
 
     /**
      * 更新申请单
      * @param table
      */
-    void updateTable(Waste_Requisition table);
+    boolean updateTable(Waste_Requisition table);
 
     /**
      * 删除申请单
      * @param tableId
      */
-    void deleteTable(String tableId);
+    boolean deleteTable(String tableId);
 
 //    /**
 //     * 提交申请单

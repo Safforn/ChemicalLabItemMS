@@ -9,8 +9,8 @@ import util.UuidUtil;
 public class borrow_in_service_impl implements borrow_in_service {
     private borrow_in_dao borrowInDao = new borrow_in_dao_impl();
     @Override
-    public void add(Borrow_in_Warehouse table) {
+    public boolean add(Borrow_in_Warehouse table) {
         table.setBorrow_in_warehouse_id(UuidUtil.getUuid());
-        borrowInDao.add(table);
+        return borrowInDao.add(table);
     }
 }

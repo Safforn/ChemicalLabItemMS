@@ -17,7 +17,7 @@ public class purchase_in_service_impl implements purchase_in_service {
     private purchase_in_dao purchaseInDao = new purchase_in_dao_impl();
 
     @Override
-    public void add(template_order temp) {
+    public boolean add(template_order temp) {
         Purchase_in_Warehouse table = (Purchase_in_Warehouse)temp.getTable();//采购入库表
         List<Object_Entry> order = temp.getOrder();  // 入库清单
         List<String> inOrderId = purchaseInDao.getInOrder(table.getPurchase_order_id());  // 从DS里获取的 与采购清单关联的入库清单
@@ -30,22 +30,25 @@ public class purchase_in_service_impl implements purchase_in_service {
             for (Object_Entry object_entry : order) {
                 object_entry.setObject_entry_id(UuidUtil.getUuid());
             }
-            objectEntryDao.addEntry(order, id);
-            purchaseInDao.add(table);
+            return objectEntryDao.addEntry(order, id) && purchaseInDao.add(table);
         }
         else {
             String id = inOrderId.get(0);
             for (Object_Entry object_entry : order) {
                 if (objectEntryDao.findOne(id, object_entry.getObject_id()) > 0) {
-                    objectEntryDao.updateOne(id, object_entry.getObject_id(), object_entry.getNum());
+                    if (!objectEntryDao.updateOne(id, object_entry.getObject_id(), object_entry.getNum())) {
+                        return false;
+                    }
                 }
                 else {
-                    objectEntryDao.addOne(object_entry, id);
+                    if (!objectEntryDao.addOne(object_entry, id)) {
+                        return false;
+                    }
                 }
             }
 
             table.setPurchase_in_order_id(id);
-            purchaseInDao.add(table);
+            return purchaseInDao.add(table);
         }
     }
 }

@@ -22,19 +22,24 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
     String time = sfd.format(new java.util.Date());
 
     @Override
-    public void createOrUpdate(template_order tando) {
+    public boolean createOrUpdate(template_order tando) {
         Purchase_Requisition table = (Purchase_Requisition) tando.getTable();
         List<Object_Entry> order = tando.getOrder();
         if (table.getPurchase_requisition_id().length() == 0) {
-            createTable(table, order);
+            return createTable(table, order);
         }
         else {
-            createTable(table, order);
+            return changeTable(table, order);
         }
     }
 
-    @Override
-    public void createTable(Purchase_Requisition table, List<Object_Entry> order) {
+    /**
+     * 创建采购申请单
+     * @param table
+     * @param order
+     * @return
+     */
+    private boolean createTable(Purchase_Requisition table, List<Object_Entry> order) {
         table.setRequisition_date(DateTime.parse(time));
         table.setPurchase_requisition_id(UuidUtil.getUuid());
         String orderId = UuidUtil.getUuid();
@@ -42,31 +47,38 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
         for (Object_Entry object_entry : order) {
             object_entry.setObject_entry_id(UuidUtil.getUuid());
         }
-        objectEntryDao.addEntry(order, orderId);
-        purchaseRequisitionDao.createTable(table);
+        return objectEntryDao.addEntry(order, orderId) && purchaseRequisitionDao.createTable(table);
     }
 
-    @Override
-    public void changeTable(Purchase_Requisition table, List<Object_Entry> order) {
-        purchaseRequisitionDao.updateTable(table);
-        objectEntryDao.deleteEntryByOrder(table.getPurchase_order_id());
-        for (Object_Entry object_entry : order) {
-            object_entry.setObject_entry_id(UuidUtil.getUuid());
+    /**
+     * 修改采购申请单
+     * @param table
+     * @param order
+     * @return
+     */
+    private boolean changeTable(Purchase_Requisition table, List<Object_Entry> order) {
+        if (purchaseRequisitionDao.updateTable(table)) {
+            if (!objectEntryDao.deleteEntryByOrder(table.getPurchase_order_id())) {
+                return false;
+            }
+            for (Object_Entry object_entry : order) {
+                object_entry.setObject_entry_id(UuidUtil.getUuid());
+            }
+            return objectEntryDao.addEntry(order, table.getPurchase_order_id());
         }
-        objectEntryDao.addEntry(order, table.getPurchase_order_id());
+        return false;
     }
 
     @Override
-    public void approvalTable(Purchase_Requisition table) {
+    public boolean approvalTable(Purchase_Requisition table) {
         table.setApproval_date(DateTime.parse(time));
-        purchaseRequisitionDao.updateTable(table);
+        return purchaseRequisitionDao.updateTable(table);
     }
 
     @Override
-    public void deleteTable(String tableId) {
+    public boolean deleteTable(String tableId) {
         Purchase_Requisition purchase_requisition = purchaseRequisitionDao.searchTableById(tableId);
-        objectEntryDao.deleteEntryByOrder(purchase_requisition.getPurchase_order_id());
-        purchaseRequisitionDao.deleteTable(tableId);
+        return objectEntryDao.deleteEntryByOrder(purchase_requisition.getPurchase_order_id()) && purchaseRequisitionDao.deleteTable(tableId);
     }
 
     @Override

@@ -8,5 +8,5 @@ public interface purchase_in_service {
      * 新增购买入库单
      * @param temp
      */
-    void add(template_order temp);
+    boolean add(template_order temp);
 }

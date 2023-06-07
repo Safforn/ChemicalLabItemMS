@@ -14,44 +14,62 @@ public class waste_requisition_dao_impl implements waste_requisition_dao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
 
     @Override
-    public void createTable(Waste_Requisition table) {
+    public boolean createTable(Waste_Requisition table) {
         String sql = "insert into waste_requisition(waste_requisition_id, " +
                 "waste_order_id, requisition_user_id, waste_reason, position, " +
                 "state, requisition_date) " +
                 "values (?, ?, ?, ?, ?, ?, ?)";
-        template.update(sql,
-                table.getWaste_requisition_id(),
-                table.getWaste_order_id(),
-                table.getRequisition_user_id(),
-                table.getWaste_reason(),
-                table.getPosition(),
-                table.getState(),
-                table.getRequisition_date());
+        try {
+            template.update(sql,
+                    table.getWaste_requisition_id(),
+                    table.getWaste_order_id(),
+                    table.getRequisition_user_id(),
+                    table.getWaste_reason(),
+                    table.getPosition(),
+                    table.getState(),
+                    table.getRequisition_date());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public void updateTable(Waste_Requisition table) {
+    public boolean updateTable(Waste_Requisition table) {
         String sql = "update waste_requisition set waste_requisition_id = ?, " +
                 "waste_order_id = ?, requisition_user_id = ?, waste_reason = ?, position = ?, " +
                 "state = ?, requisition_date = ?, , approval_user_id = ?, approval_opinions = ?, " +
                 "approval_date = ?)";
-        template.update(sql,
-                table.getWaste_requisition_id(),
-                table.getWaste_order_id(),
-                table.getRequisition_user_id(),
-                table.getWaste_reason(),
-                table.getPosition(),
-                table.getState(),
-                table.getRequisition_date(),
-                table.getApproval_user_id(),
-                table.getApproval_opinions(),
-                table.getApproval_date());
+        try {
+            template.update(sql,
+                    table.getWaste_requisition_id(),
+                    table.getWaste_order_id(),
+                    table.getRequisition_user_id(),
+                    table.getWaste_reason(),
+                    table.getPosition(),
+                    table.getState(),
+                    table.getRequisition_date(),
+                    table.getApproval_user_id(),
+                    table.getApproval_opinions(),
+                    table.getApproval_date());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public void deleteTable(String tableId) {
+    public boolean deleteTable(String tableId) {
         String sql = "delete from waste_requisition where waste_requisition_id = ?";
-        template.update(sql, tableId);
+        try {
+            template.update(sql, tableId);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override

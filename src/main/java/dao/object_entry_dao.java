@@ -10,25 +10,25 @@ public interface object_entry_dao {
      * @param lists
      * @param orderId
      */
-    void addEntry(List<Object_Entry> lists, String orderId);
+    boolean addEntry(List<Object_Entry> lists, String orderId);
 
     /**
      * 新增一行
      * @param orderId
      */
-    void addOne(Object_Entry oe, String orderId);
+    boolean addOne(Object_Entry oe, String orderId);
 
     /**
      * 删除一条
      * @param id
      */
-    void deleteEntryById(String id);
+    boolean deleteEntryById(String id);
 
     /**
      * 按照订单编号删除
      * @param orderId
      */
-    void deleteEntryByOrder(String orderId);
+    boolean deleteEntryByOrder(String orderId);
 
     /**
      * 查询一行是否存在
@@ -44,7 +44,7 @@ public interface object_entry_dao {
      * @param objectId
      * @param num
      */
-    void updateOne(String orderId, String objectId, int num);
+    boolean updateOne(String orderId, String objectId, int num);
 
     /**
      * 获取订单

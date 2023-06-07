@@ -9,19 +9,19 @@ public interface get_or_borrow_dao {
      * 新建申请单
      * @param table
      */
-    void createTable(get_or_borrow_Requisition table);
+    boolean createTable(get_or_borrow_Requisition table);
 
     /**
      * 更新申请单
      * @param table
      */
-    void updateTable(get_or_borrow_Requisition table);
+    boolean updateTable(get_or_borrow_Requisition table);
 
     /**
      * 删除申请单
      * @param tableId
      */
-    void deleteTable(String tableId);
+    boolean deleteTable(String tableId);
 
 //    /**
 //     * 提交申请单
