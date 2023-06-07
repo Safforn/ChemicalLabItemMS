@@ -1,5 +1,6 @@
 package service;
 
+import domain.Identity;
 import domain.User;
 
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.List;
 public interface UserService {
     boolean regist(User user);
     User login(User user);
+    Identity findIdentity(User user);
 //    List<Goods> searchGoods(String uid);
 //    String leaseAndBuy(Order order);
 //    List<Order> searchOrderByType(int type, String uid);

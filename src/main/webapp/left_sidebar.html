@@ -5,22 +5,20 @@
                 <li class="nav-header">
 
                     <div class="dropdown profile-element">
-                        <!-- 头像 <span> <img alt="image" class="img-circle" src="img/profile_small.jpg" /> </span>-->
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
                             <span class="clear">
-                                <span id="span_user_id" class="block m-t-xs"><strong class="font-bold">admin</strong></span>
-                                <span id="span_username" class="text-muted text-xs block">系统管理员<b class="caret"></b></span>
+                                <span id="span_user_id" class="block m-t-xs">
+                                    <strong class="font-bold">用户id</strong>
+                                </span>
+                                <span id="span_username" class="text-muted text-xs block">
+                                    <b class="caret">用户身份</b>
+                                </span>
                             </span>
                         </a>
                         <!--登陆位置的下拉栏-->
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="profile.html">个人资料</a>
-                            </li>
-                            <li><a href="mailbox.html">信箱</a>
-                            </li>
-
-                            <li class="divider"></li>  <!-- 分割线 -->
-                            <li><a href="login.html">安全退出</a>
+                            <li>
+                                <a href="login.html">安全退出</a>
                             </li>
                         </ul>
                     </div>
@@ -36,34 +34,61 @@
                     <a href="index.html#"><i class="fa fa-edit"></i> <span class="nav-label">表单</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         <li><a href="test_center_form.html">个人中心测试页面</a></li>
-                        <li><a href="form_use_or_borrow.html">采购申请表</a></li>
-                        <li><a href="form_use_or_borrow.html">领用/借用申请表</a></li>
-                        <li><a href="form_waste.html">废弃物品申请表</a></li>
-                        <li><a href="form_purchase_in_warehouse.html">采购入库表</a></li>
-                        <li><a href="form_borrow_in_warehouse.html">借用归还入库表</a></li>
-                        <li><a href="form_other_in_warehouse.html">其他入库表</a></li>
-                        <li><a href="form_ex_warehouse.html">出库表</a></li>
-                        <li><a href="view_in_warehouse.html">查看入库表</a></li>
-                        <li><a href="view_ex_warehouse.html">查看出库表</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="index.html#"><i class="fa fa-desktop"></i> <span class="nav-label">页面</span></a>
-                    <ul class="nav nav-second-level">
-                        <li><a href="login.html">登录</a></li>
-                        <li><a href="register.html">注册</a></li>
+                        <li><a id="form_purchase"               href="form_purchase.html"  style="display: none;">
+                            采购申请表</a></li>
+                        <li><a id="form_use_or_borrow"          href="form_use_or_borrow.html">
+                            领用/借用申请表</a></li>
+                        <li><a id="form_waste"                  href="form_waste.html">
+                            废弃物品申请表</a></li>
+                        <li><a id="form_purchase_in_warehouse"  href="form_purchase_in_warehouse.html" style="display: none;">
+                            采购入库表</a></li>
+                        <li><a id="form_borrow_in_warehouse"    href="form_borrow_in_warehouse.html" style="display: none;">
+                            借用归还入库表</a></li>
+                        <li><a id="form_other_in_warehouse"     href="form_other_in_warehouse.html" style="display: none;">
+                            其他入库表</a></li>
+                        <li><a id="form_ex_warehouse"           href="form_ex_warehouse.html" style="display: none;">
+                            出库表</a></li>
+                        <li><a id="view_in_warehouse.html"      href="view_in_warehouse.html" style="display: none;">
+                            查看入库表</a></li>
+                        <li><a id="view_ex_warehouse"           href="view_ex_warehouse.html" style="display: none;">
+                            查看出库表</a></li>
                     </ul>
                 </li>
             </ul>
-
         </div>
     </nav>
 
+    <!--获取当前登陆状态-->
     <script>
         $.get("user/findOne", {}, function (data) {
             $("#span_username").html(data.name)
             $("#span_user_id").html(data.account)
-            //$("#login").css("display", "inline")
-            //$("#login_out").css("display", "none")
+        })
+    </script>
+    <script>
+        $.get("user/findIdentity", {}, function (data) {
+            switch (data.identity){
+                //1:实验室负责人
+                case 1:
+                    $("#form_purchase").css("display","");
+                    $("#form_use_or_borrow").css("display","none");
+                    $("#form_waste").css("display","none");
+                    break;
+                //2:仓库管理员
+                case 2:
+                    $("#form_borrow_in_warehouse").css("display","");
+                    $("#form_ex_warehouse").css("display","");
+                    $("#form_other_in_warehouse").css("display","");
+                    $("#form_purchase_in_warehouse").css("display","");
+                    $("#view_ex_warehouse").css("display","");
+                    $("#view_in_warehouse").css("display","");
+                    $("#form_use_or_borrow").css("display","none");
+                    $("#form_waste").css("display","none");
+                    break;
+                //3:审批人员
+                case 3:
+                    $("#form_purchase").css("display","");
+                    break;
+            }
         })
     </script>

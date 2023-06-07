@@ -1,6 +1,7 @@
 package web.servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import domain.Identity;
 import domain.ResultInfo;
 import domain.User;
 import org.apache.commons.beanutils.BeanUtils;
@@ -120,6 +121,19 @@ public class UserServlet extends BaseServlet {
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json;charset=utf-8");
         mapper.writeValue(response.getOutputStream(), user);
+    }
+    /**
+     * 查询登录用户的身份
+     */
+    public void findIdentity(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
+        //从 session 中获取登录用户
+        Object user = request.getSession().getAttribute("user");
+        Identity identity = service.findIdentity((User) user);
+        //将 identity 写回客户端
+        ObjectMapper mapper = new ObjectMapper();
+        response.setContentType("application/json;charset=utf-8");
+        mapper.writeValue(response.getOutputStream(), identity);
     }
 }
 

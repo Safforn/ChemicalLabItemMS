@@ -2,6 +2,7 @@ package service.impl;
 
 import dao.UserDao;
 import dao.impl.UserDaoImpl;
+import domain.Identity;
 import domain.User;
 import service.UserService;
 
@@ -40,6 +41,11 @@ public class user_service_impl implements UserService {
     @Override
     public User login(User user) {
         return userDao.findByUidAndPassword(user.getAccount(), user.getPassword());
+    }
+
+    @Override
+    public Identity findIdentity(User user) {
+        return userDao.findByUserId(user.getUser_id());
     }
 
 //    @Override

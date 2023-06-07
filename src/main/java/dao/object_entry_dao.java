@@ -1,7 +1,5 @@
 package dao;
-
 import domain.Object_Entry;
-
 import java.util.List;
 
 public interface object_entry_dao {

@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.UserDao;
+import domain.Identity;
 import domain.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -56,6 +57,17 @@ public class UserDaoImpl implements UserDao {
         } catch (Exception e) {
         }
         return user;
+    }
+
+    @Override
+    public Identity findByUserId(String uid) {
+        Identity identity = null;
+        try {
+            String sql = "select * from Identity where user_id = ? ";
+            identity = template.queryForObject(sql, new BeanPropertyRowMapper<>(Identity.class), uid);
+        } catch (Exception e) {
+        }
+        return identity;
     }
 
 //    @Override
