@@ -27,7 +27,7 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
     public boolean createOrUpdate(template_order tando) {
         Purchase_Requisition table = (Purchase_Requisition) tando.getTable();
         List<Object_Entry> order = tando.getOrder();
-        if (table.getPurchase_requisition_id().length() == 0) {
+        if (table.getPurchase_requisition_id() == null) {
             return createTable(table, order);
         }
         else {
@@ -42,10 +42,15 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
      * @return
      */
     private boolean createTable(Purchase_Requisition table, List<Object_Entry> order) {
+        System.out.println("进入CreateTable");
         table.setRequisition_date(getCurrentTime());
         table.setPurchase_requisition_id(UuidUtil.getUuid());
         String orderId = UuidUtil.getUuid();
         table.setPurchase_order_id(orderId);
+
+        System.out.println("-------CreateTable--------");
+        table.print();
+
         for (Object_Entry object_entry : order) {
             object_entry.setObject_entry_id(UuidUtil.getUuid());
         }

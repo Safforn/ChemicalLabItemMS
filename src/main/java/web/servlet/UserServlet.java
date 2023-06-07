@@ -117,6 +117,7 @@ public class UserServlet extends BaseServlet {
             ServletException, IOException {
         //从 session 中获取登录用户
         Object user = request.getSession().getAttribute("user");
+        System.out.println("userservlet: "+((User) user).getUser_id());
         //将 user 写回客户端
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json;charset=utf-8");

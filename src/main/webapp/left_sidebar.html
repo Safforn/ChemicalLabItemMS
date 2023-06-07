@@ -5,6 +5,7 @@
                 <li class="nav-header">
 
                     <div class="dropdown profile-element">
+                        <!-- 头像 <span> <img alt="image" class="img-circle" src="img/profile_small.jpg" /> </span>-->
                         <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
                             <span class="clear">
                                 <span id="span_user_id" class="block m-t-xs">
@@ -58,7 +59,6 @@
         </div>
     </nav>
 
-    <!--获取当前登陆状态-->
     <script>
         $.get("user/findOne", {}, function (data) {
             $("#span_username").html(data.name)

@@ -4,7 +4,7 @@
     <root id="archive" name="CLIMS_war.war">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="WebLab-main" />
+          <element id="module-output" name="ChemicalLabItemMS" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: junit:junit:4.12" />
@@ -34,7 +34,7 @@
           <element id="library" level="project" name="Maven: org.webjars:jquery:3.6.1" />
         </element>
       </element>
-      <element id="javaee-facet-resources" facet="WebLab-main/web/Web" />
+      <element id="javaee-facet-resources" facet="ChemicalLabItemMS/web/Web" />
     </root>
   </artifact>
 </component>
