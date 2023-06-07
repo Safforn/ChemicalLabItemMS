@@ -18,7 +18,7 @@ public class get_or_borrow_Requisition implements Serializable {
     private Date borrow_date;//借用/领用日期
     private Date return_date;//归还日期
     private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
-    private String type;//类型（借用/领用）
+    private int type;//类型（借用/领用）
     private String approval_opinions;//审批意见
     private DateTime approval_date;//审批的时间
 
@@ -42,7 +42,7 @@ public class get_or_borrow_Requisition implements Serializable {
      * @param approval_opinions
      * @param approval_date
      */
-    public get_or_borrow_Requisition(String get_or_borrow_requisition_id, String get_or_borrow_order_id, String applicant_user_id, String approval_user_id, String purpose, DateTime requisition_date, Date borrow_date, Date return_date, int state, String type, String approval_opinions, DateTime approval_date) {
+    public get_or_borrow_Requisition(String get_or_borrow_requisition_id, String get_or_borrow_order_id, String applicant_user_id, String approval_user_id, String purpose, DateTime requisition_date, Date borrow_date, Date return_date, int state, int type, String approval_opinions, DateTime approval_date) {
         this.get_or_borrow_requisition_id = get_or_borrow_requisition_id;
         this.get_or_borrow_order_id = get_or_borrow_order_id;
         this.applicant_user_id = applicant_user_id;
@@ -129,11 +129,11 @@ public class get_or_borrow_Requisition implements Serializable {
         this.state = state;
     }
 
-    public String getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(int type) {
         this.type = type;
     }
 

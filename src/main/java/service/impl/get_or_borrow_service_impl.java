@@ -3,8 +3,11 @@ package service.impl;
 import dao.get_or_borrow_dao;
 import dao.impl.get_or_borrow_dao_impl;
 import dao.impl.object_entry_dao_impl;
+import dao.impl.reminder_dao_impl;
 import dao.object_entry_dao;
+import dao.reminder_dao;
 import domain.Object_Entry;
+import domain.Reminder;
 import domain.get_or_borrow_Requisition;
 import domain.template_order;
 import org.joda.time.DateTime;
@@ -17,6 +20,7 @@ import java.util.List;
 public class get_or_borrow_service_impl implements get_or_borrow_service {
     private get_or_borrow_dao getOrBorrowDao = new get_or_borrow_dao_impl();
     private object_entry_dao objectEntryDao = new object_entry_dao_impl();
+    private reminder_dao reminderDao = new reminder_dao_impl();
     private SimpleDateFormat sfd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     String time = sfd.format(new java.util.Date());
 
@@ -57,6 +61,11 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
             object_entry.setObject_entry_id(UuidUtil.getUuid());
         }
         objectEntryDao.addEntry(order, table.getGet_or_borrow_order_id());
+
+        if (table.getType() == 1) {
+            //填写催还单
+            reminderDao.add(new Reminder(UuidUtil.getUuid(), table.getGet_or_borrow_requisition_id()));
+        }
     }
 
     @Override
