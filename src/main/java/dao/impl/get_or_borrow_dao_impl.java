@@ -96,6 +96,18 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
     }
 
     @Override
+    public get_or_borrow_Requisition searchTableByOrderId(String orderId) {
+        get_or_borrow_Requisition table = null;
+        String sql = "select * from get_or_borrow_requisition where get_or_borrow_order_id = ?";
+        try{
+            table = template.queryForObject(sql, new BeanPropertyRowMapper<get_or_borrow_Requisition>(get_or_borrow_Requisition.class), orderId);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return table;
+    }
+
+    @Override
     public List<get_or_borrow_Requisition> searchTableByUser(String userId) {
         String sql = "select * from get_or_borrow_requisition where applicant_user_id = ?";
         return template.query(sql, new BeanPropertyRowMapper<get_or_borrow_Requisition>(get_or_borrow_Requisition.class), userId);
@@ -105,5 +117,11 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
     public List<get_or_borrow_Requisition> searchTableByState(int state) {
         String sql = "select * from get_or_borrow_requisition where state = ?";
         return template.query(sql, new BeanPropertyRowMapper<get_or_borrow_Requisition>(get_or_borrow_Requisition.class), state);
+    }
+
+    @Override
+    public List<get_or_borrow_Requisition> searchBorrowUnreturn() {
+        String sql = "select * from get_or_borrow_requisition where type = 1 and state = 4";
+        return template.query(sql, new BeanPropertyRowMapper<>());
     }
 }

@@ -51,4 +51,10 @@ public interface get_or_borrow_service {
      * @return
      */
     List<get_or_borrow_Requisition> searchTableByState(int state);
+
+    /**
+     * 查询已提交未归还的借用单
+     * @return
+     */
+    List<get_or_borrow_Requisition> searchBorrowUnreturn();
 }

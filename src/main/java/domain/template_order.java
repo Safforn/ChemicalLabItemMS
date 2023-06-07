@@ -15,6 +15,10 @@ public class template_order<T> implements Serializable {
         this.order = order;
     }
 
+    public template_order() {
+
+    }
+
 
     public List<Object_Entry> getOrder() {
         return order;

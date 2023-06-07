@@ -9,6 +9,7 @@ import domain.Purchase_Requisition;
 import domain.get_or_borrow_Requisition;
 import domain.template_order;
 import org.joda.time.DateTime;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import service.purchase_requisition_service;
 import util.UuidUtil;
 
@@ -97,5 +98,11 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
     @Override
     public List<Purchase_Requisition> searchTableByState(int state) {
         return null;
+    }
+
+
+    @Override
+    public List<Purchase_Requisition> searchUnreturn() {
+        return purchaseRequisitionDao.searchUnreturn();
     }
 }

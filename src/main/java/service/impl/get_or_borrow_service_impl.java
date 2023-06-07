@@ -102,4 +102,9 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
     public List<get_or_borrow_Requisition> searchTableByState(int state) {
         return getOrBorrowDao.searchTableByState(state);
     }
+
+    @Override
+    public List<get_or_borrow_Requisition> searchBorrowUnreturn() {
+        return getOrBorrowDao.searchBorrowUnreturn();
+    }
 }

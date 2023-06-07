@@ -49,4 +49,18 @@ public interface purchase_requisition_dao {
      * @return
      */
     List<Purchase_Requisition> searchTableByState(int state);
+
+    /**
+     * 查询所有未归还的采购申请单
+     * @return
+     */
+    List<Purchase_Requisition> searchUnreturn();
+
+    /**
+     * 根据orderId修改订单状态
+     * @param orderId
+     * @param state
+     * @return
+     */
+    boolean changeState(String orderId, int state);
 }

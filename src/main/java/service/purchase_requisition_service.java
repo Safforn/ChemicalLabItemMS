@@ -51,4 +51,10 @@ public interface purchase_requisition_service {
      * @return
      */
     List<Purchase_Requisition> searchTableByState(int state);
+
+    /**
+     * 查询所有未归还的采购申请单
+     * @return
+     */
+    List<Purchase_Requisition> searchUnreturn();
 }

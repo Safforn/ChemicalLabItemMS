@@ -88,4 +88,23 @@ public class purchase_requisition_dao_impl implements purchase_requisition_dao {
         String sql = "select * from purchase_requisition where state = ?";
         return template.query(sql, new BeanPropertyRowMapper<Purchase_Requisition>(Purchase_Requisition.class), state);
     }
+
+    @Override
+    public List<Purchase_Requisition> searchUnreturn() {
+        String sql = "select * from purchase_requisition where state = 3";
+        return template.query(sql, new BeanPropertyRowMapper<>()) ;
+    }
+
+    @Override
+    public boolean changeState(String orderId, int state) {
+        String sql = "update purchase_requisition set state = ? where purchase_order_id = ?";
+        try {
+            template.update(sql, state, orderId);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
 }

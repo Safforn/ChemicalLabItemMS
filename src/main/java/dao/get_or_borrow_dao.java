@@ -32,20 +32,34 @@ public interface get_or_borrow_dao {
     /**
      * 根据id查询单个申请单
      * @param tableId
-     * @return
+     * @return get_or_borrow_Requisition
      */
     get_or_borrow_Requisition searchTableById(String tableId);
 
     /**
+     * 根据orderid查询单个申请单
+     * @param orderId
+     * @return get_or_borrow_Requisition
+     */
+    get_or_borrow_Requisition searchTableByOrderId(String orderId);
+
+
+    /**
      * 根据申请人查询申请单
      * @param userId
-     * @return
+     * @return List<get_or_borrow_Requisition>
      */
     List<get_or_borrow_Requisition> searchTableByUser(String userId);
 
     /**
      * 审批人查询所有 已提交 未审批 的申请单
-     * @return
+     * @return List<get_or_borrow_Requisition>
      */
     List<get_or_borrow_Requisition> searchTableByState(int state);
+
+    /**
+     * 查询已提交未归还的借用单
+     * @return List<get_or_borrow_Requisition>
+     */
+    List<get_or_borrow_Requisition> searchBorrowUnreturn();
 }
