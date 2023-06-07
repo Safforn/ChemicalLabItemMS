@@ -27,7 +27,7 @@
 
         <h3>欢迎使用 化工实验室管理系统</h3>
 
-        <form id="loginForm" class="m-t" role="form" action="" method="post" accept-charset="utf-8">
+        <form id="loginForm" class="m-t" role="form" method="post" accept-charset="utf-8">
             <div class="form-group">
                 <input id="account" class="form-control" placeholder="账号" required="">
             </div>
@@ -79,18 +79,14 @@
 
     $(function () {
         $("#loginForm").submit(function () {
-            var account = accountElement.value.trim();
-            var password = passwordElement.value.trim();  //获取值
-            var front_end_data = "account="+$("#account").val()+"&password="+$("#password").val()
+            var front_end_data = "account="+$("#account").val()+
+                                 "&password="+$("#password").val();
             if (checkAccount() && checkPassword()) {
                 $.post("user/login", front_end_data, function (data) {
                     if (data.flag) {
                         console.log(data.data);
                         //TODO: 身份识别，跳转至各自界面
-                        if(data.data === "admin")
-                            location.href = "index.html";
-                        else
-                            location.href = "register.html";
+                        location.href = "index.html";
                     } else {
                         $("#errorMsg").html(data.errorMsg);
                         alert(data.errorMsg);

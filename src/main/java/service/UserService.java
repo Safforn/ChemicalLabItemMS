@@ -5,7 +5,7 @@ import domain.User;
 import java.util.List;
 
 public interface UserService {
-//    boolean regist(User user);
+    boolean regist(User user);
     User login(User user);
 //    List<Goods> searchGoods(String uid);
 //    String leaseAndBuy(Order order);

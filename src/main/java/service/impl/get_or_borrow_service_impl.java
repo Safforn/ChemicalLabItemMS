@@ -11,6 +11,8 @@ import domain.Reminder;
 import domain.get_or_borrow_Requisition;
 import domain.template_order;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import service.get_or_borrow_service;
 import util.UuidUtil;
 
@@ -28,7 +30,8 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
     public boolean createOrUpdate(template_order tando) {
         get_or_borrow_Requisition table = (get_or_borrow_Requisition) tando.getTable();
         List<Object_Entry> order = tando.getOrder();
-        if (table.getGet_or_borrow_requisition_id().length() == 0) {
+        System.out.println("serviceimpl"+table.getGet_or_borrow_requisition_id());
+        if (table.getGet_or_borrow_requisition_id() == null) {
             return createTable(table, order);
         }
         else {
@@ -41,7 +44,10 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
          * 新增物品列表
          * 系统填写：申请单id，物品单id，提交时间
          */
-        table.setRequisition_date(DateTime.parse(time));
+        DateTimeFormatter format = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.println("datatime"+DateTime.parse(time, format));
+        table.setRequisition_date(DateTime.parse(time,format));
+
         table.setGet_or_borrow_requisition_id(UuidUtil.getUuid());
         String orderId = UuidUtil.getUuid();
         table.setGet_or_borrow_order_id(orderId);

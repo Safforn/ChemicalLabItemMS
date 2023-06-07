@@ -27,7 +27,8 @@
             </div>
             <h3>欢迎注册</h3>
             <h2>创建一个化工实验室账户</h2>
-            <form class="m-t" role="form" action="login.html">
+<!--            <form id="registerForm" class="m-t" role="form" action="login.html" >-->
+            <form id="registerForm" class="m-t" role="form" method="post" accept-charset="utf-8" action="login.html">
                 <div>
                     <tr>
                         <label for="status">身份:</label>
@@ -48,8 +49,8 @@
                             <input type="radio" name="status" value="用户" checked> 用户
                         </td>
                     </tr>
-
                 </div>
+
                 <div class="form-group">
                     <input type="text" id="account" class="form-control" placeholder="请输入账号" required="">
                 </div>
@@ -132,11 +133,14 @@
         function checkRepassword() {
             var password = passwordElement.value.trim();
             var repassword = repasswordElement.value.trim();
+            var flag = null;
             if(password == repassword&&password!=null) {
                 //校验通过
+                flag = true;
                 repasswordElement.style.border = "";
             } else {
                 //校验失败
+                flag = false;
                 repasswordElement.style.border = "1px solid red";
             }
             return flag;
@@ -193,40 +197,39 @@
             return flag;
         }
 
-        // // 当表单提交时,调用所有的校验方法
-        // $("#registerForm").submit(function () { //function（）没有返回值，或者返回为true，说明校验成功，提交；否则不提交
-        //     // 1. 发送数据到服务器,通过ajax异步发送
-        //     if (checkUsername() && checkPassword() && checkEmail() && checkTel()) {
-        //         // 校验通过，发送ajax请求，异步提交表单的数据
-        //         $.post("user/regist", $("#registerForm").serialize(), function (data) {
-        //             // 处理服务器响应的结果:从服务器响应的data格式： {flag:true,errorMsg:"注册失败"}
-        //             if (data.flag) {
-        //                 //注册成功，跳转成功页面
-        //                 location.href = "register_ok.html";
-        //             } else {
-        //                 //注册失败,给errorMsg添加提示信息
-        //                 $("#errorMsg").html(data.errorMsg);
-        //             }
-        //         });
-        //     }
-        //     // 2. 不能使用表单跳转页面，表单通过action提交页面是一种同步方式：return false就可以不让跳转。
-        //     // return checkUserName() && checkPassword() && checkUserName();
-        //     return false;
-        // });
+        $(function () {
+            $("#registerForm").submit(function () {
+                var front_end_data = "account="+$("#account").val()+
+                                     "&password="+$("#password").val()+
+                                     "&name="+$("#name").val()+
+                                     "&phonenumber="+$("#phonenumber").val()+
+                                     "&email="+$("#email").val();
+                if (checkAccount() && checkPassword() && checkName() && checkRepassword() && checkEmail() && checkTel()) {
+                    $.post("user/regist",front_end_data, function (data) {
+                        // 处理服务器响应的结果:从服务器响应的data格式： {flag:true,errorMsg:"注册失败"}
+                        alert("data.flag="+data.flag);
+                        if (data.flag) {
+                            // 注册成功，跳转成功页面
+                            location.href = "login.html";
+                        } else {
+                            // 注册失败,给errorMsg添加提示信息
+                            alert("errormsg="+data.errorMsg);
+                            $("#errorMsg").html(data.errorMsg);
+                        }
+                    });
+                }
+                return false;
+            });
 
+            $("#account").blur(checkAccount);
+            $("#name").blur(checkName);
+            $("#email").blur(checkEmail);
+            $("#password").blur(checkPassword);
+            $("#repassword").blur(checkRepassword);
+            $("#phonenumber").blur(checkTel);
+        })
     </script>
-    <!-- iCheck -->
-<!--    <script src="js/plugins/iCheck/icheck.min.js"></script>-->
-<!--    <script>-->
-<!--        $(document).ready(function () {-->
-<!--            $('.i-checks').iCheck({-->
-<!--                checkboxClass: 'icheckbox_square-green',-->
-<!--                radioClass: 'iradio_square-green',-->
-<!--            });-->
-<!--        });-->
-<!--    </script>-->
 
-
-//</body>
+</body>
 
 </html>

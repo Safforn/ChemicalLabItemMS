@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+
+    <title>基本表单</title>
+    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
+    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+
+    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=2.2.0" rel="stylesheet">
+</head>
+<body>
+<!--<button type="button" id="batch-edit-btn">批量编辑</button>-->
+<!--<button type="button" id="batch-save-btn">批量保存</button>-->
+<!--<table id="table" class="display" width="100%"></table>-->
+<div id="wrapper">
+    <!-- 侧边栏 -->
+    <div id="left_sidebar"></div>
+
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="form_basic.html#"><i class="fa fa-bars"></i> </a>
+                    <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                        <div class="form-group">
+                            <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
+                        </div>
+                    </form>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message"><a href="index.html" title="返回首页"><i class="fa fa-home"></i></a>欢迎使用H+后台主题</span>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                            <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="img/a7.jpg">
+                                    </a>
+                                    <div class="media-body">
+                                        <small class="pull-right">46小时前</small>
+                                        <strong>小四</strong> 项目已处理完结
+                                        <br>
+                                        <small class="text-muted">3天前 2014.11.8</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="img/a4.jpg">
+                                    </a>
+                                    <div class="media-body ">
+                                        <small class="pull-right text-navy">25小时前</small>
+                                        <strong>国民岳父</strong> 这是一条测试信息
+                                        <br>
+                                        <small class="text-muted">昨天</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="mailbox.html">
+                                        <i class="fa fa-envelope"></i>  <strong> 查看所有消息</strong>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                            <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <li>
+                                <a href="mailbox.html">
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> 您有16条未读消息
+                                        <span class="pull-right text-muted small">4分钟前</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="profile.html">
+                                    <div>
+                                        <i class="fa fa-qq fa-fw"></i> 3条新回复
+                                        <span class="pull-right text-muted small">12分钟钱</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="notifications.html">
+                                        <strong>查看所有 </strong>
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="login.html">
+                            <i class="fa fa-sign-out"></i> 退出
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>其他入库</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="index.html">主页</a>
+                    </li>
+                    <li>
+                        <a>表单</a>
+                    </li>
+                    <li>
+                        <strong>其他入库</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <!--                所有表单元素  -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>入库单</h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <form method="get" class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">选择仓库</label>
+
+                                    <div class="col-sm-10">
+                                        <select class="form-control m-b" name="account">
+                                            <option>仓库 1</option>
+                                            <option>仓库 2</option>
+                                            <option>仓库 3</option>
+                                            <option>仓库 4</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">备注</label>
+                                    <div class="col-sm-10">
+                                        <textarea class="form-control input-lg m-b" name="saysths" rows="5" cols="30" wrap="soft" style="resize:none;">备注</textarea>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <label class="col-lg-2 control-label">时间</label>
+                                    <div class="col-lg-10">
+                                        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                                        <div class="form-control-static" id="dateTime"></div>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <h5>其他入库</h5>
+                                                <div class="ibox-tools">
+                                                    <a class="collapse-link">
+                                                        <i class="fa fa-chevron-up"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <div class="">
+                                                    <a onclick="fnClickAddRow();" href="javascript:void(0);" class="btn btn-primary ">添加物品</a>
+                                                </div>
+
+
+                                                <table id="table" class="datatable table table-striped table-bordered table-hover">
+
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-4 col-sm-offset-2">
+                                        <button class="btn btn-primary" type="submit">确认</button>
+                                        <button class="btn btn-white" type="submit">取消</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="pull-right">
+                By：<a href="http://www.zi-han.net" target="_blank">zihan's blog</a>
+            </div>
+            <div>
+                <strong>Copyright</strong> H+ &copy; 2014
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<!-- Mainly scripts -->
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js?v=3.4.0"></script>
+<script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="js/hplus.js?v=2.2.0"></script>
+<script src="js/plugins/pace/pace.min.js"></script>
+
+<!-- Data Tables -->
+<script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<!-- iCheck -->
+<script src="js/plugins/iCheck/icheck.min.js"></script>
+<!--引入css-->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+
+<!--引入JavaScript-->
+<script type="text/javascript" language="javascript" src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
+<!--初始化代码-->
+<script>
+    $(function () {
+        $.get("left_sidebar.html",function (data) {
+            $("#left_sidebar").html(data);
+        });
+    });
+</script>
+<script>
+    const dataSets = [
+        ['aaa0', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu0'],
+        ['aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu1'],
+        ['aaa2', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu2'],
+        ['aaa3', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu3'],
+        ['aaa4', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu4'],
+        ['aaa5', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu5'],
+        ['aaa6', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu6'],
+        ['aaa7', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu7'],
+        ['aaa8', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu8'],
+        ['aaa9', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu9']
+    ];
+    $(document).ready(function() {
+        $(function(){
+            var table = $('#table').DataTable({
+                retrieve: true,
+                data:dataSets,
+                columns:[
+                    {
+                        'field': "name",
+                        'title': '物品名称',
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        'field': "specification",
+                        'title': '规格',
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        'field': "quantity",
+                        'title': '数量',
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        'field': "unit",
+                        'title': '包装单位',
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        'field': "classification",
+                        'title': '分类',
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        'field': "price",
+                        'title': '单价',
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        'field': "expiration_time",
+                        'title': '过期时间',
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        'field': "upper_limit",
+                        'title': '警戒上限',
+                        width:90,
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        'field': "lower_limit",
+                        'title': '警戒下限',
+                        width:90,
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        'field': "warehouse_id",
+                        'title': '仓库',
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        'field': "notes",
+                        'title': '备注',
+                        'defaultContent' : "",
+                        'sClass': 'text-center'
+                    }, {
+                        field: "operate",
+                        sTitle: '操作',
+                        sDefaultContent : "<button class='edit-btn btn btn-primary btn-xs' type='button'>修改</button>" +
+                            "<button class='delete btn btn-default btn-xs' style='margin-left: 10px'>删除</button>",
+                        sClass: 'text-center',
+                        width:100,
+                        "data" : null,
+                    }],
+                "language": {
+                    "sProcessing": "处理中...",
+                    "sLengthMenu": "显示 _MENU_ 项结果",
+                    "sZeroRecords": "没有匹配结果",
+                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                    "sInfoPostFix": "",
+                    "sSearch": "搜索:",
+                    "sUrl": "",
+                    "sEmptyTable": "表中数据为空",
+                    "sLoadingRecords": "载入中...",
+                    "sInfoThousands": ",",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": 以升序排列此列",
+                        "sSortDescending": ": 以降序排列此列"
+                    }
+                }
+            });
+
+
+            $("#table tbody").on("click",".edit-btn",function(){
+                var tds=$(this).parents("tr").children();
+                $.each(tds, function(i,val){
+                    var jqob=$(val);
+                    if(jqob.has('button').length ){return true;}//跳过第1项 序号,按钮
+                    var txt=jqob.text();
+                    var put=$("<input type='text' style='width: 80px'>");
+                    put.val(txt);
+                    jqob.html(put);
+                });
+                $(this).html("保存");
+                $(this).toggleClass("edit-btn");
+                $(this).toggleClass("save-btn");
+            });
+
+            $("#table tbody").on("click",".save-btn",function(){
+                var row=table.row($(this).parents("tr"));
+                var tds=$(this).parents("tr").children();
+                $.each(tds, function(i,val){
+                    var jqob=$(val);
+                    //把input变为字符串
+                    console.log(!jqob.has('button').length);
+                    if(!jqob.has('button').length){
+                        var txt=jqob.children("input").val();
+                        console.log(jqob.children("input"));
+                        jqob.html(txt);
+                        table.cell(jqob).data(txt);//修改DataTables对象的数据
+                    }
+                });
+                var data = row.data();
+                $.ajax({
+                    "url":"getorborrow/createOrUpdateItems", //TODO:
+                    "data":data,  //发送给后端的数据
+                    "type":"post",
+                    "error":function(){
+                        alert("服务器未正常响应，请重试");
+                    },
+                    "success":function(response){
+                        alert(response);
+                    }
+                });
+                $(this).html("编辑");
+                $(this).toggleClass("edit-btn");
+                $(this).toggleClass("save-btn");
+            });
+
+            //批量点击编辑按钮
+            $("#batch-edit-btn").click(function(){
+                $(".edit-btn").click();
+            });
+            $("#batch-save-btn").click(function(){
+                $(".save-btn").click();
+            });
+
+            // 点击删除按钮，触发删除行脚本
+            $(document).on("click",'.delete',function(){
+                $('#table').dataTable().fnDeleteRow($(this).closest('tr')[0]);
+            });
+        });
+  } );
+</script>
+
+<script>
+    function fnClickAddRow() {
+        $('#table').dataTable().fnAddData([
+            "", "", "", "",
+            "", "", "", "", "",
+            "", ""]);}
+</script>
+
+
+<script>
+    Date.prototype.format = function (fmt) {
+        var o = {
+            "y+": this.getFullYear, //年
+            "M+": this.getMonth() + 1, //月份
+            "d+": this.getDate(), //日
+            "h+": this.getHours(), //小时
+            "m+": this.getMinutes(), //分
+            "s+": this.getSeconds() //秒
+        };
+        if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        for (var k in o)
+            if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        return fmt;
+    }
+    setInterval("document.getElementById('dateTime').innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');", 1000);
+</script>
+</body>
+</html>

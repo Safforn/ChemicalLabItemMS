@@ -21,15 +21,10 @@ import java.util.Map;
 public class UserServlet extends BaseServlet {
     //声明 UserService 业务对象
     private UserService service = new UserServiceImpl();
-    /**
-     * 注册功能
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
+
     public void regist(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
+        System.out.println("进入注册的后端");
         //1.获取数据
         Map<String, String[]> map = request.getParameterMap();
         //2.封装对象
@@ -41,10 +36,11 @@ public class UserServlet extends BaseServlet {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-        //3.调用 service 完成注册
-        UserService service = new UserServiceImpl();
-        boolean flag = false;
-//        flag = service.regist(user);
+        // 3.调用 service 完成注册
+        System.out.println("UserServlet: "+user.getAccount()+"|"+
+                        user.getPassword()+"|"+user.getName()+"|"+
+                        user.getEmail()+"|"+user.getPhonenumber());
+        boolean flag = service.regist(user);
         ResultInfo info = new ResultInfo();
         //4.响应结果
         if(flag){
@@ -117,10 +113,6 @@ public class UserServlet extends BaseServlet {
     }
     /**
      * 查询单个对象
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
      */
     public void findOne(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {

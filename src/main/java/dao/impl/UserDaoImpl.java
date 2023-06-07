@@ -9,35 +9,37 @@ import util.JDBCUtils;
 public class UserDaoImpl implements UserDao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
 
-//    /**
-//     *
-//     * @param uid
-//     * @return
-//     */
-//    @Override
-//    public User findByUid(String uid) {
-//        User user = null;
-//        try {
-//            String sql = "select * from user where uid = ?";
-//            user = template.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class), uid);
-//        } catch (Exception e) {
-//        }
-//        return user;
-//    }
-//
-//    /**
-//     *
-//     * @param user
-//     */
-//    @Override
-//    public void save(User user) {
-//        String sql = "insert into user(uid,name,password,telephone) values(?,?,?,?)";
-//        template.update(sql,
-//                user.getUid(),
-//                user.getName(),
-//                user.getPassword(),
-//                user.getTelephone());
-//    }
+    /**
+     *
+     * @param account
+     * @return user
+     */
+    @Override
+    public User findByAccount(String account) {
+        User user = null;
+        try {
+            String sql = "select * from user where account = ?";
+            user = template.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class), account);
+        } catch (Exception e) {
+        }
+        return user;
+    }
+
+    /**
+     *
+     * @param user
+     */
+    @Override
+    public void save(User user) {
+        String sql = "insert into user(user_id, account, password, name,phonenumber,email) values(?,?,?,?,?,?)";
+        template.update(sql,
+                user.getUser_id(),
+                user.getAccount(),
+                user.getPassword(),
+                user.getName(),
+                user.getPhonenumber(),
+                user.getEmail());
+    }
 
     /**
      *

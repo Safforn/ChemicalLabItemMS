@@ -17,19 +17,23 @@ public class UserServiceImpl implements UserService {
      * @param user
      * @return
      */
-//    @Override
-//    public boolean regist(User user) {
-//        //1.根据用户名查询用户对象
-//        User u = userDao.findByUid(user.getUid());
-//        //判断 u 是否为 null
-//        if(u != null){
-//            //用户名存在，注册失败
-//            return false;
-//        }
-//        //2.保存用户信息
-//        userDao.save(user);
-//        return true;
-//    }
+    @Override
+    public boolean regist(User user) {
+        //1.根据用户名查询用户对象
+        User u = userDao.findByAccount(user.getAccount());
+        //判断 u 是否为 null
+        if(u != null){
+            //用户名存在，注册失败
+            return false;
+        }
+
+        // TODO: 临时代码为新用户创建user_id
+        user.setUser_id("0012");
+
+        //2.保存用户信息
+        userDao.save(user);
+        return true;
+    }
 
     /**
      *

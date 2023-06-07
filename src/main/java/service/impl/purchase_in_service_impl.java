@@ -35,7 +35,7 @@ public class purchase_in_service_impl implements purchase_in_service {
         else {
             String id = inOrderId.get(0);
             for (Object_Entry object_entry : order) {
-                if (objectEntryDao.findOne(id, object_entry.getObject_id()) > 0) {
+                if (objectEntryDao.findOne(id, object_entry.getObject_id()) > 0) {  // 去入库清单里查找当前物品
                     if (!objectEntryDao.updateOne(id, object_entry.getObject_id(), object_entry.getNum())) {
                         return false;
                     }

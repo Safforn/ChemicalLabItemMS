@@ -6,9 +6,9 @@ import java.util.List;
 
 public class template_order<T> implements Serializable {
 
-    private T table;
+    private T table;  // 申请表
 
-    private List<Object_Entry> order;
+    private List<Object_Entry> order;  // 物品清单行 数组
 
     public template_order(T table, List<Object_Entry> order) {
         this.table = table;
