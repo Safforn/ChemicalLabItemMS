@@ -1,0 +1,596 @@
+Index: src/main/webapp/register.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"renderer\" content=\"webkit\">\r\n\r\n    <title>注册</title>\r\n    <meta name=\"keywords\">\r\n    <meta name=\"description\">\r\n\r\n    <link href=\"css/bootstrap.min.css?v=3.4.0\" rel=\"stylesheet\">\r\n    <link href=\"font-awesome/css/font-awesome.css?v=4.3.0\" rel=\"stylesheet\">\r\n    <link href=\"css/plugins/iCheck/custom.css\" rel=\"stylesheet\">\r\n    <link href=\"css/animate.css\" rel=\"stylesheet\">\r\n    <link href=\"css/style.css?v=2.2.0\" rel=\"stylesheet\">\r\n\r\n</head>\r\n\r\n<body class=\"gray-bg\">\r\n\r\n    <div class=\"middle-box text-center loginscreen   animated fadeInDown\">\r\n        <div>\r\n            <div>\r\n                <h1 class=\"logo-name\">666</h1>\r\n            </div>\r\n            <h3>欢迎注册</h3>\r\n            <h2>创建一个化工实验室账户</h2>\r\n            <form class=\"m-t\" role=\"form\" action=\"login.html\">\r\n                <div>\r\n                    <tr>\r\n                        <label for=\"status\">身份:</label>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>\r\n                            <input type=\"radio\" id=\"status\" name=\"status\" value=\"负责人\">负责人\r\n                        </td>\r\n                        <td>\r\n                            <input type=\"radio\" name=\"status\" value=\"审批人\"> 审批人\r\n                        </td>\r\n                    </tr>\r\n                    <tr>\r\n                        <td>\r\n                            <input type=\"radio\" name=\"status\" value=\"仓库管理员\"> 仓库管理员\r\n                        </td>\r\n                        <td>\r\n                            <input type=\"radio\" name=\"status\" value=\"用户\" checked> 用户\r\n                        </td>\r\n                    </tr>\r\n\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"text\" id=\"account\" class=\"form-control\" placeholder=\"请输入账号\" required=\"\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"password\" id=\"password\" class=\"form-control\" placeholder=\"请输入密码\" required=\"\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"password\" id=\"repassword\" class=\"form-control\" placeholder=\"请再次输入密码\" required=\"\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"text\" id=\"name\" class=\"form-control\" placeholder=\"请输入真实姓名\" required=\"\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"text\" id=\"email\" class=\"form-control\" placeholder=\"请输入电子邮箱\" required=\"\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"text\" id=\"phonenumber\" class=\"form-control\" placeholder=\"请输入手机号\" required=\"\">\r\n                </div>\r\n                <div class=\"form-group text-left\">\r\n                    <div class=\"checkbox i-checks\">\r\n                        <label class=\"no-padding\">\r\n                            <input type=\"checkbox\"><i></i> 我同意注册协议</label>\r\n                    </div>\r\n                </div>\r\n                <button type=\"submit\" class=\"btn btn-primary block full-width m-b\">注 册</button>\r\n\r\n                <p class=\"text-muted text-center\"><small>已经有账户了？</small><a href=\"login.html\">点此登录</a>\r\n                </p>\r\n\r\n            </form>\r\n        </div>\r\n    </div>\r\n\r\n    <!-- Mainly scripts -->\r\n    <script src=\"js/jquery-2.1.1.min.js\"></script>\r\n    <script src=\"js/bootstrap.min.js?v=3.4.0\"></script>\r\n    <script>\r\n        //1. 验证账号是否符合规则\r\n        //1.1 获取账号的输入框\r\n        let accountElement = document.getElementById(\"account\");\r\n        //1.2 绑定onblur事件 失去焦点\r\n        accountElement.onblur = checkAccount;\r\n        function checkAccount() {\r\n            //1.2 获取账号值\r\n            let account = accountElement.value.trim();\r\n            //1.3 定义正则\r\n            var account_reg = /^\\w{3,12}$/;\r\n            //1.4 判断，给出提示信息\r\n            var flag = account_reg.test(account);\r\n            if (flag) {\r\n                //账号合法\r\n                accountElement.style.border = \"\";\r\n            } else {\r\n                //账号非法,加一个红色边框\r\n                accountElement.style.border = \"1px solid red\";\r\n            }\r\n            return flag;\r\n        }\r\n\r\n        //2. 验证密码是否符合规则\r\n        let passwordElement = document.getElementById(\"password\");\r\n        passwordElement.onblur = checkPassword;\r\n        function checkPassword() {\r\n            var password = passwordElement.value.trim();  //获取值\r\n            var reg_password = /^\\w{3,20}$/  //单词类型\\w，8-20用{}\r\n            var flag = reg_password.test(password);\r\n            if(flag) {\r\n                //校验通过\r\n                passwordElement.style.border = \"\";\r\n            } else {\r\n                //校验失败\r\n                passwordElement.style.border = \"1px solid red\";\r\n            }\r\n            return flag;\r\n        }\r\n\r\n        //3. 验证再次输入的密码是否符合规则\r\n        let repasswordElement = document.getElementById(\"repassword\");\r\n        repasswordElement.onblur = checkRepassword;\r\n        function checkRepassword() {\r\n            var password = passwordElement.value.trim();\r\n            var repassword = repasswordElement.value.trim();\r\n            if(password == repassword&&password!=null) {\r\n                //校验通过\r\n                repasswordElement.style.border = \"\";\r\n            } else {\r\n                //校验失败\r\n                repasswordElement.style.border = \"1px solid red\";\r\n            }\r\n            return flag;\r\n        }\r\n\r\n        //4. 验证姓名是否符合规则\r\n        let nameElement = document.getElementById(\"name\");\r\n        nameElement.onblur = checkName;\r\n        function checkName() {\r\n            var name = nameElement.value.trim();  //获取值\r\n            var reg_name = /^[\\s\\S]*.*[^\\s][\\s\\S]*$/  //单词类型\\w，1-10用{}\r\n            var flag = reg_name.test(name);\r\n            if(flag) {\r\n                //校验通过\r\n                nameElement.style.border = \"\";\r\n            } else {\r\n                //校验失败\r\n                nameElement.style.border = \"1px solid red\";\r\n            }\r\n            return flag;\r\n        }\r\n\r\n        //5. 校验邮箱\r\n        let emailElement = document.getElementById(\"email\");\r\n        emailElement.onblur = checkEmail;\r\n        function checkEmail() {\r\n            var email = emailElement.value.trim();   //获取值\r\n            var reg_email = /^\\w+@\\w+\\.\\w+$/  //单词类型\\w，8-20用{}\r\n            var flag = reg_email.test(email);\r\n            if (flag) {\r\n                //校验通过\r\n                emailElement.style.border = \"\";\r\n            } else {\r\n                //校验失败\r\n                emailElement.style.border = \"1px solid red\";\r\n            }\r\n            return flag;\r\n        }\r\n\r\n        //6. 验证手机号是否符合规则\r\n        let phonenumberElement = document.getElementById(\"phonenumber\");\r\n        phonenumberElement.onblur = checkTel;\r\n        function checkTel() {\r\n            var phonenumber = phonenumberElement.value.trim();   //获取值\r\n            var reg_phonenumber = /^1[0-9]{10}$/\r\n            var flag = reg_phonenumber.test(phonenumber);\r\n            if(flag) {\r\n                //校验通过\r\n                phonenumberElement.style.border = \"\";\r\n            } else {\r\n                //校验失败\r\n                phonenumberElement.style.border = \"1px solid red\";\r\n            }\r\n            return flag;\r\n        }\r\n\r\n        // // 当表单提交时,调用所有的校验方法\r\n        // $(\"#registerForm\").submit(function () { //function（）没有返回值，或者返回为true，说明校验成功，提交；否则不提交\r\n        //     // 1. 发送数据到服务器,通过ajax异步发送\r\n        //     if (checkUsername() && checkPassword() && checkEmail() && checkTel()) {\r\n        //         // 校验通过，发送ajax请求，异步提交表单的数据\r\n        //         $.post(\"user/regist\", $(\"#registerForm\").serialize(), function (data) {\r\n        //             // 处理服务器响应的结果:从服务器响应的data格式： {flag:true,errorMsg:\"注册失败\"}\r\n        //             if (data.flag) {\r\n        //                 //注册成功，跳转成功页面\r\n        //                 location.href = \"register_ok.html\";\r\n        //             } else {\r\n        //                 //注册失败,给errorMsg添加提示信息\r\n        //                 $(\"#errorMsg\").html(data.errorMsg);\r\n        //             }\r\n        //         });\r\n        //     }\r\n        //     // 2. 不能使用表单跳转页面，表单通过action提交页面是一种同步方式：return false就可以不让跳转。\r\n        //     // return checkUserName() && checkPassword() && checkUserName();\r\n        //     return false;\r\n        // });\r\n\r\n    </script>\r\n    <!-- iCheck -->\r\n<!--    <script src=\"js/plugins/iCheck/icheck.min.js\"></script>-->\r\n<!--    <script>-->\r\n<!--        $(document).ready(function () {-->\r\n<!--            $('.i-checks').iCheck({-->\r\n<!--                checkboxClass: 'icheckbox_square-green',-->\r\n<!--                radioClass: 'iradio_square-green',-->\r\n<!--            });-->\r\n<!--        });-->\r\n<!--    </script>-->\r\n\r\n\r\n//</body>\r\n\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/register.html b/src/main/webapp/register.html
+--- a/src/main/webapp/register.html	(revision 896830645765453a28f2efa66ea99279dfdaa6bd)
++++ b/src/main/webapp/register.html	(date 1686040661438)
+@@ -27,7 +27,8 @@
+             </div>
+             <h3>欢迎注册</h3>
+             <h2>创建一个化工实验室账户</h2>
+-            <form class="m-t" role="form" action="login.html">
++<!--            <form id="registerForm" class="m-t" role="form" action="login.html" >-->
++            <form id="registerForm" class="m-t" role="form" method="post" accept-charset="utf-8" action="login.html">
+                 <div>
+                     <tr>
+                         <label for="status">身份:</label>
+@@ -48,8 +49,8 @@
+                             <input type="radio" name="status" value="用户" checked> 用户
+                         </td>
+                     </tr>
+-
+                 </div>
++
+                 <div class="form-group">
+                     <input type="text" id="account" class="form-control" placeholder="请输入账号" required="">
+                 </div>
+@@ -132,11 +133,14 @@
+         function checkRepassword() {
+             var password = passwordElement.value.trim();
+             var repassword = repasswordElement.value.trim();
++            var flag = null;
+             if(password == repassword&&password!=null) {
+                 //校验通过
++                flag = true;
+                 repasswordElement.style.border = "";
+             } else {
+                 //校验失败
++                flag = false;
+                 repasswordElement.style.border = "1px solid red";
+             }
+             return flag;
+@@ -193,40 +197,51 @@
+             return flag;
+         }
+ 
+-        // // 当表单提交时,调用所有的校验方法
+-        // $("#registerForm").submit(function () { //function（）没有返回值，或者返回为true，说明校验成功，提交；否则不提交
+-        //     // 1. 发送数据到服务器,通过ajax异步发送
+-        //     if (checkUsername() && checkPassword() && checkEmail() && checkTel()) {
+-        //         // 校验通过，发送ajax请求，异步提交表单的数据
+-        //         $.post("user/regist", $("#registerForm").serialize(), function (data) {
+-        //             // 处理服务器响应的结果:从服务器响应的data格式： {flag:true,errorMsg:"注册失败"}
+-        //             if (data.flag) {
+-        //                 //注册成功，跳转成功页面
+-        //                 location.href = "register_ok.html";
+-        //             } else {
+-        //                 //注册失败,给errorMsg添加提示信息
+-        //                 $("#errorMsg").html(data.errorMsg);
+-        //             }
+-        //         });
+-        //     }
+-        //     // 2. 不能使用表单跳转页面，表单通过action提交页面是一种同步方式：return false就可以不让跳转。
+-        //     // return checkUserName() && checkPassword() && checkUserName();
+-        //     return false;
+-        // });
++        $(function () {
++            $("#registerForm").submit(function () {
++                var front_end_data = "account="+$("#account").val()+
++                                     "&password="+$("#password").val()+
++                                     "&name="+$("#name").val()+
++                                     "&phonenumber="+$("#phonenumber").val()+
++                                     "&email="+$("#email").val();
++                if (checkAccount() && checkPassword() && checkName() && checkRepassword() && checkEmail() && checkTel()) {
++                    $.post("user/regist",front_end_data, function (data) {
++                        // 处理服务器响应的结果:从服务器响应的data格式： {flag:true,errorMsg:"注册失败"}
++                        alert("data.flag="+data.flag);
++                        if (data.flag) {
++                            //注册成功，跳转成功页面
++                            location.href = "login.html";
++                        } else {
++                            //注册失败,给errorMsg添加提示信息
++                            alert("errormsg="+data.errorMsg);
++                            $("#errorMsg").html(data.errorMsg);
++                        }
++                    });
++                    // $.post("user/regist", front_end_data, function (data) {
++                    //     //alert(front_end_data);
++                    //     //!data有问题，flag没显示
++                    //     alert("data.flag="+data.flag);
++                    //     if (data.flag) {
++                    //         location.href = "login.html";
++                    //     } else {
++                    //         $("#errorMsg").html(data.errorMsg);
++                    //         alert("errormsg="+data.errorMsg);
++                    //     }
++                    //
++                    // })
++                }
++                return false;
++            });
+ 
++            $("#account").blur(checkAccount);
++            $("#name").blur(checkName);
++            $("#email").blur(checkEmail);
++            $("#password").blur(checkPassword);
++            $("#repassword").blur(checkRepassword);
++            $("#phonenumber").blur(checkTel);
++        })
+     </script>
+-    <!-- iCheck -->
+-<!--    <script src="js/plugins/iCheck/icheck.min.js"></script>-->
+-<!--    <script>-->
+-<!--        $(document).ready(function () {-->
+-<!--            $('.i-checks').iCheck({-->
+-<!--                checkboxClass: 'icheckbox_square-green',-->
+-<!--                radioClass: 'iradio_square-green',-->
+-<!--            });-->
+-<!--        });-->
+-<!--    </script>-->
+ 
+-
+-//</body>
++</body>
+ 
+ </html>
+Index: src/main/java/service/impl/UserServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package service.impl;\r\n\r\nimport dao.UserDao;\r\nimport dao.impl.UserDaoImpl;\r\nimport domain.User;\r\nimport service.UserService;\r\nimport util.UuidUtil;\r\nimport java.text.SimpleDateFormat;\r\nimport java.util.Date;\r\nimport java.util.List;\r\n\r\npublic class UserServiceImpl implements UserService {\r\n\r\n    private UserDao userDao = new UserDaoImpl();\r\n    /**\r\n     * 注册用户\r\n     * @param user\r\n     * @return\r\n     */\r\n//    @Override\r\n//    public boolean regist(User user) {\r\n//        //1.根据用户名查询用户对象\r\n//        User u = userDao.findByUid(user.getUid());\r\n//        //判断 u 是否为 null\r\n//        if(u != null){\r\n//            //用户名存在，注册失败\r\n//            return false;\r\n//        }\r\n//        //2.保存用户信息\r\n//        userDao.save(user);\r\n//        return true;\r\n//    }\r\n\r\n    /**\r\n     *\r\n     * @param user\r\n     * @return\r\n     */\r\n    @Override\r\n    public User login(User user) {\r\n        return userDao.findByUidAndPassword(user.getAccount(), user.getPassword());\r\n    }\r\n\r\n//    @Override\r\n//    public void updateUser(User user) {\r\n//        userDao.updateUser(user);\r\n//    }\r\n//\r\n//    @Override\r\n//    public User loginByUid(String uid) {\r\n//        return userDao.findByUid(uid);\r\n//    }\r\n\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/service/impl/UserServiceImpl.java b/src/main/java/service/impl/UserServiceImpl.java
+--- a/src/main/java/service/impl/UserServiceImpl.java	(revision 896830645765453a28f2efa66ea99279dfdaa6bd)
++++ b/src/main/java/service/impl/UserServiceImpl.java	(date 1686032390897)
+@@ -17,19 +17,23 @@
+      * @param user
+      * @return
+      */
+-//    @Override
+-//    public boolean regist(User user) {
+-//        //1.根据用户名查询用户对象
+-//        User u = userDao.findByUid(user.getUid());
+-//        //判断 u 是否为 null
+-//        if(u != null){
+-//            //用户名存在，注册失败
+-//            return false;
+-//        }
+-//        //2.保存用户信息
+-//        userDao.save(user);
+-//        return true;
+-//    }
++    @Override
++    public boolean regist(User user) {
++        //1.根据用户名查询用户对象
++        User u = userDao.findByAccount(user.getAccount());
++        //判断 u 是否为 null
++        if(u != null){
++            //用户名存在，注册失败
++            return false;
++        }
++
++        // TODO: 临时代码为新用户创建user_id
++        user.setUser_id("0011");
++
++        //2.保存用户信息
++        userDao.save(user);
++        return true;
++    }
+ 
+     /**
+      *
+Index: src/main/java/dao/impl/UserDaoImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package dao.impl;\r\n\r\nimport dao.UserDao;\r\nimport domain.User;\r\nimport org.springframework.jdbc.core.BeanPropertyRowMapper;\r\nimport org.springframework.jdbc.core.JdbcTemplate;\r\nimport util.JDBCUtils;\r\n\r\npublic class UserDaoImpl implements UserDao {\r\n    private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());\r\n\r\n//    /**\r\n//     *\r\n//     * @param uid\r\n//     * @return\r\n//     */\r\n//    @Override\r\n//    public User findByUid(String uid) {\r\n//        User user = null;\r\n//        try {\r\n//            String sql = \"select * from user where uid = ?\";\r\n//            user = template.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class), uid);\r\n//        } catch (Exception e) {\r\n//        }\r\n//        return user;\r\n//    }\r\n//\r\n//    /**\r\n//     *\r\n//     * @param user\r\n//     */\r\n//    @Override\r\n//    public void save(User user) {\r\n//        String sql = \"insert into user(uid,name,password,telephone) values(?,?,?,?)\";\r\n//        template.update(sql,\r\n//                user.getUid(),\r\n//                user.getName(),\r\n//                user.getPassword(),\r\n//                user.getTelephone());\r\n//    }\r\n\r\n    /**\r\n     *\r\n     * @param account 用户登录用的账号\r\n     * @param password 用户登录用密码\r\n     * @return 对应的User对象\r\n     */\r\n    @Override\r\n    public User findByUidAndPassword(String account, String password) {\r\n        User user = null;\r\n        try {\r\n            String sql = \"select * from user where account = ? and password = ?\";\r\n            user = template.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class), account, password);\r\n        } catch (Exception e) {\r\n        }\r\n        return user;\r\n    }\r\n\r\n//    @Override\r\n//    public void updateUser(User user) {\r\n//        String sql = \"update user set name=?, telephone=? where uid=?\";\r\n//        template.update(sql, user.getName(), user.getTelephone(), user.getUid());\r\n//    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/dao/impl/UserDaoImpl.java b/src/main/java/dao/impl/UserDaoImpl.java
+--- a/src/main/java/dao/impl/UserDaoImpl.java	(revision 896830645765453a28f2efa66ea99279dfdaa6bd)
++++ b/src/main/java/dao/impl/UserDaoImpl.java	(date 1686040855034)
+@@ -9,35 +9,37 @@
+ public class UserDaoImpl implements UserDao {
+     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
+ 
+-//    /**
+-//     *
+-//     * @param uid
+-//     * @return
+-//     */
+-//    @Override
+-//    public User findByUid(String uid) {
+-//        User user = null;
+-//        try {
+-//            String sql = "select * from user where uid = ?";
+-//            user = template.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class), uid);
+-//        } catch (Exception e) {
+-//        }
+-//        return user;
+-//    }
+-//
+-//    /**
+-//     *
+-//     * @param user
+-//     */
+-//    @Override
+-//    public void save(User user) {
+-//        String sql = "insert into user(uid,name,password,telephone) values(?,?,?,?)";
+-//        template.update(sql,
+-//                user.getUid(),
+-//                user.getName(),
+-//                user.getPassword(),
+-//                user.getTelephone());
+-//    }
++    /**
++     *
++     * @param account
++     * @return user
++     */
++    @Override
++    public User findByAccount(String account) {
++        User user = null;
++        try {
++            String sql = "select * from user where account = ?";
++            user = template.queryForObject(sql, new BeanPropertyRowMapper<User>(User.class), account);
++        } catch (Exception e) {
++        }
++        return user;
++    }
++
++    /**
++     *
++     * @param user
++     */
++    @Override
++    public void save(User user) {
++        String sql = "insert into user(user_id, account, password, name,phonenumber,email) values(?,?,?,?,?,?)";
++        template.update(sql,
++                user.getUser_id(),
++                user.getAccount(),
++                user.getPassword(),
++                user.getName(),
++                user.getPhonenumber(),
++                user.getEmail());
++    }
+ 
+     /**
+      *
+Index: src/main/java/web/servlet/UserServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web.servlet;\r\n\r\nimport com.fasterxml.jackson.databind.ObjectMapper;\r\nimport domain.ResultInfo;\r\nimport domain.User;\r\nimport org.apache.commons.beanutils.BeanUtils;\r\nimport service.UserService;\r\nimport service.impl.UserServiceImpl;\r\nimport web.servlet.BaseServlet;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.lang.reflect.InvocationTargetException;\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n@WebServlet(\"/user/*\") // /user/add /user/find\r\npublic class UserServlet extends BaseServlet {\r\n    //声明 UserService 业务对象\r\n    private UserService service = new UserServiceImpl();\r\n    /**\r\n     * 注册功能\r\n     * @param request\r\n     * @param response\r\n     * @throws ServletException\r\n     * @throws IOException\r\n     */\r\n    public void regist(HttpServletRequest request, HttpServletResponse response) throws\r\n            ServletException, IOException {\r\n        //1.获取数据\r\n        Map<String, String[]> map = request.getParameterMap();\r\n        //2.封装对象\r\n        User user = new User();\r\n        try {\r\n            BeanUtils.populate(user,map);\r\n        } catch (IllegalAccessException e) {\r\n            e.printStackTrace();\r\n        } catch (InvocationTargetException e) {\r\n            e.printStackTrace();\r\n        }\r\n        //3.调用 service 完成注册\r\n        UserService service = new UserServiceImpl();\r\n        boolean flag = false;\r\n//        flag = service.regist(user);\r\n        ResultInfo info = new ResultInfo();\r\n        //4.响应结果\r\n        if(flag){\r\n            //注册成功\r\n            info.setFlag(true);\r\n        }else{\r\n            //注册失败\r\n            info.setFlag(false);\r\n            info.setErrorMsg(\"注册失败!\");\r\n        }\r\n        //将 info 对象序列化为 json\r\n        ObjectMapper mapper = new ObjectMapper();\r\n        String json = mapper.writeValueAsString(info);\r\n        //将 json 数据写回客户端\r\n        //设置 content-type\r\n        response.setContentType(\"application/json;charset=utf-8\");\r\n        response.getWriter().write(json);\r\n    }\r\n    /**\r\n     * 登录功能\r\n     * @param request\r\n     * @param response\r\n     * @throws ServletException\r\n     * @throws IOException\r\n     */\r\n    public void login(HttpServletRequest request, HttpServletResponse response) throws\r\n            ServletException, IOException {\r\n        //1.获取用户名和密码数据\r\n        Map<String, String[]> map = request.getParameterMap();\r\n\r\n        //2.封装 User 对象\r\n        User user = new User();\r\n        try {\r\n            BeanUtils.populate(user,map);\r\n        } catch (IllegalAccessException e) {\r\n            e.printStackTrace();\r\n        } catch (InvocationTargetException e) {\r\n            e.printStackTrace();\r\n        }\r\n        //3.调用 Service 查询\r\n        System.out.println(\"UserServlet: \"+user.getAccount()+\"|\"+user.getPassword());\r\n        User u = service.login(user);\r\n        ResultInfo info = new ResultInfo();\r\n        //4.判断用户对象是否为 null\r\n        if(u == null) {\r\n            //用户名密码或错误\r\n            info.setFlag(false);\r\n            info.setErrorMsg(\"用户名密码或错误\");\r\n        }\r\n        //6.判断登录成功\r\n        if(u != null){\r\n            request.getSession().setAttribute(\"user\", u);//登录成功标记\r\n            u.print();\r\n            //登录成功\r\n            info.setFlag(true);\r\n            String account = user.getAccount();\r\n            // TODO：调试用，管理员账户在0001-0006之间\r\n            char lastChar = account.charAt(account.length()-1);\r\n            if(lastChar > '0' && lastChar < '7') {\r\n                System.out.println(\"UserServlet: 管理员登录ing..\");\r\n                info.setData(\"admin\");\r\n            } else {\r\n                info.setData(user.getAccount() + \"is logging in.\");\r\n            }\r\n        }\r\n        //响应数据\r\n        ObjectMapper mapper = new ObjectMapper();\r\n        response.setContentType(\"application/json;charset=utf-8\");\r\n        mapper.writeValue(response.getOutputStream(),info);\r\n    }\r\n    /**\r\n     * 查询单个对象\r\n     * @param request\r\n     * @param response\r\n     * @throws ServletException\r\n     * @throws IOException\r\n     */\r\n    public void findOne(HttpServletRequest request, HttpServletResponse response) throws\r\n            ServletException, IOException {\r\n        //从 session 中获取登录用户\r\n        Object user = request.getSession().getAttribute(\"user\");\r\n        //将 user 写回客户端\r\n        ObjectMapper mapper = new ObjectMapper();\r\n        response.setContentType(\"application/json;charset=utf-8\");\r\n        mapper.writeValue(response.getOutputStream(),user);\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/web/servlet/UserServlet.java b/src/main/java/web/servlet/UserServlet.java
+--- a/src/main/java/web/servlet/UserServlet.java	(revision 896830645765453a28f2efa66ea99279dfdaa6bd)
++++ b/src/main/java/web/servlet/UserServlet.java	(date 1686034003843)
+@@ -21,15 +21,10 @@
+ public class UserServlet extends BaseServlet {
+     //声明 UserService 业务对象
+     private UserService service = new UserServiceImpl();
+-    /**
+-     * 注册功能
+-     * @param request
+-     * @param response
+-     * @throws ServletException
+-     * @throws IOException
+-     */
++
+     public void regist(HttpServletRequest request, HttpServletResponse response) throws
+             ServletException, IOException {
++        System.out.println("进入注册的后端");
+         //1.获取数据
+         Map<String, String[]> map = request.getParameterMap();
+         //2.封装对象
+@@ -41,10 +36,11 @@
+         } catch (InvocationTargetException e) {
+             e.printStackTrace();
+         }
+-        //3.调用 service 完成注册
+-        UserService service = new UserServiceImpl();
+-        boolean flag = false;
+-//        flag = service.regist(user);
++        // 3.调用 service 完成注册
++        System.out.println("UserServlet: "+user.getAccount()+"|"+
++                        user.getPassword()+"|"+user.getName()+"|"+
++                        user.getEmail()+"|"+user.getPhonenumber());
++        boolean flag = service.regist(user);
+         ResultInfo info = new ResultInfo();
+         //4.响应结果
+         if(flag){
+Index: src/main/webapp/left_sidebar.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>    <!-- 左侧边栏 -->\r\n    <nav class=\"navbar-default navbar-static-side\" role=\"navigation\">\r\n        <div class=\"sidebar-collapse\">\r\n            <ul class=\"nav\" id=\"side-menu\">\r\n                <li class=\"nav-header\">\r\n\r\n                    <div class=\"dropdown profile-element\">\r\n                        <!-- 头像 <span> <img alt=\"image\" class=\"img-circle\" src=\"img/profile_small.jpg\" /> </span>-->\r\n                        <a data-toggle=\"dropdown\" class=\"dropdown-toggle\" href=\"index.html#\">\r\n                                <span class=\"clear\"> <span class=\"block m-t-xs\"> <strong class=\"font-bold\">admin</strong>\r\n                             </span>  <span class=\"text-muted text-xs block\">系统管理员 <b class=\"caret\"></b></span> </span>\r\n                        </a>\r\n                        <!--登陆位置的下拉栏-->\r\n                        <ul class=\"dropdown-menu animated fadeInRight m-t-xs\">\r\n                            <li><a href=\"profile.html\">个人资料</a>\r\n                            </li>\r\n                            <li><a href=\"mailbox.html\">信箱</a>\r\n                            </li>\r\n\r\n                            <li class=\"divider\"></li>  <!-- 分割线 -->\r\n                            <li><a href=\"login.html\">安全退出</a>\r\n                            </li>\r\n                        </ul>\r\n                    </div>\r\n                    <div class=\"logo-element\">\r\n                        H+\r\n                    </div>\r\n\r\n                </li>\r\n                <li class=\"active\">\r\n                    <a href=\"index.html\"><i class=\"fa fa-th-large\"></i> <span class=\"nav-label\">主页</span></a>\r\n                </li>\r\n                <li>\r\n                    <a href=\"mailbox.html\"><i class=\"fa fa-envelope\"></i> <span class=\"nav-label\">信箱 </span><span class=\"label label-warning pull-right\">16</span></a>\r\n                    <ul class=\"nav nav-second-level\">\r\n                        <li><a href=\"mailbox.html\">收件箱</a>\r\n                        </li>\r\n                        <li><a href=\"mail_detail.html\">查看邮件</a>\r\n                        </li>\r\n                        <li><a href=\"mail_compose.html\">写信</a>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li>\r\n                    <a href=\"index.html#\"><i class=\"fa fa-edit\"></i> <span class=\"nav-label\">表单</span><span class=\"fa arrow\"></span></a>\r\n                    <ul class=\"nav nav-second-level\">\r\n                        <li><a href=\"form_use_or_borrow.html\">采购申请表</a></li>\r\n                        <li><a href=\"form_use_or_borrow.html\">领用/借用申请表</a></li>\r\n                        <li><a href=\"form_waste.html\">废弃物品申请表</a></li>\r\n                        <li><a href=\"form_purchase_in_warehouse.html\">采购入库表</a></li>\r\n                        <li><a href=\"form_borrow_in_warehouse.html\">借用归还入库表</a></li>\r\n                        <li><a href=\"form_other_in_warehouse.html\">其他入库表</a></li>\r\n                        <li><a href=\"form_ex_warehouse.html\">出库表</a></li>\r\n                        <li><a href=\"view_in_warehouse.html\">查看入库表</a></li>\r\n                        <li><a href=\"view_ex_warehouse.html\">查看出库表</a></li>\r\n                    </ul>\r\n                </li>\r\n                <li>\r\n                    <a href=\"index.html#\"><i class=\"fa fa-desktop\"></i> <span class=\"nav-label\">页面</span></a>\r\n                    <ul class=\"nav nav-second-level\">\r\n                        <li><a href=\"projects.html\">项目</a>\r\n                        </li>\r\n                        <li><a href=\"invoice.html\">单据</a>\r\n                        </li>\r\n                        <li><a href=\"login.html\">登录</a>\r\n                        </li>\r\n                        <li><a href=\"register.html\">注册</a>\r\n                        </li>\r\n                    </ul>\r\n                </li>\r\n                <li>\r\n                    <a href=\"index.html#\"><i class=\"fa fa-table\"></i> <span class=\"nav-label\">表格</span><span class=\"fa arrow\"></span></a>\r\n                    <ul class=\"nav nav-second-level\">\r\n                        <li><a href=\"table_basic.html\">基本表格</a>\r\n                        </li>\r\n                        <li><a href=\"table_data_tables.html\">数据表格(DataTables)</a>\r\n                    </ul>\r\n                </li>\r\n            </ul>\r\n\r\n        </div>\r\n    </nav>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/left_sidebar.html b/src/main/webapp/left_sidebar.html
+--- a/src/main/webapp/left_sidebar.html	(revision 896830645765453a28f2efa66ea99279dfdaa6bd)
++++ b/src/main/webapp/left_sidebar.html	(date 1686034701400)
+@@ -23,7 +23,7 @@
+                         </ul>
+                     </div>
+                     <div class="logo-element">
+-                        H+
++                        666
+                     </div>
+ 
+                 </li>
+@@ -55,27 +55,27 @@
+                         <li><a href="view_ex_warehouse.html">查看出库表</a></li>
+                     </ul>
+                 </li>
+-                <li>
+-                    <a href="index.html#"><i class="fa fa-desktop"></i> <span class="nav-label">页面</span></a>
+-                    <ul class="nav nav-second-level">
+-                        <li><a href="projects.html">项目</a>
+-                        </li>
+-                        <li><a href="invoice.html">单据</a>
+-                        </li>
+-                        <li><a href="login.html">登录</a>
+-                        </li>
+-                        <li><a href="register.html">注册</a>
+-                        </li>
+-                    </ul>
+-                </li>
+-                <li>
+-                    <a href="index.html#"><i class="fa fa-table"></i> <span class="nav-label">表格</span><span class="fa arrow"></span></a>
+-                    <ul class="nav nav-second-level">
+-                        <li><a href="table_basic.html">基本表格</a>
+-                        </li>
+-                        <li><a href="table_data_tables.html">数据表格(DataTables)</a>
+-                    </ul>
+-                </li>
++<!--                <li>-->
++<!--                    <a href="index.html#"><i class="fa fa-desktop"></i> <span class="nav-label">页面</span></a>-->
++<!--                    <ul class="nav nav-second-level">-->
++<!--                        <li><a href="projects.html">项目</a>-->
++<!--                        </li>-->
++<!--                        <li><a href="invoice.html">单据</a>-->
++<!--                        </li>-->
++<!--                        <li><a href="login.html">登录</a>-->
++<!--                        </li>-->
++<!--                        <li><a href="register.html">注册</a>-->
++<!--                        </li>-->
++<!--                    </ul>-->
++<!--                </li>-->
++<!--                <li>-->
++<!--                    <a href="index.html#"><i class="fa fa-table"></i> <span class="nav-label">表格</span><span class="fa arrow"></span></a>-->
++<!--                    <ul class="nav nav-second-level">-->
++<!--                        <li><a href="table_basic.html">基本表格</a>-->
++<!--                        </li>-->
++<!--                        <li><a href="table_data_tables.html">数据表格(DataTables)</a>-->
++<!--                    </ul>-->
++<!--                </li>-->
+             </ul>
+ 
+         </div>
+Index: src/main/java/dao/UserDao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package dao;\r\n\r\nimport domain.User;\r\n\r\npublic interface UserDao {\r\n//    User findByUid(String uid);\r\n//    void save(User user);\r\n    User findByUidAndPassword(String uid, String password);\r\n//    void updateUser(User user);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/dao/UserDao.java b/src/main/java/dao/UserDao.java
+--- a/src/main/java/dao/UserDao.java	(revision 896830645765453a28f2efa66ea99279dfdaa6bd)
++++ b/src/main/java/dao/UserDao.java	(date 1686031641618)
+@@ -3,8 +3,8 @@
+ import domain.User;
+ 
+ public interface UserDao {
+-//    User findByUid(String uid);
+-//    void save(User user);
++    User findByAccount(String account);
++    void save(User user);
+     User findByUidAndPassword(String uid, String password);
+ //    void updateUser(User user);
+ }
+Index: src/main/webapp/login.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"renderer\" content=\"webkit\">\r\n\r\n    <title>登录</title>\r\n    <meta name=\"keywords\">\r\n    <meta name=\"description\">\r\n\r\n    <link href=\"css/bootstrap.min.css?v=3.4.0\" rel=\"stylesheet\">\r\n    <link href=\"font-awesome/css/font-awesome.css?v=4.3.0\" rel=\"stylesheet\">\r\n\r\n    <link href=\"css/animate.css\" rel=\"stylesheet\">\r\n    <link href=\"css/style.css?v=2.2.0\" rel=\"stylesheet\">\r\n\r\n</head>\r\n\r\n\r\n<body class=\"gray-bg\">\r\n\r\n<div class=\"middle-box text-center loginscreen  animated fadeInDown\">\r\n    <div>\r\n        <div><h1 class=\"logo-name\">666</h1></div>\r\n\r\n        <h3>欢迎使用 化工实验室管理系统</h3>\r\n\r\n        <form id=\"loginForm\" class=\"m-t\" role=\"form\" action=\"\" method=\"post\" accept-charset=\"utf-8\">\r\n            <div class=\"form-group\">\r\n                <input id=\"account\" class=\"form-control\" placeholder=\"账号\" required=\"\">\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <input id=\"password\" type=\"password\" class=\"form-control\" placeholder=\"密码\" required=\"\">\r\n            </div>\r\n            <button type=\"submit\" class=\"btn btn-primary block full-width m-b\">登 录</button>\r\n            <p class=\"text-muted text-center\"> <a href=\"\"><small>忘记密码？</small></a> | <a href=\"register.html\">注册一个新账号</a>\r\n            </p>\r\n\r\n        </form>\r\n    </div>\r\n</div>\r\n\r\n<!-- Mainly scripts -->\r\n<script src=\"js/jquery-2.1.1.min.js\"></script>\r\n<script src=\"js/bootstrap.min.js?v=3.4.0\"></script>\r\n\r\n<script>\r\n    let accountElement = document.getElementById(\"account\");\r\n    accountElement.onblur = checkAccount;\r\n    function checkAccount() {\r\n        let account = accountElement.value.trim();\r\n        var account_reg = /^\\w{3,12}$/;\r\n        var flag = account_reg.test(account);\r\n        if (flag){\r\n            accountElement.style.border = \"\";\r\n        } else {\r\n            accountElement.style.border = \"1px solid red\";\r\n        }\r\n        return flag;\r\n    }\r\n\r\n    let passwordElement = document.getElementById(\"password\");\r\n    passwordElement.onblur = checkPassword;\r\n    function checkPassword() {\r\n        var password = passwordElement.value.trim();  //获取值\r\n        var reg_password = /^\\w{3,20}$/  //单词类型\\w，8-20用{}\r\n        var flag = reg_password.test(password);\r\n        if(flag) {\r\n            //校验通过\r\n            passwordElement.style.border = \"\";\r\n        } else {\r\n            //校验失败\r\n            passwordElement.style.border = \"1px solid red\";\r\n        }\r\n        return flag;\r\n    }\r\n\r\n    $(function () {\r\n        $(\"#loginForm\").submit(function () {\r\n            var account = accountElement.value.trim();\r\n            var password = passwordElement.value.trim();  //获取值\r\n            var front_end_data = \"account=\"+$(\"#account\").val()+\"&password=\"+$(\"#password\").val()\r\n            if (checkAccount() && checkPassword()) {\r\n                $.post(\"user/login\", front_end_data, function (data) {\r\n                    if (data.flag) {\r\n                        console.log(data.data);\r\n                        //TODO: 身份识别，跳转至各自界面\r\n                        if(data.data === \"admin\")\r\n                            location.href = \"index.html\";\r\n                        else\r\n                            location.href = \"register.html\";\r\n                    } else {\r\n                        $(\"#errorMsg\").html(data.errorMsg);\r\n                        alert(data.errorMsg);\r\n                    }\r\n                })\r\n            }\r\n            return false\r\n        });\r\n\r\n        $(\"#account\").blur(checkAccount);\r\n        $(\"#password\").blur(checkPassword);\r\n    })\r\n</script>\r\n\r\n</body>\r\n\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/login.html b/src/main/webapp/login.html
+--- a/src/main/webapp/login.html	(revision 896830645765453a28f2efa66ea99279dfdaa6bd)
++++ b/src/main/webapp/login.html	(date 1686036821596)
+@@ -27,7 +27,7 @@
+ 
+         <h3>欢迎使用 化工实验室管理系统</h3>
+ 
+-        <form id="loginForm" class="m-t" role="form" action="" method="post" accept-charset="utf-8">
++        <form id="loginForm" class="m-t" role="form" method="post" accept-charset="utf-8">
+             <div class="form-group">
+                 <input id="account" class="form-control" placeholder="账号" required="">
+             </div>
+@@ -79,9 +79,8 @@
+ 
+     $(function () {
+         $("#loginForm").submit(function () {
+-            var account = accountElement.value.trim();
+-            var password = passwordElement.value.trim();  //获取值
+-            var front_end_data = "account="+$("#account").val()+"&password="+$("#password").val()
++            var front_end_data = "account="+$("#account").val()+
++                                 "&password="+$("#password").val();
+             if (checkAccount() && checkPassword()) {
+                 $.post("user/login", front_end_data, function (data) {
+                     if (data.flag) {
+Index: src/main/webapp/index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"renderer\" content=\"webkit\">\r\n\r\n    <title>首页</title>\r\n    <meta name=\"keywords\">\r\n    <meta name=\"description\">\r\n\r\n    <link href=\"css/bootstrap.min.css?v=3.4.0\" rel=\"stylesheet\">\r\n    <link href=\"font-awesome/css/font-awesome.css?v=4.3.0\" rel=\"stylesheet\">\r\n\r\n    <!-- Morris -->\r\n    <link href=\"css/plugins/morris/morris-0.4.3.min.css\" rel=\"stylesheet\">\r\n\r\n    <!-- Gritter -->\r\n    <link href=\"js/plugins/gritter/jquery.gritter.css\" rel=\"stylesheet\">\r\n\r\n    <link href=\"css/animate.css\" rel=\"stylesheet\">\r\n    <link href=\"css/style.css?v=2.2.0\" rel=\"stylesheet\">\r\n\r\n</head>\r\n\r\n<body>\r\n<!--  插入header  -->\r\n    <div id=\"wrapper\">\r\n        <!-- 侧边栏 -->\r\n        <div id=\"left_sidebar\"></div>\r\n\r\n        <div id=\"page-wrapper\" class=\"gray-bg dashbard-1\">\r\n\r\n            <!-- 页面头部 的搜索栏，通知消息，推出等部件 -->\r\n            <div class=\"row border-bottom\">\r\n                <nav class=\"navbar navbar-static-top\" role=\"navigation\" style=\"margin-bottom: 0\">\r\n                    <div class=\"navbar-header\">\r\n                        <a class=\"navbar-minimalize minimalize-styl-2 btn btn-primary \" href=\"index.html#\"><i class=\"fa fa-bars\"></i> </a>\r\n                        <form role=\"search\" class=\"navbar-form-custom\" method=\"post\" action=\"search_results.html\">\r\n                            <div class=\"form-group\">\r\n                                <input type=\"text\" placeholder=\"请输入您需要查找的内容 …\" class=\"form-control\" name=\"top-search\" id=\"top-search\">\r\n                            </div>\r\n                        </form>\r\n                    </div>\r\n                    <ul class=\"nav navbar-top-links navbar-right\">\r\n                        <li>\r\n                            <span class=\"m-r-sm text-muted welcome-message\"><a href=\"index.html\" title=\"返回首页\"><i class=\"fa fa-home\"></i></a></span>\r\n                        </li>\r\n                        <li class=\"dropdown\">\r\n                            <a class=\"dropdown-toggle count-info\" data-toggle=\"dropdown\" href=\"index.html#\">\r\n                                <i class=\"fa fa-envelope\"></i>  <span class=\"label label-warning\">16</span>\r\n                            </a>\r\n                            <ul class=\"dropdown-menu dropdown-messages\">\r\n                                <li>\r\n                                    <div class=\"dropdown-messages-box\">\r\n                                        <a href=\"profile.html\" class=\"pull-left\">\r\n                                            <img alt=\"image\" class=\"img-circle\" src=\"img/a7.jpg\">\r\n                                        </a>\r\n                                        <div class=\"media-body\">\r\n                                            <small class=\"pull-right\">46小时前</small>\r\n                                            <strong>小四</strong> 项目已处理完结\r\n                                            <br>\r\n                                            <small class=\"text-muted\">3天前 2014.11.8</small>\r\n                                        </div>\r\n                                    </div>\r\n                                </li>\r\n                                <li class=\"divider\"></li>\r\n                                <li>\r\n                                    <div class=\"dropdown-messages-box\">\r\n                                        <a href=\"profile.html\" class=\"pull-left\">\r\n                                            <img alt=\"image\" class=\"img-circle\" src=\"img/a4.jpg\">\r\n                                        </a>\r\n                                        <div class=\"media-body \">\r\n                                            <small class=\"pull-right text-navy\">25小时前</small>\r\n                                            <strong>国民岳父</strong> 这是一条测试信息\r\n                                            <br>\r\n                                            <small class=\"text-muted\">昨天</small>\r\n                                        </div>\r\n                                    </div>\r\n                                </li>\r\n                                <li class=\"divider\"></li>\r\n                                <li>\r\n                                    <div class=\"text-center link-block\">\r\n                                        <a href=\"mailbox.html\">\r\n                                            <i class=\"fa fa-envelope\"></i>  <strong> 查看所有消息</strong>\r\n                                        </a>\r\n                                    </div>\r\n                                </li>\r\n                            </ul>\r\n                        </li>\r\n                        <li class=\"dropdown\">\r\n                            <a class=\"dropdown-toggle count-info\" data-toggle=\"dropdown\" href=\"index.html#\">\r\n                                <i class=\"fa fa-bell\"></i>  <span class=\"label label-primary\">8</span>\r\n                            </a>\r\n                            <ul class=\"dropdown-menu dropdown-alerts\">\r\n                                <li>\r\n                                    <a href=\"mailbox.html\">\r\n                                        <div>\r\n                                            <i class=\"fa fa-envelope fa-fw\"></i> 您有16条未读消息\r\n                                            <span class=\"pull-right text-muted small\">4分钟前</span>\r\n                                        </div>\r\n                                    </a>\r\n                                </li>\r\n                                <li class=\"divider\"></li>\r\n                                <li>\r\n                                    <a href=\"profile.html\">\r\n                                        <div>\r\n                                            <i class=\"fa fa-qq fa-fw\"></i> 3条新回复\r\n                                            <span class=\"pull-right text-muted small\">12分钟钱</span>\r\n                                        </div>\r\n                                    </a>\r\n                                </li>\r\n                                <li class=\"divider\"></li>\r\n                                <li>\r\n                                    <div class=\"text-center link-block\">\r\n                                        <a href=\"notifications.html\">\r\n                                            <strong>查看所有 </strong>\r\n                                            <i class=\"fa fa-angle-right\"></i>\r\n                                        </a>\r\n                                    </div>\r\n                                </li>\r\n                            </ul>\r\n                        </li>\r\n\r\n\r\n                        <li>\r\n                            <a href=\"login.html\">\r\n                                <i class=\"fa fa-sign-out\"></i> 退出\r\n                            </a>\r\n                        </li>\r\n                    </ul>\r\n\r\n                </nav>\r\n            </div>\r\n\r\n            <!-- 首页分析图表 -->\r\n            <div class=\"wrapper wrapper-content\">\r\n                <div class=\"row\">\r\n                    <div class=\"col-lg-12\">\r\n                        <div class=\"ibox float-e-margins\">\r\n                            <div class=\"ibox-title\">\r\n                                <h5>申请数量</h5>\r\n                                <div class=\"pull-right\">\r\n                                    <div class=\"btn-group\">\r\n                                        <button type=\"button\" class=\"btn btn-xs btn-white active\">天</button>\r\n                                        <button type=\"button\" class=\"btn btn-xs btn-white\">月</button>\r\n                                        <button type=\"button\" class=\"btn btn-xs btn-white\">年</button>\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                            <div class=\"ibox-content\">\r\n                                <div class=\"row\">\r\n                                    <div class=\"col-lg-9\">\r\n                                        <div class=\"flot-chart\">\r\n                                            <div class=\"flot-chart-content\" id=\"flot-dashboard-chart\"></div>\r\n                                        </div>\r\n                                    </div>\r\n                                    <div class=\"col-lg-3\">\r\n                                        <ul class=\"stat-list\">\r\n                                            <li>\r\n                                                <h2 class=\"no-margins\">2,346</h2>\r\n                                                <small>订单总数</small>\r\n                                                <div class=\"stat-percent\">48% <i class=\"fa fa-level-up text-navy\"></i>\r\n                                                </div>\r\n                                                <div class=\"progress progress-mini\">\r\n                                                    <div style=\"width: 48%;\" class=\"progress-bar\"></div>\r\n                                                </div>\r\n                                            </li>\r\n                                            <li>\r\n                                                <h2 class=\"no-margins \">4,422</h2>\r\n                                                <small>最近一个月订单</small>\r\n                                                <div class=\"stat-percent\">60% <i class=\"fa fa-level-down text-navy\"></i>\r\n                                                </div>\r\n                                                <div class=\"progress progress-mini\">\r\n                                                    <div style=\"width: 60%;\" class=\"progress-bar\"></div>\r\n                                                </div>\r\n                                            </li>\r\n                                            <li>\r\n                                                <h2 class=\"no-margins \">9,180</h2>\r\n                                                <small>最近一个月销售额</small>\r\n                                                <div class=\"stat-percent\">22% <i class=\"fa fa-bolt text-navy\"></i>\r\n                                                </div>\r\n                                                <div class=\"progress progress-mini\">\r\n                                                    <div style=\"width: 22%;\" class=\"progress-bar\"></div>\r\n                                                </div>\r\n                                            </li>\r\n                                        </ul>\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n\r\n\r\n\r\n    <!-- Mainly scripts -->\r\n    <script src=\"js/jquery-2.1.1.min.js\"></script>\r\n    <script src=\"js/bootstrap.min.js?v=3.4.0\"></script>\r\n    <script src=\"js/plugins/metisMenu/jquery.metisMenu.js\"></script>\r\n    <script src=\"js/plugins/slimscroll/jquery.slimscroll.min.js\"></script>\r\n\r\n    <!-- Flot -->\r\n    <script src=\"js/plugins/flot/jquery.flot.js\"></script>\r\n    <script src=\"js/plugins/flot/jquery.flot.tooltip.min.js\"></script>\r\n    <script src=\"js/plugins/flot/jquery.flot.spline.js\"></script>\r\n    <script src=\"js/plugins/flot/jquery.flot.resize.js\"></script>\r\n    <script src=\"js/plugins/flot/jquery.flot.pie.js\"></script>\r\n    <script src=\"js/plugins/flot/jquery.flot.symbol.js\"></script>\r\n\r\n    <!-- Peity -->\r\n    <script src=\"js/plugins/peity/jquery.peity.min.js\"></script>\r\n    <script src=\"js/demo/peity-demo.js\"></script>\r\n\r\n    <!-- Custom and plugin javascript -->\r\n    <script src=\"js/hplus.js?v=2.2.0\"></script>\r\n    <script src=\"js/plugins/pace/pace.min.js\"></script>\r\n\r\n    <!-- jQuery UI -->\r\n    <script src=\"js/plugins/jquery-ui/jquery-ui.min.js\"></script>\r\n\r\n    <!-- Jvectormap -->\r\n    <script src=\"js/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js\"></script>\r\n    <script src=\"js/plugins/jvectormap/jquery-jvectormap-world-mill-en.js\"></script>\r\n\r\n    <!-- EayPIE -->\r\n    <script src=\"js/plugins/easypiechart/jquery.easypiechart.js\"></script>\r\n\r\n    <!-- Sparkline -->\r\n    <script src=\"js/plugins/sparkline/jquery.sparkline.min.js\"></script>\r\n\r\n    <!-- Sparkline demo data  -->\r\n    <script src=\"js/demo/sparkline-demo.js\"></script>\r\n\r\n\r\n    <!--图表的数据-->\r\n    <script>\r\n        $(document).ready(function () {\r\n            $('.chart').easyPieChart({\r\n                barColor: '#f8ac59',\r\n                //                scaleColor: false,\r\n                scaleLength: 5,\r\n                lineWidth: 4,\r\n                size: 80\r\n            });\r\n\r\n            $('.chart2').easyPieChart({\r\n                barColor: '#1c84c6',\r\n                //                scaleColor: false,\r\n                scaleLength: 5,\r\n                lineWidth: 4,\r\n                size: 80\r\n            });\r\n\r\n            var data2 = [\r\n                [gd(2012, 1, 1), 7], [gd(2012, 1, 2), 6], [gd(2012, 1, 3), 4], [gd(2012, 1, 4), 8],\r\n                [gd(2012, 1, 5), 9], [gd(2012, 1, 6), 7], [gd(2012, 1, 7), 5], [gd(2012, 1, 8), 4],\r\n                [gd(2012, 1, 9), 7], [gd(2012, 1, 10), 8], [gd(2012, 1, 11), 9], [gd(2012, 1, 12), 6],\r\n                [gd(2012, 1, 13), 4], [gd(2012, 1, 14), 5], [gd(2012, 1, 15), 11], [gd(2012, 1, 16), 8],\r\n                [gd(2012, 1, 17), 8], [gd(2012, 1, 18), 11], [gd(2012, 1, 19), 11], [gd(2012, 1, 20), 6],\r\n                [gd(2012, 1, 21), 6], [gd(2012, 1, 22), 8], [gd(2012, 1, 23), 11], [gd(2012, 1, 24), 13],\r\n                [gd(2012, 1, 25), 7], [gd(2012, 1, 26), 9], [gd(2012, 1, 27), 9], [gd(2012, 1, 28), 8],\r\n                [gd(2012, 1, 29), 5], [gd(2012, 1, 30), 8], [gd(2012, 1, 31), 25]\r\n            ];\r\n\r\n            var data3 = [\r\n                [gd(2012, 1, 1), 800], [gd(2012, 1, 2), 500], [gd(2012, 1, 3), 600], [gd(2012, 1, 4), 700],\r\n                [gd(2012, 1, 5), 500], [gd(2012, 1, 6), 456], [gd(2012, 1, 7), 800], [gd(2012, 1, 8), 589],\r\n                [gd(2012, 1, 9), 467], [gd(2012, 1, 10), 876], [gd(2012, 1, 11), 689], [gd(2012, 1, 12), 700],\r\n                [gd(2012, 1, 13), 500], [gd(2012, 1, 14), 600], [gd(2012, 1, 15), 700], [gd(2012, 1, 16), 786],\r\n                [gd(2012, 1, 17), 345], [gd(2012, 1, 18), 888], [gd(2012, 1, 19), 888], [gd(2012, 1, 20), 888],\r\n                [gd(2012, 1, 21), 987], [gd(2012, 1, 22), 444], [gd(2012, 1, 23), 999], [gd(2012, 1, 24), 567],\r\n                [gd(2012, 1, 25), 786], [gd(2012, 1, 26), 666], [gd(2012, 1, 27), 888], [gd(2012, 1, 28), 900],\r\n                [gd(2012, 1, 29), 178], [gd(2012, 1, 30), 555], [gd(2012, 1, 31), 993]\r\n            ];\r\n\r\n\r\n            var dataset = [\r\n                {\r\n                    label: \"订单数\",\r\n                    data: data3,\r\n                    color: \"#1ab394\",\r\n                    bars: {\r\n                        show: true,\r\n                        align: \"center\",\r\n                        barWidth: 24 * 60 * 60 * 600,\r\n                        lineWidth: 0\r\n                    }\r\n\r\n                }, {\r\n                    label: \"付款数\",\r\n                    data: data2,\r\n                    yaxis: 2,\r\n                    color: \"#464f88\",\r\n                    lines: {\r\n                        lineWidth: 1,\r\n                        show: true,\r\n                        fill: true,\r\n                        fillColor: {\r\n                            colors: [{\r\n                                opacity: 0.2\r\n                            }, {\r\n                                opacity: 0.2\r\n                            }]\r\n                        }\r\n                    },\r\n                    splines: {\r\n                        show: false,\r\n                        tension: 0.6,\r\n                        lineWidth: 1,\r\n                        fill: 0.1\r\n                    },\r\n                }\r\n            ];\r\n\r\n\r\n            var options = {\r\n                xaxis: {\r\n                    mode: \"time\",\r\n                    tickSize: [3, \"day\"],\r\n                    tickLength: 0,\r\n                    axisLabel: \"Date\",\r\n                    axisLabelUseCanvas: true,\r\n                    axisLabelFontSizePixels: 12,\r\n                    axisLabelFontFamily: 'Arial',\r\n                    axisLabelPadding: 10,\r\n                    color: \"#838383\"\r\n                },\r\n                yaxes: [{\r\n                        position: \"left\",\r\n                        max: 1070,\r\n                        color: \"#838383\",\r\n                        axisLabelUseCanvas: true,\r\n                        axisLabelFontSizePixels: 12,\r\n                        axisLabelFontFamily: 'Arial',\r\n                        axisLabelPadding: 3\r\n                }, {\r\n                        position: \"right\",\r\n                        clolor: \"#838383\",\r\n                        axisLabelUseCanvas: true,\r\n                        axisLabelFontSizePixels: 12,\r\n                        axisLabelFontFamily: ' Arial',\r\n                        axisLabelPadding: 67\r\n                }\r\n                ],\r\n                legend: {\r\n                    noColumns: 1,\r\n                    labelBoxBorderColor: \"#000000\",\r\n                    position: \"nw\"\r\n                },\r\n                grid: {\r\n                    hoverable: false,\r\n                    borderWidth: 0,\r\n                    color: '#838383'\r\n                }\r\n            };\r\n\r\n            function gd(year, month, day) {\r\n                return new Date(year, month - 1, day).getTime();\r\n            }\r\n\r\n            var previousPoint = null,\r\n                previousLabel = null;\r\n\r\n            $.plot($(\"#flot-dashboard-chart\"), dataset, options);\r\n\r\n            var mapData = {\r\n                \"US\": 298,\r\n                \"SA\": 200,\r\n                \"DE\": 220,\r\n                \"FR\": 540,\r\n                \"CN\": 120,\r\n                \"AU\": 760,\r\n                \"BR\": 550,\r\n                \"IN\": 200,\r\n                \"GB\": 120,\r\n            };\r\n\r\n            $('#world-map').vectorMap({\r\n                map: 'world_mill_en',\r\n                backgroundColor: \"transparent\",\r\n                regionStyle: {\r\n                    initial: {\r\n                        fill: '#e4e4e4',\r\n                        \"fill-opacity\": 0.9,\r\n                        stroke: 'none',\r\n                        \"stroke-width\": 0,\r\n                        \"stroke-opacity\": 0\r\n                    }\r\n                },\r\n\r\n                series: {\r\n                    regions: [{\r\n                        values: mapData,\r\n                        scale: [\"#1ab394\", \"#22d6b1\"],\r\n                        normalizeFunction: 'polynomial'\r\n                    }]\r\n                },\r\n            });\r\n        });\r\n    </script>\r\n\r\n    <!-- 导入left_sidebar -->\r\n    <script>\r\n        $(function () {\r\n            $.get(\"left_sidebar.html\",function (data) {\r\n                $(\"#left_sidebar\").html(data);\r\n            });\r\n        });\r\n    </script>\r\n\r\n</body>\r\n\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/index.html b/src/main/webapp/index.html
+--- a/src/main/webapp/index.html	(revision 896830645765453a28f2efa66ea99279dfdaa6bd)
++++ b/src/main/webapp/index.html	(date 1686034930905)
+@@ -17,7 +17,6 @@
+ 
+     <!-- Gritter -->
+     <link href="js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+-
+     <link href="css/animate.css" rel="stylesheet">
+     <link href="css/style.css?v=2.2.0" rel="stylesheet">
+ 
+Index: src/main/java/service/UserService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package service;\r\n\r\nimport domain.User;\r\n\r\nimport java.util.List;\r\n\r\npublic interface UserService {\r\n//    boolean regist(User user);\r\n    User login(User user);\r\n//    List<Goods> searchGoods(String uid);\r\n//    String leaseAndBuy(Order order);\r\n//    List<Order> searchOrderByType(int type, String uid);\r\n//    void updateUser(User user);\r\n//    User loginByUid(String uid);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/service/UserService.java b/src/main/java/service/UserService.java
+--- a/src/main/java/service/UserService.java	(revision 896830645765453a28f2efa66ea99279dfdaa6bd)
++++ b/src/main/java/service/UserService.java	(date 1686021264574)
+@@ -5,7 +5,7 @@
+ import java.util.List;
+ 
+ public interface UserService {
+-//    boolean regist(User user);
++    boolean regist(User user);
+     User login(User user);
+ //    List<Goods> searchGoods(String uid);
+ //    String leaseAndBuy(Order order);
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ArtifactsWorkspaceSettings\">\r\n    <artifacts-to-build>\r\n      <artifact name=\"travel:war\" />\r\n    </artifacts-to-build>\r\n  </component>\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec\" name=\"Default Changelist\" comment=\"更新采购、领用dao层功能\">\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/artifacts/WebLab_main_war.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/.idea/artifacts/WebLab_main_war_exploded.xml\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/dao/UserDao.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/domain/ResultInfo.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/service/UserService.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/service/impl/UserServiceImpl.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/web/servlet/BaseServlet.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/web/servlet/UserServlet.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/artifacts/CLIMS_war.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/artifacts/CLIMS_war.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/artifacts/ChemicalLabItemMS_war_exploded.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/artifacts/ChemicalLabItemMS_war_exploded.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/compiler.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/compiler.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_druid_1_1_21.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_druid_1_1_21.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_beust_jcommander_1_82.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_beust_jcommander_1_82.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_3_3.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_3_3.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_3_3.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_3_3.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_3_3.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_3_3.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_sun_mail_javax_mail_1_5_3.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__com_sun_mail_javax_mail_1_5_3.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_javax_mail_api_1_5_6.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_javax_mail_api_1_5_6.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_10_0_M1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_10_0_M1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_10_0_M1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_10_0_M1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_10_0_M1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_10_0_M1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_10_0_M1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_10_0_M1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_10_0_M1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_10_0_M1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_10_0_M1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_10_0_M1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_36.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_36.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_4_1_2_RELEASE.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_4_1_2_RELEASE.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_4_1_2_RELEASE.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_4_1_2_RELEASE.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_4_1_2_RELEASE.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_4_1_2_RELEASE.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_4_1_2_RELEASE.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_4_1_2_RELEASE.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_testng_testng_7_8_0.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_testng_testng_7_8_0.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_jquery_3_6_1.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_jquery_3_6_1.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_2_7_0.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_2_7_0.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/misc.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/misc.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/modules.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/modules.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/ChemicalLabItemMS.iml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/WebLab-main.iml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/domain/User.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/domain/User.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/login.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/login.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/register.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/register.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/Dao/GoodsDaoTest.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/Dao/Impl/OrderDaoImplTest.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/Dao/Impl/UserDaoImplTest.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/Dao/OrderDaoTest.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/Service/AdminServiceTest.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/Service/GoodsServiceTest.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/Service/Impl/UserServiceImplTest.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/Service/UserServiceTest.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/web/servlet_temp/AdminServletTest.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/web/servlet_temp/Tool.java\" beforeDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"LogFilters\">\r\n    <option name=\"FILTER_ERRORS\" value=\"false\" />\r\n    <option name=\"FILTER_WARNINGS\" value=\"false\" />\r\n    <option name=\"FILTER_INFO\" value=\"true\" />\r\n    <option name=\"FILTER_DEBUG\" value=\"true\" />\r\n    <option name=\"CUSTOM_FILTER\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"localRepository\" value=\"D:\\develop\\Java\\jar_tools\\.m2\\repository\" />\r\n        <option name=\"mavenHome\" value=\"D:\\develop\\Java\\jar_tools\\apache-maven-3.6.3\" />\r\n        <option name=\"userSettingsFile\" value=\"D:\\develop\\Java\\jar_tools\\apache-maven-3.6.3\\conf\\settings.xml\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2Avt6bIjEb9LPH0DVMOFNxUmr9z\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"ASKED_ADD_EXTERNAL_FILES\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\r\n    <property name=\"aspect.path.notification.shown\" value=\"true\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/src/main/webapp/front-end-res-lib\" />\r\n    <property name=\"node.js.detected.package.eslint\" value=\"true\" />\r\n    <property name=\"node.js.path.for.package.eslint\" value=\"project\" />\r\n    <property name=\"node.js.path.for.package.tslint\" value=\"project\" />\r\n    <property name=\"node.js.selected.package.eslint\" value=\"(autodetect)\" />\r\n    <property name=\"node.js.selected.package.tslint\" value=\"(autodetect)\" />\r\n    <property name=\"nodejs_package_manager_path\" value=\"npm\" />\r\n    <property name=\"project.structure.last.edited\" value=\"Artifacts\" />\r\n    <property name=\"project.structure.proportion\" value=\"0.17\" />\r\n    <property name=\"project.structure.side.proportion\" value=\"0.26412776\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"MavenSettings\" />\r\n  </component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\webapp\\front-end-res-lib\" />\r\n      <recent name=\"D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\java\\service\\temp_service\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\webapp\\html_temp\" />\r\n    </key>\r\n    <key name=\"MoveClassesOrPackagesDialog.RECENTS_KEY\">\r\n      <recent name=\"\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Maven.ChemicalLabItemMS\">\r\n    <configuration name=\"ChemicalLabItemMS\" type=\"MavenRunConfiguration\" factoryName=\"Maven\">\r\n      <MavenSettings>\r\n        <option name=\"myGeneralSettings\" />\r\n        <option name=\"myRunnerSettings\" />\r\n        <option name=\"myRunnerParameters\">\r\n          <MavenRunnerParameters>\r\n            <option name=\"profiles\">\r\n              <set />\r\n            </option>\r\n            <option name=\"goals\">\r\n              <list>\r\n                <option value=\"tomcat7:run\" />\r\n              </list>\r\n            </option>\r\n            <option name=\"pomFileName\" />\r\n            <option name=\"profilesMap\">\r\n              <map />\r\n            </option>\r\n            <option name=\"resolveToWorkspace\" value=\"false\" />\r\n            <option name=\"workingDirPath\" value=\"$PROJECT_DIR$\" />\r\n          </MavenRunnerParameters>\r\n        </option>\r\n      </MavenSettings>\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"Tomcat 8.5.24\" type=\"#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory\" factoryName=\"Local\" APPLICATION_SERVER_NAME=\"Tomcat 8.5.24\" ALTERNATIVE_JRE_ENABLED=\"false\" nameIsGenerated=\"true\">\r\n      <option name=\"UPDATING_POLICY\" value=\"restart-server\" />\r\n      <deployment>\r\n        <artifact name=\"travel:war\">\r\n          <settings>\r\n            <option name=\"CONTEXT_PATH\" value=\"/travel_war\" />\r\n          </settings>\r\n        </artifact>\r\n        <artifact name=\"ChemicalLabItemMS:war\">\r\n          <settings>\r\n            <option name=\"CONTEXT_PATH\" value=\"/ChemicalLabItemMS_war\" />\r\n          </settings>\r\n        </artifact>\r\n      </deployment>\r\n      <server-settings>\r\n        <option name=\"BASE_DIRECTORY_NAME\" value=\"0049ada1-20ae-4acc-ba0a-1e64ffc4502d\" />\r\n      </server-settings>\r\n      <predefined_log_file enabled=\"true\" id=\"Tomcat\" />\r\n      <predefined_log_file enabled=\"true\" id=\"Tomcat Catalina\" />\r\n      <predefined_log_file id=\"Tomcat Manager\" />\r\n      <predefined_log_file id=\"Tomcat Host Manager\" />\r\n      <predefined_log_file id=\"Tomcat Localhost Access\" />\r\n      <RunnerSettings RunnerId=\"Debug\">\r\n        <option name=\"DEBUG_PORT\" value=\"1237\" />\r\n      </RunnerSettings>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Cover\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Debug\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Profile\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Run\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n        <option name=\"BuildArtifacts\" enabled=\"true\">\r\n          <artifact name=\"ChemicalLabItemMS:war\" />\r\n        </option>\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"Maven.ChemicalLabItemMS\" />\r\n      <item itemvalue=\"Tomcat Server.Tomcat 8.5.24\" />\r\n    </list>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"SvnConfiguration\">\r\n    <configuration />\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1655901715645</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1655901715645</updated>\r\n      <workItem from=\"1655901717854\" duration=\"450000\" />\r\n      <workItem from=\"1685427151825\" duration=\"1535000\" />\r\n      <workItem from=\"1685428706026\" duration=\"124000\" />\r\n      <workItem from=\"1685428833294\" duration=\"826000\" />\r\n      <workItem from=\"1685520782760\" duration=\"706000\" />\r\n      <workItem from=\"1685537381059\" duration=\"1334000\" />\r\n      <workItem from=\"1685540296469\" duration=\"811000\" />\r\n      <workItem from=\"1685599640376\" duration=\"132000\" />\r\n      <workItem from=\"1685599807762\" duration=\"1261000\" />\r\n      <workItem from=\"1685603422754\" duration=\"49000\" />\r\n      <workItem from=\"1685603474267\" duration=\"10000\" />\r\n      <workItem from=\"1685603485940\" duration=\"6000\" />\r\n      <workItem from=\"1685603502462\" duration=\"2399000\" />\r\n      <workItem from=\"1685674025238\" duration=\"1608000\" />\r\n      <workItem from=\"1685771307743\" duration=\"402000\" />\r\n      <workItem from=\"1685771714405\" duration=\"5544000\" />\r\n      <workItem from=\"1685777299983\" duration=\"306000\" />\r\n      <workItem from=\"1685897456684\" duration=\"1052000\" />\r\n      <workItem from=\"1685924081606\" duration=\"921000\" />\r\n      <workItem from=\"1685965736717\" duration=\"8365000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"添加GoodsService及其实现，实体类Date-&gt;String\">\r\n      <created>1655902015448</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1655902015448</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"更新了实体类的注释\">\r\n      <created>1685776134712</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685776134712</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"更新了实体类的注释\">\r\n      <created>1685777451475</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685777451475</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"更新了领用&amp;借用申请表的校验\">\r\n      <created>1685955280415</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685955280415</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"更新采购、领用dao层功能\">\r\n      <created>1686015910191</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1686015910191</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"6\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\r\n    <MESSAGE value=\"添加GoodsService及其实现，实体类Date-&gt;String\" />\r\n    <MESSAGE value=\"更新了实体类的注释\" />\r\n    <MESSAGE value=\"更新了领用&amp;借用申请表的校验\" />\r\n    <MESSAGE value=\"更新采购、领用dao层功能\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"更新采购、领用dao层功能\" />\r\n  </component>\r\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\r\n    <expand />\r\n    <select />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 896830645765453a28f2efa66ea99279dfdaa6bd)
++++ b/.idea/workspace.xml	(date 1686040661814)
+@@ -9,71 +9,17 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="更新采购、领用dao层功能">
+-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/WebLab_main_war.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/WebLab_main_war_exploded.xml" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/UserDao.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/domain/ResultInfo.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/service/UserService.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/service/impl/UserServiceImpl.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/web/servlet/BaseServlet.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/web/servlet/UserServlet.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/CLIMS_war.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/CLIMS_war.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/ChemicalLabItemMS_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/ChemicalLabItemMS_war_exploded.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_druid_1_1_21.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_druid_1_1_21.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_beust_jcommander_1_82.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_beust_jcommander_1_82.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_3_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_3_3.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_3_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_3_3.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_3_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_3_3.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_mail_javax_mail_1_5_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_mail_javax_mail_1_5_3.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_javax_mail_api_1_5_6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_javax_mail_api_1_5_6.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_10_0_M1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_10_0_M1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_10_0_M1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_10_0_M1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_10_0_M1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_10_0_M1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_10_0_M1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_10_0_M1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_10_0_M1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_10_0_M1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_10_0_M1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_10_0_M1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_36.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_36.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_4_1_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_4_1_2_RELEASE.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_4_1_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_4_1_2_RELEASE.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_4_1_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_4_1_2_RELEASE.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_4_1_2_RELEASE.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_4_1_2_RELEASE.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_testng_testng_7_8_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_testng_testng_7_8_0.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_jquery_3_6_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_jquery_3_6_1.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_2_7_0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_2_7_0.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml" afterDir="false" />
++    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="更新了登录跳转，前后端对接成功">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/ChemicalLabItemMS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/WebLab-main.iml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/User.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/UserDao.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/UserDaoImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/UserService.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/UserServiceImpl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/UserServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/UserServlet.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/webapp/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/webapp/left_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/left_sidebar.html" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/webapp/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/login.html" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/webapp/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/register.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/Dao/GoodsDaoTest.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/Dao/Impl/OrderDaoImplTest.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/Dao/Impl/UserDaoImplTest.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/Dao/OrderDaoTest.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/Service/AdminServiceTest.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/Service/GoodsServiceTest.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/Service/Impl/UserServiceImplTest.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/Service/UserServiceTest.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/web/servlet_temp/AdminServletTest.java" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/web/servlet_temp/Tool.java" beforeDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -154,6 +100,17 @@
+     </key>
+   </component>
+   <component name="RunManager" selected="Maven.ChemicalLabItemMS">
++    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
++      <option name="arquillianRunConfiguration">
++        <value>
++          <option name="containerStateName" value="" />
++        </value>
++      </option>
++      <option name="TEST_OBJECT" value="class" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
+     <configuration name="ChemicalLabItemMS" type="MavenRunConfiguration" factoryName="Maven">
+       <MavenSettings>
+         <option name="myGeneralSettings" />
+@@ -307,6 +264,7 @@
+       <workItem from="1685897456684" duration="1052000" />
+       <workItem from="1685924081606" duration="921000" />
+       <workItem from="1685965736717" duration="8365000" />
++      <workItem from="1686019221248" duration="11773000" />
+     </task>
+     <task id="LOCAL-00001" summary="添加GoodsService及其实现，实体类Date-&gt;String">
+       <created>1655902015448</created>
+@@ -343,7 +301,14 @@
+       <option name="project" value="LOCAL" />
+       <updated>1686015910191</updated>
+     </task>
+-    <option name="localTasksCounter" value="6" />
++    <task id="LOCAL-00006" summary="更新了登录跳转，前后端对接成功">
++      <created>1686019386526</created>
++      <option name="number" value="00006" />
++      <option name="presentableId" value="LOCAL-00006" />
++      <option name="project" value="LOCAL" />
++      <updated>1686019386526</updated>
++    </task>
++    <option name="localTasksCounter" value="7" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -367,7 +332,8 @@
+     <MESSAGE value="更新了实体类的注释" />
+     <MESSAGE value="更新了领用&amp;借用申请表的校验" />
+     <MESSAGE value="更新采购、领用dao层功能" />
+-    <option name="LAST_COMMIT_MESSAGE" value="更新采购、领用dao层功能" />
++    <MESSAGE value="更新了登录跳转，前后端对接成功" />
++    <option name="LAST_COMMIT_MESSAGE" value="更新了登录跳转，前后端对接成功" />
+   </component>
+   <component name="XSLT-Support.FileAssociations.UIState">
+     <expand />
