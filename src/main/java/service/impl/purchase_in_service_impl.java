@@ -34,8 +34,12 @@ public class purchase_in_service_impl implements purchase_in_service {
             table.setPurchase_in_order_id(id);  // 写入采购入库表
             for (Object_Entry object_entry : order) {
                 object_entry.setObject_entry_id(UuidUtil.getUuid());
+                itemDao.changeNum(object_entry.getObject_id(), object_entry.getNum());
             }
             check(table);
+
+
+
             return objectEntryDao.addEntry(order, id) && purchaseInDao.add(table);
         }
         else {
