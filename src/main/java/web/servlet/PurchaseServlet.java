@@ -87,9 +87,18 @@ public class PurchaseServlet extends BaseServlet {
         List<Object_Entry> object_entries = new ArrayList<>();
         Object_Entry objectEntry = new Object_Entry();
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
+        System.out.println("OrderId : " + purchase_requisition.getPurchase_order_id() + "====");
+        if (purchase_requisition.getPurchase_order_id() == null) {
+            purchase_requisition.setPurchase_order_id(order_id);
+            System.out.println("OrderId : " + purchase_requisition.getPurchase_order_id() + "====");
+        }
+
+        temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
+        System.out.println(temp_items.get(purchase_requisition.getPurchase_order_id()));
         for (Item item : temp_items.get(purchase_requisition.getPurchase_order_id())) {
             objectEntry.setObject_id(item.getObject_id());
             objectEntry.setNum((int)(item.getQuantity()));
+            objectEntry.setOrder_id(purchase_requisition.getPurchase_order_id());
             object_entries.add(objectEntry);
             item.setQuantity(0);
             System.out.println(item.getNotes());
@@ -120,6 +129,9 @@ public class PurchaseServlet extends BaseServlet {
             BeanUtils.populate(item_changed, map);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+        }
+        if (order_id == "") {
+            order_id = UuidUtil.getUuid();
         }
         // 如果当前order_id没有关联的物品行，新建一个对应的缓存
         temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
@@ -209,8 +221,8 @@ public class PurchaseServlet extends BaseServlet {
         json = buf.toString();  //拼串完成
         System.out.println(json);
 
-        String filename = "PurchaseData.txt";
-        JsonUtil.writeJson(filename, json);  //写入Data.json文件
+//        String filename = "PurchaseData.txt";
+//        JsonUtil.writeJson(filename, json);  //写入Data.json文件
         return json;
     }
 
@@ -296,8 +308,8 @@ public class PurchaseServlet extends BaseServlet {
         buf.append(json).insert(0, "[");
         json = buf.toString();  //拼串完成
         System.out.println("物品信息json="+json);
-        String filename = "PurchaseListData.txt";
-        JsonUtil.writeJson(filename, json);  //写入Data.json文件
+//        String filename = "PurchaseListData.txt";
+//        JsonUtil.writeJson(filename, json);  //写入Data.json文件
         return json;
     }
 

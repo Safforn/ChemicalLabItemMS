@@ -45,8 +45,8 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
         System.out.println("进入CreateTable");
         table.setRequisition_date(getCurrentTime());
         table.setPurchase_requisition_id(UuidUtil.getUuid());
-        String orderId = UuidUtil.getUuid();
-        table.setPurchase_order_id(orderId);
+//        String orderId = UuidUtil.getUuid();
+//        table.setPurchase_order_id(orderId);
 
         System.out.println("-------CreateTable--------");
         table.print();
@@ -54,7 +54,7 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
         for (Object_Entry object_entry : order) {
             object_entry.setObject_entry_id(UuidUtil.getUuid());
         }
-        return objectEntryDao.addEntry(order, orderId) && purchaseRequisitionDao.createTable(table);
+        return objectEntryDao.addEntry(order, table.getPurchase_order_id()) && purchaseRequisitionDao.createTable(table);
     }
 
     /**
