@@ -15,8 +15,8 @@ public class Item implements Serializable {
     private String classification;//分类
     private float price ;//单价
     private Date expiration_time;//过期时间
-    private float lower_limit;//警戒下限
-    private float upper_limit;//警戒上限
+    private Float lower_limit;//警戒下限
+    private Float upper_limit;//警戒上限
     private String notes;//备注
 
     /**
@@ -39,7 +39,7 @@ public class Item implements Serializable {
      * @param expiration_time
      * @param notes
      */
-    public Item(String object_id, String name, float lower_limit, float upper_limit, String specification, String classification, float price, float quantity, String unit, Date expiration_time, String notes) {
+    public Item(String object_id, String name, Float lower_limit, Float upper_limit, String specification, String classification, float price, float quantity, String unit, Date expiration_time, String notes) {
         this.object_id = object_id;
         this.name = name;
         this.lower_limit = lower_limit;
@@ -51,6 +51,15 @@ public class Item implements Serializable {
         this.unit = unit;
         this.expiration_time = expiration_time;
         this.notes = notes;
+    }
+
+    //TODO: 调试用代码，显示User对象全部信息
+    public void print() {
+        System.out.println("输出Item对象信息:\n"+
+                "object_id="+object_id+
+                "|name="+name+
+                "|specification="+specification+
+                "|quantity="+quantity);
     }
 
     public String getObject_id() {
@@ -69,19 +78,19 @@ public class Item implements Serializable {
         this.name = name;
     }
 
-    public float getLower_limit() {
+    public Float getLower_limit() {
         return lower_limit;
     }
 
-    public void setLower_limit(float lower_limit) {
+    public void setLower_limit(Float lower_limit) {
         this.lower_limit = lower_limit;
     }
 
-    public float getUpper_limit() {
+    public Float getUpper_limit() {
         return upper_limit;
     }
 
-    public void setUpper_limit(float upper_limit) {
+    public void setUpper_limit(Float upper_limit) {
         this.upper_limit = upper_limit;
     }
 

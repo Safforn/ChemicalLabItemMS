@@ -9,14 +9,14 @@ public class  Object_Entry implements Serializable {
     private String object_entry_id;//物品行id(PK)
     private String order_id;//物品清单id（借用入库物品清单、出库物品清单、领用借用物品清单、其他入库物品清单、采购入库物品清单、采购申请物品清单、废弃物申请物品清单）(FK)
     private String object_id;//物品id(FK)
-    private int num;//物品数量
+    private int quantity;//物品数量
 
     public int getNum() {
-        return num;
+        return quantity;
     }
 
-    public void setNum(int num) {
-        this.num = num;
+    public void setNum(int quantity) {
+        this.quantity = quantity;
     }
 
     /**
@@ -30,13 +30,13 @@ public class  Object_Entry implements Serializable {
      * @param object_entry_id
      * @param order_id
      * @param object_id
-     * @param num
+     * @param quantity
      */
-    public Object_Entry(String object_entry_id, String order_id, String object_id, int num) {
+    public Object_Entry(String object_entry_id, String order_id, String object_id, int quantity) {
         this.object_entry_id = object_entry_id;
         this.order_id = order_id;
         this.object_id = object_id;
-        this.num = num;
+        this.quantity = quantity;
     }
 
 
@@ -62,5 +62,13 @@ public class  Object_Entry implements Serializable {
 
     public void setObject_id(String object_id) {
         this.object_id = object_id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

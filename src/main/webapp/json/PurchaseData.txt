@@ -1,0 +1,55 @@
+[{
+	"purchase_requisition_id":"195ecd93bb1849b4b885195b5b9b6518",
+	"purchase_order_id":"047025b7b1dd4261a28748d48be18cff",
+	"requisition_user_id":"0001",
+	"purpose":"买点猫粮",
+	"requisition_date":1686184662000,
+	"state":0,
+	"approval_user_id":null,
+	"approval_opinions":null,
+	"approval_date":null
+},
+{
+	"purchase_requisition_id":"PR-0000001",
+	"purchase_order_id":"PRO-0000001",
+	"requisition_user_id":"0001",
+	"purpose":"搞台设备",
+	"requisition_date":1546950896000,
+	"state":0,
+	"approval_user_id":"0005",
+	"approval_opinions":"设备好搞，朕允了",
+	"approval_date":1546983836000
+},
+{
+	"purchase_requisition_id":"PR-0000002",
+	"purchase_order_id":"PRO-0000002",
+	"requisition_user_id":"0001",
+	"purpose":"搞点化学试剂",
+	"requisition_date":null,
+	"state":1,
+	"approval_user_id":null,
+	"approval_opinions":null,
+	"approval_date":null
+},
+{
+	"purchase_requisition_id":"PR-0000003",
+	"purchase_order_id":"PRO-0000003",
+	"requisition_user_id":"0001",
+	"purpose":"全都搞点",
+	"requisition_date":1684404672000,
+	"state":2,
+	"approval_user_id":null,
+	"approval_opinions":null,
+	"approval_date":null
+},
+{
+	"purchase_requisition_id":"PR-0000004",
+	"purchase_order_id":"PRO-0000004",
+	"requisition_user_id":"0001",
+	"purpose":"搞点耗材",
+	"requisition_date":1684480334000,
+	"state":3,
+	"approval_user_id":"0006",
+	"approval_opinions":"耗材好搞，同意申请",
+	"approval_date":1684570394000
+}]

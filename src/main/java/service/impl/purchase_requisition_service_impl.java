@@ -97,7 +97,8 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
 
     @Override
     public List<Purchase_Requisition> searchTableByUser(String userId) {
-        return null;
+
+        return purchaseRequisitionDao.searchTableByUser(userId);
     }
 
     @Override

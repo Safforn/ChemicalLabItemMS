@@ -12,11 +12,11 @@ public class Purchase_Requisition implements Serializable {
 
     private String purchase_requisition_id;//采购申请表id(PK)
     private String purchase_order_id;//采购申请物品清单id
-    private String approval_user_id;//审批人id（FK）
     private String requisition_user_id;//申请人id（FK）
-    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
     private String purpose;//申请用途
     private Date requisition_date;//申请提交时间
+    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
+    private String approval_user_id;//审批人id（FK）
     private String approval_opinions;//审批意见
     private Date approval_date;//审批时间
 
@@ -42,12 +42,13 @@ public class Purchase_Requisition implements Serializable {
     public Purchase_Requisition(String purchase_requisition_id, String purchase_order_id, int state, String purpose, Date requisition_date, String approval_opinions, Date approval_date, String requisition_user_id, String approval_user_id) {
         this.purchase_requisition_id = purchase_requisition_id;
         this.purchase_order_id = purchase_order_id;
+        this.requisition_user_id = requisition_user_id;
         this.state = state;
         this.purpose = purpose;
         this.requisition_date = requisition_date;
         this.approval_opinions = approval_opinions;
         this.approval_date = approval_date;
-        this.requisition_user_id = requisition_user_id;
+
         this.approval_user_id = approval_user_id;
     }
 

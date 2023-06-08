@@ -1,0 +1,40 @@
+[{
+	"object_id":"VLP120-230",
+	"name":"深真空油泵",
+	"specification":"230V 50Hz",
+	"quantity":1.0,
+	"unit":"台",
+	"classification":null,
+	"price":25000.0,
+	"expiration_time":null,
+	"lower_limit":null,
+	"upper_limit":null,
+	"notes":"与浓缩和冷冻干燥系统配合使用"
+},
+{
+	"object_id":"CAS-127-40-2-X109574-50mg",
+	"name":"叶黃素",
+	"specification":"50mg",
+	"quantity":2.0,
+	"unit":"瓶",
+	"classification":null,
+	"price":720.9,
+	"expiration_time":null,
+	"lower_limit":2.0,
+	"upper_limit":20.0,
+	"notes":"对空气和光敏感，-20°C储存,
+	充氩"
+},
+{
+	"object_id":"HC-20220006",
+	"name":"抽杆夹",
+	"specification":"25cm",
+	"quantity":3.0,
+	"unit":"个",
+	"classification":null,
+	"price":0.34,
+	"expiration_time":null,
+	"lower_limit":null,
+	"upper_limit":null,
+	"notes":null
+}]

@@ -1,10 +1,16 @@
 package web.servlet;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.*;
 import org.apache.commons.beanutils.BeanUtils;
+import service.impl.item_service_impl;
+import service.impl.order_service_impl;
 import service.impl.purchase_requisition_service_impl;
+import service.item_service;
+import service.order_service;
 import service.purchase_requisition_service;
+import util.JsonUtil;
 import web.servlet.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -23,6 +29,8 @@ import java.util.Map;
 public class PurchaseServlet extends BaseServlet {
 
     private purchase_requisition_service service = new purchase_requisition_service_impl();
+    private order_service o_service = new order_service_impl();
+    private item_service i_service = new item_service_impl();
 
     public void createOrUpdateItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("PurchaseServlet：进入 采购申请 后端");
@@ -55,13 +63,8 @@ public class PurchaseServlet extends BaseServlet {
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().write(json);
     }
-    /**
-     * 登录功能
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
+
+
     public void deleteTable(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
         // 从前端获取 待删除申请表行的 tableId
@@ -72,17 +75,116 @@ public class PurchaseServlet extends BaseServlet {
         //  只需要把tableId传给后端即可
 
     }
-    /**
-     * 获取当前登录用户user_id
-     */
-    public void findOne(HttpServletRequest request, HttpServletResponse response) throws
+
+    public void initTable(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
-        //从 session 中获取登录用户
-        Object user = request.getSession().getAttribute("user");
-        //System.out.println("purchase findone="+((User)user).getUser_id());
-        //将 user 写回客户端
+        System.out.println("PurchaseServlet：进入 初始化表格 后端");
+        String user_id = request.getParameter("user_id");
+        System.out.println("PurchaseServlet user_id="+user_id);
+        String purchaseDataList = "";
+        if (user_id != null)
+            purchaseDataList = updatePurchaseData(user_id);
+
+        ResultInfo info = new ResultInfo();
+        // 4. 响应结果
+        info.setFlag(true);
+        info.setData(purchaseDataList);
+        // 将 info 对象序列化为 json
         ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);
+        // 将 json 数据写回客户端
         response.setContentType("application/json;charset=utf-8");
-        mapper.writeValue(response.getOutputStream(),user);
+        response.getWriter().write(json);
     }
+
+
+    public String updatePurchaseData(String user_id) throws IOException {
+        System.out.println("进入updatePurchaseDataList");
+        List<Purchase_Requisition> pr_list = service.searchTableByUser(user_id);
+        for (Purchase_Requisition pr : pr_list) {
+            System.out.println(pr.getPurchase_requisition_id());
+        }
+        // 拼串
+        String json = "";
+        for (Purchase_Requisition pr : pr_list) {
+            try {
+                json += writeValueAsString(pr);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        json = json.replace("}", "},");
+        json = json.replaceFirst(".$","");  //去掉最后的逗号
+        json += "]";
+        StringBuffer buf = new StringBuffer();
+        buf.append(json).insert(0, "[");
+        json = buf.toString();  //拼串完成
+        System.out.println(json);
+
+        String filename = "PurchaseData.txt";
+        JsonUtil.writeJson(filename, json);  //写入Data.json文件
+        return json;
+    }
+
+
+    // 初始化 物品清单列表
+    public void initListTable(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
+        System.out.println("PurchaseServlet：进入 初始化物品清单弹窗表格 后端");
+        String order_id = request.getParameter("order_id");
+        System.out.println("PurchaseServlet order_id="+order_id);
+        String purchaseDataList = "";
+        if (order_id != null)
+            purchaseDataList = updatePurchaseListData(order_id);
+
+
+        ResultInfo info = new ResultInfo();
+        // 4. 响应结果
+        info.setFlag(true);
+        info.setData(purchaseDataList);
+        // 将 info 对象序列化为 json
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);
+        // 将 json 数据写回客户端
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(json);
+    }
+
+    public String updatePurchaseListData(String order_id) throws IOException {
+        System.out.println("更新 物品清单列表"+order_id);
+
+        // 获取物品清单的 全部物品行
+        List<Object_Entry> oe_list = o_service.search(order_id);
+
+        // 根据 order_id 查找 物品信息
+        List<Item> items = new ArrayList<>();
+        for (Object_Entry oe : oe_list) {
+            System.out.println("物品id="+oe.getObject_id());
+            Item item = i_service.search(oe.getObject_id());  // 获取物品信息
+            item.setQuantity(oe.getQuantity());  // 修改数量（采购物品的数量在object_entry中）
+            item.print();  // 显示对象信息
+            items.add(item);  //添加进 物品信息表
+        }
+
+        // 拼串
+        String json = "";
+        for (Item i : items) {
+            try {
+                json += writeValueAsString(i);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        json = json.replace("}", "},");
+        json = json.replaceFirst(".$","");  //去掉最后的逗号
+        json += "]";
+        StringBuffer buf = new StringBuffer();
+        buf.append(json).insert(0, "[");
+        json = buf.toString();  //拼串完成
+        System.out.println("物品信息json="+json);
+        String filename = "PurchaseListData.txt";
+        JsonUtil.writeJson(filename, json);  //写入Data.json文件
+        return json;
+    }
+
 }
