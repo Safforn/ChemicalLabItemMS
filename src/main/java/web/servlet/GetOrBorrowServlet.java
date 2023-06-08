@@ -5,6 +5,8 @@ import domain.*;
 import org.apache.commons.beanutils.BeanUtils;
 import service.get_or_borrow_service;
 import service.impl.get_or_borrow_service_impl;
+import service.impl.order_service_impl;
+import service.order_service;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,8 +21,10 @@ import java.util.Map;
 
 @WebServlet("/getorborrow/*")
 public class GetOrBorrowServlet extends BaseServlet {
+    private static final int SUBMITTED = 1;
 
-    private get_or_borrow_service service = new get_or_borrow_service_impl();
+    private final get_or_borrow_service service = new get_or_borrow_service_impl();
+    private final order_service orderService = new order_service_impl();
 
     /**
      * 领用物品
@@ -31,21 +35,19 @@ public class GetOrBorrowServlet extends BaseServlet {
         Map<String, String[]> map = request.getParameterMap(); //获取前端数据，考虑分两次传输 申请表信息和物品清单
 
         //2.封装对象
-        get_or_borrow_Requisition get_or_borrow_requisition = new get_or_borrow_Requisition();
+//        get_or_borrow_Requisition get_or_borrow_requisition = new get_or_borrow_Requisition();
+        // 前端传回申请表和物品列表的集合
+        template_order templateOrder = new template_order();
         try {
-            BeanUtils.populate(get_or_borrow_requisition, map);
+            BeanUtils.populate(templateOrder, map);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        List<Object_Entry> object_entries = new ArrayList<>();
-        template_order to = new template_order(get_or_borrow_requisition, object_entries);
+//        List<Object_Entry> object_entries = new ArrayList<>();
+//        template_order to = new template_order(get_or_borrow_requisition, object_entries);
 
-        // TODO: 调试，显示前端传回的数据
-//        System.out.println("GetOrBorrowServlet: "+user.getAccount()+"|"+
-//                user.getPassword()+"|"+user.getName()+"|"+
-//                user.getEmail()+"|"+user.getPhonenumber());
 
-        service.createOrUpdate(to);
+        service.createOrUpdate(templateOrder);
         ResultInfo info = new ResultInfo();
         // 4. 响应结果
         info.setFlag(true);
@@ -56,8 +58,72 @@ public class GetOrBorrowServlet extends BaseServlet {
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().write(json);
     }
+
     /**
-     * 登录功能
+     * 查询一个申请单的物品列表
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void searchOneOrderList(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        // TODO : 前端获取某一行订单ID：order_id
+        String orderId = request.getParameter("order_id");
+        List<Object_Entry> objectEntries = orderService.search(orderId);
+        ResultInfo info = new ResultInfo();
+        // 4. 响应结果
+        info.setData(objectEntries);
+        // 将 info 对象序列化为 json
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);
+        // 将 json 数据写回客户端
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(json);
+    }
+
+    /**
+     * 用户查询自己的所有申请单
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void searchAllByUser(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        // TODO : 前端获取用户id ： user_id
+        String userId = request.getParameter("user_id");
+        List<get_or_borrow_Requisition> getOrBorrowRequisitionList = service.searchTableByUser(userId);
+        ResultInfo info = new ResultInfo();
+        // 4. 响应结果
+        info.setData(getOrBorrowRequisitionList);
+        // 将 info 对象序列化为 json
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);
+        // 将 json 数据写回客户端
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(json);
+    }
+
+    /**
+     * 审批人查询所有需要审批的申请单
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void searchAllByApprovalPerson(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        List<get_or_borrow_Requisition> getOrBorrowRequisitionList = service.searchTableByState(SUBMITTED);
+        ResultInfo info = new ResultInfo();
+        // 4. 响应结果
+        info.setData(getOrBorrowRequisitionList);
+        // 将 info 对象序列化为 json
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);
+        // 将 json 数据写回客户端
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(json);
+    }
+    /**
+     * 删除功能
      * @param request
      * @param response
      * @throws ServletException
@@ -65,24 +131,18 @@ public class GetOrBorrowServlet extends BaseServlet {
      */
     public void deleteTable(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
-        // 从前端获取 待删除申请表行的 tableId
-        String tableId = request.getParameter("tableId");
-        // 调用service删除
-        service.deleteTable(tableId);
-        // TODO: 更新前端表格页面，这个好像不需要做，前端会自动删除（加个"确认删除"的弹窗）
-        //  只需要把tableId传给后端即可
-
-    }
-    /**
-     * 获取当前登录用户user_id
-     */
-    public void findOne(HttpServletRequest request, HttpServletResponse response) throws
-            ServletException, IOException {
-        //从 session 中获取登录用户
-        Object user = request.getSession().getAttribute("user");
-        //将 user 写回客户端
+        // TODO : 前端获取申请表ID：table_id
+        String tableId = request.getParameter("table_id");
+        boolean flag = service.deleteTable(tableId);
+        ResultInfo info = new ResultInfo();
+        // 4. 响应结果
+        info.setFlag(flag);
+        // 将 info 对象序列化为 json
         ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);
+        // 将 json 数据写回客户端
         response.setContentType("application/json;charset=utf-8");
-        mapper.writeValue(response.getOutputStream(),user);
+        response.getWriter().write(json);
     }
+
 }
