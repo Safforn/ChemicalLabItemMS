@@ -111,4 +111,25 @@ public class purchase_requisition_dao_impl implements purchase_requisition_dao {
         }
 
     }
+
+    @Override
+    public boolean updateByApprove(Purchase_Requisition table) {
+        // TODO : 时间问题
+        //purchase_requisition_id=PR-0000002&state=2&approval_user_id=0005&approval_opinions=朕允了
+        String sql = "update purchase_requisition set state = ?, approval_user_id = ?, approval_opinions = ?, approval_date = ? where purchase_requisition_id = ?";
+        try {
+            template.update(sql,
+                    table.getState(),
+                    table.getApproval_user_id(),
+                    table.getApproval_opinions(),
+                    table.getApproval_date(),
+                    table.getPurchase_requisition_id()
+            );
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

@@ -543,7 +543,6 @@
 
                         $.get("user/findOne", {}, function (data) {
                             // 获取当前登陆的用户id
-                            front_end_data += "requisition_user_id="+data.user_id;
                             console.log("front_end_data="+front_end_data);
                             // 把前端数据传给后端
                             $.post("purchase/createOrUpdateItems", front_end_data, function (data) {

@@ -108,4 +108,9 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
     public List<get_or_borrow_Requisition> searchBorrowUnreturn() {
         return getOrBorrowDao.searchBorrowUnreturn();
     }
+
+    @Override
+    public boolean updateByApprove(get_or_borrow_Requisition table) {
+        return getOrBorrowDao.updateByApprove(table);
+    }
 }

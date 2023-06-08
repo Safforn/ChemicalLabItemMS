@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.get_or_borrow_dao;
+import domain.Purchase_Requisition;
 import domain.get_or_borrow_Requisition;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -123,4 +124,27 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
         String sql = "select * from get_or_borrow_requisition where type = 1 and state = 4";
         return template.query(sql, new BeanPropertyRowMapper<>());
     }
+
+    @Override
+    public boolean updateByApprove(get_or_borrow_Requisition table) {
+        // TODO : 时间问题
+        //purchase_requisition_id=PR-0000002&state=2&approval_user_id=0005&approval_opinions=朕允了
+        String sql = "update get_or_borrow_requisition set " +
+                "state = ?, approval_user_id = ?, approval_opinions = ?, " +
+                "approval_date = ? where get_or_borrow_requisition_id = ?";
+        try {
+            template.update(sql,
+                    table.getState(),
+                    table.getApproval_user_id(),
+                    table.getApproval_opinions(),
+                    table.getApproval_date(),
+                    table.getGet_or_borrow_requisition_id()
+            );
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

@@ -112,4 +112,9 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
     public List<Purchase_Requisition> searchUnreturn() {
         return purchaseRequisitionDao.searchUnreturn();
     }
+
+    //purchase_requisition_id=PR-0000002&state=2&approval_user_id=0005&approval_opinions=朕允了
+    public void updateByApprove(Purchase_Requisition purchase_requisition) {
+        purchaseRequisitionDao.updateByApprove(purchase_requisition);
+    }
 }

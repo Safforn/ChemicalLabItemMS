@@ -57,4 +57,6 @@ public interface purchase_requisition_service {
      * @return
      */
     List<Purchase_Requisition> searchUnreturn();
+
+    public void updateByApprove(Purchase_Requisition purchase_requisition);
 }

@@ -9,56 +9,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="采购ok0.5+借用ok">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_druid_1_1_21.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_beust_jcommander_1_82.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_3_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_3_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_3_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_mail_javax_mail_1_5_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_javax_mail_api_1_5_6.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_10_0_M1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_10_0_M1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_10_0_M1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_10_0_M1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_10_0_M1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_10_0_M1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_36.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_4_1_2_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_4_1_2_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_4_1_2_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_4_1_2_RELEASE.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_testng_testng_7_8_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_jquery_3_6_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_2_7_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/web/servlet/ApproveServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/approve_purchase.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/approve_use_or_borrow.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/approve_waste.html" afterDir="false" />
+    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="删除优化">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/order_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/order_service_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/get_or_borrow_dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/get_or_borrow_dao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/purchase_requisition_dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/purchase_requisition_dao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/order_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/order_service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/GetOrBorrowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/GetOrBorrowServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/purchase_requisition_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/purchase_requisition_service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/ApproveServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/ApproveServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/approve_purchase.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/approve_purchase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/approve_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/approve_use_or_borrow.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/left_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/left_sidebar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/view_ex_warehouse_old.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/view_in_warehouse_old.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +38,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="master" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$" value="master" />
@@ -302,7 +279,8 @@
       <workItem from="1686124548099" duration="13105000" />
       <workItem from="1686186044285" duration="1925000" />
       <workItem from="1686252945405" duration="1705000" />
-      <workItem from="1686254694370" duration="644000" />
+      <workItem from="1686254694370" duration="4340000" />
+      <workItem from="1686259302143" duration="314000" />
     </task>
     <task id="LOCAL-00001" summary="添加GoodsService及其实现，实体类Date-&gt;String">
       <created>1655902015448</created>
@@ -381,7 +359,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686244989015</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="删除优化">
+      <created>1686255439291</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1686255439291</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -413,7 +398,8 @@
     <MESSAGE value="田老师的借用领用更新" />
     <MESSAGE value="更新出库，废弃" />
     <MESSAGE value="采购ok0.5+借用ok" />
-    <option name="LAST_COMMIT_MESSAGE" value="采购ok0.5+借用ok" />
+    <MESSAGE value="删除优化" />
+    <option name="LAST_COMMIT_MESSAGE" value="删除优化" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

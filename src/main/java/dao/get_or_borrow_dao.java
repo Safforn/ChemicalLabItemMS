@@ -1,5 +1,6 @@
 package dao;
 
+import domain.Purchase_Requisition;
 import domain.get_or_borrow_Requisition;
 
 import java.util.List;
@@ -62,4 +63,6 @@ public interface get_or_borrow_dao {
      * @return List<get_or_borrow_Requisition>
      */
     List<get_or_borrow_Requisition> searchBorrowUnreturn();
+
+    boolean updateByApprove(get_or_borrow_Requisition table);
 }

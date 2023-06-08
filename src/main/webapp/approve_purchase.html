@@ -169,9 +169,21 @@
     });
 </script>
 <script>
+    var temp_user_id;
     var temp_data;
 
     console.log("--flag-1-");
+
+    $.ajax({
+        async: false,
+        type : "post",
+        url : "user/findOne",
+        success : function(user) {
+            console.log("--flag-findOne-");
+            temp_user_id = user.user_id;
+            console.log("user.user_id"+user.user_id);
+        }
+    });
 
     // 初始化，获取首页表格数据
     $.ajax({
@@ -449,7 +461,7 @@
                         // if (tds[3].innerText !== "") front_end_data += "purpose="+tds[3].innerText+"&";
                         // if (tds[4].innerText !== "") front_end_data += "requisition_date="+tds[4].innerText+"&";
                         if (tds[5].innerText !== "") front_end_data += "state="+2+"&";
-                        if (tds[6].innerText !== "") front_end_data += "approval_user_id="+tds[6].innerText+"&";
+                        if (tds[6].innerText !== "") front_end_data += "approval_user_id="+temp_user_id+"&";
                         if (tds[7].innerText !== "") front_end_data += "approval_opinions="+tds[7].innerText+"&";
                         if (tds[8].innerText !== "") front_end_data += "approval_date="+tds[8].innerText+"&";
                         front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
@@ -458,19 +470,21 @@
                         console.log("front_end_data="+front_end_data);
                         alert("打开F12看前端发送的数据");
                         // 把前端数据传给后端
-                        $.post("approve/approveOver", front_end_data, function (data) {
-                            console.log("在接受后端数据之后");
-                            if (data.flag) {
-                                alert("提交成功");
-                                tds[5].innerText = '审核通过';
-                                // 禁用按钮：应该放入点击确认
-                                $(this).attr('disabled',true);
-                                tds.find('.edit-btn').attr('disabled',true);
-                            } else {
-                                alert("提交失败");
-                            }
+                        $.get("user/findOne", {}, function (data) {
+                            // 获取当前登陆的用户id
+                            $.post("approve/approveOver", front_end_data, function (data) {
+                                console.log("在接受后端数据之后");
+                                if (data.flag) {
+                                    //alert("提交成功");
+                                    tds[5].innerText = '审核通过';
+                                    // 禁用按钮：应该放入点击确认
+                                    $(this).attr('disabled', true);
+                                    tds.find('.edit-btn').attr('disabled', true);
+                                } else {
+                                    //alert("提交失败");
+                                }
+                            });
                         });
-
                     } // end of confirm(确认提交申请？)
                     else {} //点击取消，无事发生
                 }
@@ -490,7 +504,7 @@
                         // if (tds[3].innerText !== "") front_end_data += "purpose="+tds[3].innerText+"&";
                         // if (tds[4].innerText !== "") front_end_data += "requisition_date="+tds[4].innerText+"&";
                         if (tds[5].innerText !== "") front_end_data += "state="+3+"&";
-                        if (tds[6].innerText !== "") front_end_data += "approval_user_id="+tds[6].innerText+"&";
+                        if (tds[6].innerText !== "") front_end_data += "approval_user_id="+temp_user_id+"&";
                         if (tds[7].innerText !== "") front_end_data += "approval_opinions="+tds[7].innerText+"&";
                         if (tds[8].innerText !== "") front_end_data += "approval_date="+tds[8].innerText+"&";
                         front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
@@ -498,18 +512,20 @@
                         alert("打开F12看前端发送的数据");
                         console.log("front_end_data="+front_end_data);
 
-                        // 把前端数据传给后端
-                        $.post("approve/approveOver", front_end_data, function (data) {
-                            console.log("在接受后端数据之后");
-                            if (data.flag) {
-                                alert("提交成功");
-                                tds[5].innerText = '审核未通过';
-                                // 禁用按钮：应该放入点击确认
-                                $(this).attr('disabled',true);
-                                tds.find('.edit-btn').attr('disabled',true);
-                            } else {
-                                alert("提交失败");
-                            }
+                        $.get("user/findOne", {}, function (data) {
+                            // 把前端数据传给后端
+                            $.post("approve/approveOver", front_end_data, function (data) {
+                                console.log("在接受后端数据之后");
+                                if (data.flag) {
+                                    alert("提交成功");
+                                    tds[5].innerText = '审核未通过';
+                                    // 禁用按钮：应该放入点击确认
+                                    $(this).attr('disabled', true);
+                                    tds.find('.edit-btn').attr('disabled', true);
+                                } else {
+                                    alert("提交失败");
+                                }
+                            });
                         });
                     } // end of confirm(确认提交申请？)
                     else {} //点击取消，无事发生
