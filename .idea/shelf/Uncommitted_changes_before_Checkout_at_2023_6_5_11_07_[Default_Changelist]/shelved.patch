@@ -1,0 +1,494 @@
+Index: src/main/java/domain/Borrow_in_Warehouse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\nimport org.joda.time.DateTime;\r\nimport java.io.Serializable;\r\n\r\n/**\r\n *借用入库实体类\r\n */\r\npublic class Borrow_in_Warehouse implements Serializable {\r\n    private String borrow_in_warehouse_id;//借用入库登记表id(PK)\r\n    private String borrow_in_order_id; //借用入库物品清单id\r\n    private String warehouse_id;//仓库编号id(FK)\r\n    private String get_or_borrow_order_id;//领用借用申请清单id(FK)\r\n    private String notes; //备注\r\n    private DateTime date; //入库日期\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Borrow_in_Warehouse() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param borrow_in_warehouse_id\r\n     * @param notes\r\n     * @param date\r\n     * @param warehouse_id\r\n     * @param borrow_in_order_id\r\n     * @param get_or_borrow_order_id\r\n     */\r\n    public Borrow_in_Warehouse(String borrow_in_warehouse_id, String notes, DateTime date, String warehouse_id, String borrow_in_order_id, String get_or_borrow_order_id) {\r\n        this.borrow_in_warehouse_id = borrow_in_warehouse_id;\r\n        this.notes = notes;\r\n        this.date = date;\r\n        this.warehouse_id = warehouse_id;\r\n        this.borrow_in_order_id = borrow_in_order_id;\r\n        this.get_or_borrow_order_id = get_or_borrow_order_id;\r\n    }\r\n\r\n    public String getBorrow_in_warehouse_id() {\r\n        return borrow_in_warehouse_id;\r\n    }\r\n\r\n    public void setBorrow_in_warehouse_id(String borrow_in_warehouse_id) {\r\n        this.borrow_in_warehouse_id = borrow_in_warehouse_id;\r\n    }\r\n\r\n    public String getNotes() {\r\n        return notes;\r\n    }\r\n\r\n    public void setNotes(String notes) {\r\n        this.notes = notes;\r\n    }\r\n\r\n    public DateTime getDate() {\r\n        return date;\r\n    }\r\n\r\n    public void setDate(DateTime date) {\r\n        this.date = date;\r\n    }\r\n\r\n    public String getWarehouse_id() {\r\n        return warehouse_id;\r\n    }\r\n\r\n    public void setWarehouse_id(String warehouse_id) {\r\n        this.warehouse_id = warehouse_id;\r\n    }\r\n\r\n    public String getBorrow_in_order_id() {\r\n        return borrow_in_order_id;\r\n    }\r\n\r\n    public void setBorrow_in_order_id(String borrow_in_order_id) {\r\n        this.borrow_in_order_id = borrow_in_order_id;\r\n    }\r\n\r\n    public String getGet_or_borrow_order_id() {\r\n        return get_or_borrow_order_id;\r\n    }\r\n\r\n    public void setGet_or_borrow_order_id(String get_or_borrow_order_id) {\r\n        this.get_or_borrow_order_id = get_or_borrow_order_id;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Borrow_in_Warehouse.java b/src/main/java/domain/Borrow_in_Warehouse.java
+--- a/src/main/java/domain/Borrow_in_Warehouse.java	
++++ b/src/main/java/domain/Borrow_in_Warehouse.java	
+@@ -3,15 +3,15 @@
+ import java.io.Serializable;
+ 
+ /**
+- *借用入库实体类
++ *用户实体类
+  */
+ public class Borrow_in_Warehouse implements Serializable {
+-    private String borrow_in_warehouse_id;//借用入库登记表id(PK)
+-    private String borrow_in_order_id; //借用入库物品清单id
+-    private String warehouse_id;//仓库编号id(FK)
+-    private String get_or_borrow_order_id;//领用借用申请清单id(FK)
+-    private String notes; //备注
+-    private DateTime date; //入库日期
++    private String borrow_in_warehouse_id;//(PK)
++    private String borrow_in_order_id;
++    private String warehouse_id;//(FK)
++    private String get_or_borrow_order_id;//(FK)
++    private String notes;
++    private DateTime date;
+ 
+     /**
+      *无参构造方法
+Index: src/main/java/domain/Object.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport java.io.Serializable;\r\nimport java.util.Date;\r\n/**\r\n *物品实体类\r\n */\r\npublic class Object implements Serializable {\r\n\r\n    private String object_id;//物品id(PK)\r\n    private String name;//物品名称\r\n    private String specification;//规格型号\r\n    private float quantity;//数量\r\n    private String unit;//包装单位\r\n    private String classification;//分类\r\n    private float price ;//单价\r\n    private Date expiration_time;//过期时间\r\n    private float lower_limit;//警戒下限\r\n    private float upper_limit;//警戒上限\r\n    private String notes;//备注\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Object() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param object_id\r\n     * @param name\r\n     * @param lower_limit\r\n     * @param upper_limit\r\n     * @param specification\r\n     * @param classification\r\n     * @param price\r\n     * @param quantity\r\n     * @param unit\r\n     * @param expiration_time\r\n     * @param notes\r\n     */\r\n    public Object(String object_id, String name, float lower_limit, float upper_limit, String specification, String classification, float price, float quantity, String unit, Date expiration_time, String notes) {\r\n        this.object_id = object_id;\r\n        this.name = name;\r\n        this.lower_limit = lower_limit;\r\n        this.upper_limit = upper_limit;\r\n        this.specification = specification;\r\n        this.classification = classification;\r\n        this.price = price;\r\n        this.quantity = quantity;\r\n        this.unit = unit;\r\n        this.expiration_time = expiration_time;\r\n        this.notes = notes;\r\n    }\r\n\r\n    public String getObject_id() {\r\n        return object_id;\r\n    }\r\n\r\n    public void setObject_id(String object_id) {\r\n        this.object_id = object_id;\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public float getLower_limit() {\r\n        return lower_limit;\r\n    }\r\n\r\n    public void setLower_limit(float lower_limit) {\r\n        this.lower_limit = lower_limit;\r\n    }\r\n\r\n    public float getUpper_limit() {\r\n        return upper_limit;\r\n    }\r\n\r\n    public void setUpper_limit(float upper_limit) {\r\n        this.upper_limit = upper_limit;\r\n    }\r\n\r\n    public String getSpecification() {\r\n        return specification;\r\n    }\r\n\r\n    public void setSpecification(String specification) {\r\n        this.specification = specification;\r\n    }\r\n\r\n    public String getClassification() {\r\n        return classification;\r\n    }\r\n\r\n    public void setClassification(String classification) {\r\n        this.classification = classification;\r\n    }\r\n\r\n    public float getPrice() {\r\n        return price;\r\n    }\r\n\r\n    public void setPrice(float price) {\r\n        this.price = price;\r\n    }\r\n\r\n    public float getQuantity() {\r\n        return quantity;\r\n    }\r\n\r\n    public void setQuantity(float quantity) {\r\n        this.quantity = quantity;\r\n    }\r\n\r\n    public String getUnit() {\r\n        return unit;\r\n    }\r\n\r\n    public void setUnit(String unit) {\r\n        this.unit = unit;\r\n    }\r\n\r\n    public Date getExpiration_time() {\r\n        return expiration_time;\r\n    }\r\n\r\n    public void setExpiration_time(Date expiration_time) {\r\n        this.expiration_time = expiration_time;\r\n    }\r\n\r\n    public String getNotes() {\r\n        return notes;\r\n    }\r\n\r\n    public void setNotes(String notes) {\r\n        this.notes = notes;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Object.java b/src/main/java/domain/Object.java
+--- a/src/main/java/domain/Object.java	
++++ b/src/main/java/domain/Object.java	
+@@ -3,21 +3,21 @@
+ import java.io.Serializable;
+ import java.util.Date;
+ /**
+- *物品实体类
++ *用户实体类
+  */
+ public class Object implements Serializable {
+ 
+-    private String object_id;//物品id(PK)
+-    private String name;//物品名称
+-    private String specification;//规格型号
++    private String object_id;//(PK)
++    private String name;//
++    private String specification;//
+     private float quantity;//数量
+-    private String unit;//包装单位
+-    private String classification;//分类
+-    private float price ;//单价
++    private String unit;//单位
++    private String classification;//
++    private float price ;//
+     private Date expiration_time;//过期时间
+-    private float lower_limit;//警戒下限
+-    private float upper_limit;//警戒上限
+-    private String notes;//备注
++    private float lower_limit;//
++    private float upper_limit;//
++    private String notes;//
+ 
+     /**
+      *无参构造方法
+Index: src/main/java/domain/get_or_borrow_Requisition.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport org.joda.time.DateTime;\r\n\r\nimport java.io.Serializable;\r\nimport java.util.Date;\r\n\r\n/**\r\n *领用/借用申请实体类\r\n */\r\npublic class get_or_borrow_Requisition implements Serializable {\r\n    private String get_or_borrow_requisition_id;//领用/借用申请表id(PK)\r\n    private String get_or_borrow_order_id;//领用/借用申请物品清单id\r\n    private String applicant_user_id;//申领人(FK)\r\n    private String approval_user_id;//审批人(FK)\r\n    private String purpose;//领用用途\r\n    private DateTime requisition_date;//申请提交时间\r\n    private Date borrow_date;//借用/领用日期\r\n    private Date return_date;//归还日期\r\n    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）\r\n    private String type;//类型（借用/领用）\r\n    private String approval_opinions;//审批意见\r\n    private DateTime approval_date;//审批的时间\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public get_or_borrow_Requisition() {}\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param get_or_borrow_requisition_id\r\n     * @param get_or_borrow_order_id\r\n     * @param applicant_user_id\r\n     * @param approval_user_id\r\n     * @param purpose\r\n     * @param state\r\n     * @param type\r\n     * @param borrow_date\r\n     * @param return_date\r\n     * @param requisition_date\r\n     * @param approval_opinions\r\n     * @param approval_date\r\n     */\r\n    public get_or_borrow_Requisition(String get_or_borrow_requisition_id, String get_or_borrow_order_id, String applicant_user_id, String approval_user_id, String purpose, DateTime requisition_date, Date borrow_date, Date return_date, int state, String type, String approval_opinions, DateTime approval_date) {\r\n        this.get_or_borrow_requisition_id = get_or_borrow_requisition_id;\r\n        this.get_or_borrow_order_id = get_or_borrow_order_id;\r\n        this.applicant_user_id = applicant_user_id;\r\n        this.approval_user_id = approval_user_id;\r\n        this.purpose = purpose;\r\n        this.requisition_date = requisition_date;\r\n        this.borrow_date = borrow_date;\r\n        this.return_date = return_date;\r\n        this.state = state;\r\n        this.type = type;\r\n        this.approval_opinions = approval_opinions;\r\n        this.approval_date = approval_date;\r\n    }\r\n\r\n    public String getGet_or_borrow_requisition_id() {\r\n        return get_or_borrow_requisition_id;\r\n    }\r\n\r\n    public void setGet_or_borrow_requisition_id(String get_or_borrow_requisition_id) {\r\n        this.get_or_borrow_requisition_id = get_or_borrow_requisition_id;\r\n    }\r\n\r\n    public String getGet_or_borrow_order_id() {\r\n        return get_or_borrow_order_id;\r\n    }\r\n\r\n    public void setGet_or_borrow_order_id(String get_or_borrow_order_id) {\r\n        this.get_or_borrow_order_id = get_or_borrow_order_id;\r\n    }\r\n\r\n    public String getApplicant_user_id() {\r\n        return applicant_user_id;\r\n    }\r\n\r\n    public void setApplicant_user_id(String applicant_user_id) {\r\n        this.applicant_user_id = applicant_user_id;\r\n    }\r\n\r\n    public String getApproval_user_id() {\r\n        return approval_user_id;\r\n    }\r\n\r\n    public void setApproval_user_id(String approval_user_id) {\r\n        this.approval_user_id = approval_user_id;\r\n    }\r\n\r\n    public String getPurpose() {\r\n        return purpose;\r\n    }\r\n\r\n    public void setPurpose(String purpose) {\r\n        this.purpose = purpose;\r\n    }\r\n\r\n    public DateTime getRequisition_date() {\r\n        return requisition_date;\r\n    }\r\n\r\n    public void setRequisition_date(DateTime requisition_date) {\r\n        this.requisition_date = requisition_date;\r\n    }\r\n\r\n    public Date getBorrow_date() {\r\n        return borrow_date;\r\n    }\r\n\r\n    public void setBorrow_date(Date borrow_date) {\r\n        this.borrow_date = borrow_date;\r\n    }\r\n\r\n    public Date getReturn_date() {\r\n        return return_date;\r\n    }\r\n\r\n    public void setReturn_date(Date return_date) {\r\n        this.return_date = return_date;\r\n    }\r\n\r\n    public int getState() {\r\n        return state;\r\n    }\r\n\r\n    public void setState(int state) {\r\n        this.state = state;\r\n    }\r\n\r\n    public String getType() {\r\n        return type;\r\n    }\r\n\r\n    public void setType(String type) {\r\n        this.type = type;\r\n    }\r\n\r\n    public String getApproval_opinions() {\r\n        return approval_opinions;\r\n    }\r\n\r\n    public void setApproval_opinions(String approval_opinions) {\r\n        this.approval_opinions = approval_opinions;\r\n    }\r\n\r\n    public DateTime getApproval_date() {\r\n        return approval_date;\r\n    }\r\n\r\n    public void setApproval_date(DateTime approval_date) {\r\n        this.approval_date = approval_date;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/get_or_borrow_Requisition.java b/src/main/java/domain/get_or_borrow_Requisition.java
+--- a/src/main/java/domain/get_or_borrow_Requisition.java	
++++ b/src/main/java/domain/get_or_borrow_Requisition.java	
+@@ -6,26 +6,29 @@
+ import java.util.Date;
+ 
+ /**
+- *领用/借用申请实体类
++ *用户实体类
+  */
+ public class get_or_borrow_Requisition implements Serializable {
+-    private String get_or_borrow_requisition_id;//领用/借用申请表id(PK)
+-    private String get_or_borrow_order_id;//领用/借用申请物品清单id
++    private String get_or_borrow_requisition_id;//(PK)
++    private String get_or_borrow_order_id;//
+     private String applicant_user_id;//申领人(FK)
+     private String approval_user_id;//审批人(FK)
+     private String purpose;//领用用途
+-    private DateTime requisition_date;//申请提交时间
+-    private Date borrow_date;//借用/领用日期
+-    private Date return_date;//归还日期
+-    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
+-    private String type;//类型（借用/领用）
++    private String position;//
++    private String waste_reason;//
++    private DateTime requisition_date;//
++    private Date borrow_date;
++    private Date return_date;
++    private int state;//
++    private String type;
+     private String approval_opinions;//审批意见
+-    private DateTime approval_date;//审批的时间
++    private DateTime approval_date;//
+ 
+     /**
+      *无参构造方法
+      */
+-    public get_or_borrow_Requisition() {}
++    public get_or_borrow_Requisition() {
++    }
+ 
+     /**
+      * 有参构方法
+@@ -34,6 +37,8 @@
+      * @param applicant_user_id
+      * @param approval_user_id
+      * @param purpose
++     * @param waste_reason
++     * @param position
+      * @param state
+      * @param type
+      * @param borrow_date
+@@ -42,12 +47,14 @@
+      * @param approval_opinions
+      * @param approval_date
+      */
+-    public get_or_borrow_Requisition(String get_or_borrow_requisition_id, String get_or_borrow_order_id, String applicant_user_id, String approval_user_id, String purpose, DateTime requisition_date, Date borrow_date, Date return_date, int state, String type, String approval_opinions, DateTime approval_date) {
++    public get_or_borrow_Requisition(String get_or_borrow_requisition_id, String get_or_borrow_order_id, String applicant_user_id, String approval_user_id, String purpose, String position, String waste_reason, DateTime requisition_date, Date borrow_date, Date return_date, int state, String type, String approval_opinions, DateTime approval_date) {
+         this.get_or_borrow_requisition_id = get_or_borrow_requisition_id;
+         this.get_or_borrow_order_id = get_or_borrow_order_id;
+         this.applicant_user_id = applicant_user_id;
+         this.approval_user_id = approval_user_id;
+         this.purpose = purpose;
++        this.position = position;
++        this.waste_reason = waste_reason;
+         this.requisition_date = requisition_date;
+         this.borrow_date = borrow_date;
+         this.return_date = return_date;
+@@ -97,6 +104,22 @@
+         this.purpose = purpose;
+     }
+ 
++    public String getPosition() {
++        return position;
++    }
++
++    public void setPosition(String position) {
++        this.position = position;
++    }
++
++    public String getWaste_reason() {
++        return waste_reason;
++    }
++
++    public void setWaste_reason(String waste_reason) {
++        this.waste_reason = waste_reason;
++    }
++
+     public DateTime getRequisition_date() {
+         return requisition_date;
+     }
+Index: src/main/java/domain/Waste_Requisition.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport org.joda.time.DateTime;\r\n\r\nimport java.io.Serializable;\r\n/**\r\n *废弃物申请实体类\r\n */\r\npublic class Waste_Requisition implements Serializable {\r\n\r\n    private String waste_requisition_id;//废弃申请表id(PK)\r\n    private String waste_order_id;//废弃物品清单id\r\n    private String requisition_user_id;//申请人(FK)\r\n    private String approval_user_id;//审批人(FK)\r\n    private String waste_user_id;//废弃物管理员(FK)\r\n    private String waste_reason;//废弃原因\r\n    private String position;//废弃物存放位置\r\n    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）\r\n    private DateTime requisition_date;//申请提交时间\r\n    private String approval_opinions;//审批意见\r\n    private DateTime approval_date;//审批时间\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Waste_Requisition() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param waste_requisition_id\r\n     * @param waste_order_id\r\n     * @param requisition_user_id\r\n     * @param approval_user_id\r\n     * @param waste_user_id\r\n     * @param waste_reason\r\n     * @param position\r\n     * @param state\r\n     * @param requisition_date\r\n     * @param approval_opinions\r\n     * @param approval_date\r\n     */\r\n    public Waste_Requisition(String waste_requisition_id, String waste_order_id, String requisition_user_id, String approval_user_id, String waste_user_id, String waste_reason, String position, int state, DateTime requisition_date, String approval_opinions, DateTime approval_date) {\r\n        this.waste_requisition_id = waste_requisition_id;\r\n        this.waste_order_id = waste_order_id;\r\n        this.requisition_user_id = requisition_user_id;\r\n        this.approval_user_id = approval_user_id;\r\n        this.waste_user_id = waste_user_id;\r\n        this.waste_reason = waste_reason;\r\n        this.position = position;\r\n        this.state = state;\r\n        this.requisition_date = requisition_date;\r\n        this.approval_opinions = approval_opinions;\r\n        this.approval_date = approval_date;\r\n    }\r\n\r\n    public String getWaste_requisition_id() {\r\n        return waste_requisition_id;\r\n    }\r\n\r\n    public void setWaste_requisition_id(String waste_requisition_id) {\r\n        this.waste_requisition_id = waste_requisition_id;\r\n    }\r\n\r\n    public String getWaste_order_id() {\r\n        return waste_order_id;\r\n    }\r\n\r\n    public void setWaste_order_id(String waste_order_id) {\r\n        this.waste_order_id = waste_order_id;\r\n    }\r\n\r\n    public String getRequisition_user_id() {\r\n        return requisition_user_id;\r\n    }\r\n\r\n    public void setRequisition_user_id(String requisition_user_id) {\r\n        this.requisition_user_id = requisition_user_id;\r\n    }\r\n\r\n    public String getApproval_user_id() {\r\n        return approval_user_id;\r\n    }\r\n\r\n    public void setApproval_user_id(String approval_user_id) {\r\n        this.approval_user_id = approval_user_id;\r\n    }\r\n\r\n    public String getWaste_user_id() {\r\n        return waste_user_id;\r\n    }\r\n\r\n    public void setWaste_user_id(String waste_user_id) {\r\n        this.waste_user_id = waste_user_id;\r\n    }\r\n\r\n    public String getWaste_reason() {\r\n        return waste_reason;\r\n    }\r\n\r\n    public void setWaste_reason(String waste_reason) {\r\n        this.waste_reason = waste_reason;\r\n    }\r\n\r\n    public String getPosition() {\r\n        return position;\r\n    }\r\n\r\n    public void setPosition(String position) {\r\n        this.position = position;\r\n    }\r\n\r\n    public int getState() {\r\n        return state;\r\n    }\r\n\r\n    public void setState(int state) {\r\n        this.state = state;\r\n    }\r\n\r\n    public DateTime getRequisition_date() {\r\n        return requisition_date;\r\n    }\r\n\r\n    public void setRequisition_date(DateTime requisition_date) {\r\n        this.requisition_date = requisition_date;\r\n    }\r\n\r\n    public String getApproval_opinions() {\r\n        return approval_opinions;\r\n    }\r\n\r\n    public void setApproval_opinions(String approval_opinions) {\r\n        this.approval_opinions = approval_opinions;\r\n    }\r\n\r\n    public DateTime getApproval_date() {\r\n        return approval_date;\r\n    }\r\n\r\n    public void setApproval_date(DateTime approval_date) {\r\n        this.approval_date = approval_date;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Waste_Requisition.java b/src/main/java/domain/Waste_Requisition.java
+--- a/src/main/java/domain/Waste_Requisition.java	
++++ b/src/main/java/domain/Waste_Requisition.java	
+@@ -4,21 +4,21 @@
+ 
+ import java.io.Serializable;
+ /**
+- *废弃物申请实体类
++ *用户实体类
+  */
+ public class Waste_Requisition implements Serializable {
+ 
+-    private String waste_requisition_id;//废弃申请表id(PK)
+-    private String waste_order_id;//废弃物品清单id
++    private String waste_requisition_id;//(PK)
++    private String waste_order_id;//
+     private String requisition_user_id;//申请人(FK)
+     private String approval_user_id;//审批人(FK)
+     private String waste_user_id;//废弃物管理员(FK)
+-    private String waste_reason;//废弃原因
+-    private String position;//废弃物存放位置
+-    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
+-    private DateTime requisition_date;//申请提交时间
++    private String waste_reason;//
++    private String position;//
++    private int state;//
++    private DateTime requisition_date;//
+     private String approval_opinions;//审批意见
+-    private DateTime approval_date;//审批时间
++    private DateTime approval_date;//
+ 
+     /**
+      *无参构造方法
+Index: src/main/java/domain/Purchase_Requisition.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport org.joda.time.DateTime;\r\n\r\nimport java.io.Serializable;\r\n\r\n/**\r\n *采购申请实体类\r\n */\r\npublic class Purchase_Requisition implements Serializable {\r\n\r\n    private String purchase_requisition_id;//采购申请表id(PK)\r\n    private String purchase_order_id;//采购申请物品清单id\r\n    private String approval_user_id;//审批人id（FK）\r\n    private String requisition_user_id;//申请人id（FK）\r\n    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）\r\n    private String purpose;//申请用途\r\n    private DateTime requisition_date;//申请提交时间\r\n    private String approval_opinions;//审批意见\r\n    private DateTime approval_date;//审批时间\r\n\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Purchase_Requisition() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param purchase_requisition_id\r\n     * @param purchase_order_id\r\n     * @param state\r\n     * @param purpose\r\n     * @param requisition_date\r\n     * @param approval_opinions\r\n     * @param approval_date\r\n     * @param requisition_user_id\r\n     * @param approval_user_id\r\n     */\r\n    public Purchase_Requisition(String purchase_requisition_id, String purchase_order_id, int state, String purpose, DateTime requisition_date, String approval_opinions, DateTime approval_date, String requisition_user_id, String approval_user_id) {\r\n        this.purchase_requisition_id = purchase_requisition_id;\r\n        this.purchase_order_id = purchase_order_id;\r\n        this.state = state;\r\n        this.purpose = purpose;\r\n        this.requisition_date = requisition_date;\r\n        this.approval_opinions = approval_opinions;\r\n        this.approval_date = approval_date;\r\n        this.requisition_user_id = requisition_user_id;\r\n        this.approval_user_id = approval_user_id;\r\n    }\r\n\r\n    public String getPurchase_requisition_id() {\r\n        return purchase_requisition_id;\r\n    }\r\n\r\n    public void setPurchase_requisition_id(String purchase_requisition_id) {\r\n        this.purchase_requisition_id = purchase_requisition_id;\r\n    }\r\n\r\n    public String getPurchase_order_id() {\r\n        return purchase_order_id;\r\n    }\r\n\r\n    public void setPurchase_order_id(String purchase_order_id) {\r\n        this.purchase_order_id = purchase_order_id;\r\n    }\r\n\r\n    public int getState() {\r\n        return state;\r\n    }\r\n\r\n    public void setState(int state) {\r\n        this.state = state;\r\n    }\r\n\r\n    public String getPurpose() {\r\n        return purpose;\r\n    }\r\n\r\n    public void setPurpose(String purpose) {\r\n        this.purpose = purpose;\r\n    }\r\n\r\n    public DateTime getRequisition_date() {\r\n        return requisition_date;\r\n    }\r\n\r\n    public void setRequisition_date(DateTime requisition_date) {\r\n        this.requisition_date = requisition_date;\r\n    }\r\n\r\n    public String getApproval_opinions() {\r\n        return approval_opinions;\r\n    }\r\n\r\n    public void setApproval_opinions(String approval_opinions) {\r\n        this.approval_opinions = approval_opinions;\r\n    }\r\n\r\n    public DateTime getApproval_date() {\r\n        return approval_date;\r\n    }\r\n\r\n    public void setApproval_date(DateTime approval_date) {\r\n        this.approval_date = approval_date;\r\n    }\r\n\r\n\r\n    public String getRequisition_user_id() {\r\n        return requisition_user_id;\r\n    }\r\n\r\n    public void setRequisition_user_id(String requisition_user_id) {\r\n        this.requisition_user_id = requisition_user_id;\r\n    }\r\n\r\n    public String getApproval_user_id() {\r\n        return approval_user_id;\r\n    }\r\n\r\n    public void setApproval_user_id(String approval_user_id) {\r\n        this.approval_user_id = approval_user_id;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Purchase_Requisition.java b/src/main/java/domain/Purchase_Requisition.java
+--- a/src/main/java/domain/Purchase_Requisition.java	
++++ b/src/main/java/domain/Purchase_Requisition.java	
+@@ -5,19 +5,19 @@
+ import java.io.Serializable;
+ 
+ /**
+- *采购申请实体类
++ *用户实体类
+  */
+ public class Purchase_Requisition implements Serializable {
+ 
+-    private String purchase_requisition_id;//采购申请表id(PK)
+-    private String purchase_order_id;//采购申请物品清单id
++    private String purchase_requsition_id;//(PK)
++    private String purchase_order_id;//
+     private String approval_user_id;//审批人id（FK）
+     private String requisition_user_id;//申请人id（FK）
+-    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
++    private int state;//
+     private String purpose;//申请用途
+-    private DateTime requisition_date;//申请提交时间
++    private DateTime requisition_date;//
+     private String approval_opinions;//审批意见
+-    private DateTime approval_date;//审批时间
++    private DateTime approval_date;//
+ 
+ 
+     /**
+@@ -28,7 +28,7 @@
+ 
+     /**
+      * 有参构方法
+-     * @param purchase_requisition_id
++     * @param purchase_requsition_id
+      * @param purchase_order_id
+      * @param state
+      * @param purpose
+@@ -38,8 +38,8 @@
+      * @param requisition_user_id
+      * @param approval_user_id
+      */
+-    public Purchase_Requisition(String purchase_requisition_id, String purchase_order_id, int state, String purpose, DateTime requisition_date, String approval_opinions, DateTime approval_date, String requisition_user_id, String approval_user_id) {
+-        this.purchase_requisition_id = purchase_requisition_id;
++    public Purchase_Requisition(String purchase_requsition_id, String purchase_order_id, int state, String purpose, DateTime requisition_date, String approval_opinions, DateTime approval_date, String requisition_user_id, String approval_user_id) {
++        this.purchase_requsition_id = purchase_requsition_id;
+         this.purchase_order_id = purchase_order_id;
+         this.state = state;
+         this.purpose = purpose;
+@@ -50,12 +50,12 @@
+         this.approval_user_id = approval_user_id;
+     }
+ 
+-    public String getPurchase_requisition_id() {
+-        return purchase_requisition_id;
++    public String getPurchase_requsition_id() {
++        return purchase_requsition_id;
+     }
+ 
+-    public void setPurchase_requisition_id(String purchase_requisition_id) {
+-        this.purchase_requisition_id = purchase_requisition_id;
++    public void setPurchase_requsition_id(String purchase_requsition_id) {
++        this.purchase_requsition_id = purchase_requsition_id;
+     }
+ 
+     public String getPurchase_order_id() {
+Index: src/main/java/domain/Reminder.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport java.io.Serializable;\r\n/**\r\n *催还单实体类\r\n */\r\npublic class Reminder implements Serializable {\r\n     private String id;//催还单id(PK)\r\n     private String get_or_borrow_requisition_id;//借用申请表id(FK)\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Reminder() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param id\r\n     * @param get_or_borrow_requisition_id\r\n     */\r\n    public Reminder(String id, String get_or_borrow_requisition_id) {\r\n        this.id = id;\r\n        this.get_or_borrow_requisition_id = get_or_borrow_requisition_id;\r\n    }\r\n\r\n    public String getId() {\r\n        return id;\r\n    }\r\n\r\n    public void setId(String id) {\r\n        this.id = id;\r\n    }\r\n\r\n    public String getGet_or_borrow_requisition_id() {\r\n        return get_or_borrow_requisition_id;\r\n    }\r\n\r\n    public void setGet_or_borrow_requisition_id(String get_or_borrow_requisition_id) {\r\n        this.get_or_borrow_requisition_id = get_or_borrow_requisition_id;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Reminder.java b/src/main/java/domain/Reminder.java
+--- a/src/main/java/domain/Reminder.java	
++++ b/src/main/java/domain/Reminder.java	
+@@ -2,11 +2,11 @@
+ 
+ import java.io.Serializable;
+ /**
+- *催还单实体类
++ *用户实体类
+  */
+ public class Reminder implements Serializable {
+-     private String id;//催还单id(PK)
+-     private String get_or_borrow_requisition_id;//借用申请表id(FK)
++     private String id;//(PK)
++     private String get_or_borrow_requisition_id;//(FK)
+ 
+     /**
+      *无参构造方法
+Index: src/main/java/domain/Object_Entry.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport java.io.Serializable;\r\n\r\n/**\r\n *物品行实体类\r\n */\r\npublic class Object_Entry implements Serializable {\r\n    private String object_entry_id;//物品行id(PK)\r\n    private String order_id;//物品清单id（借用入库物品清单、出库物品清单、领用借用物品清单、其他入库物品清单、采购入库物品清单、采购申请物品清单、废弃物申请物品清单）(FK)\r\n    private String object_id;//物品id(FK)\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Object_Entry() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param object_entry_id\r\n     * @param order_id\r\n     * @param object_id\r\n     */\r\n    public Object_Entry(String object_entry_id, String order_id, String object_id) {\r\n        this.object_entry_id = object_entry_id;\r\n        this.order_id = order_id;\r\n        this.object_id = object_id;\r\n    }\r\n\r\n\r\n    public String getObject_entry_id() {\r\n        return object_entry_id;\r\n    }\r\n\r\n    public void setObject_entry_id(String object_entry_id) {\r\n        this.object_entry_id = object_entry_id;\r\n    }\r\n\r\n    public String getOrder_id() {\r\n        return order_id;\r\n    }\r\n\r\n    public void setOrder_id(String order_id) {\r\n        this.order_id = order_id;\r\n    }\r\n\r\n    public String getObject_id() {\r\n        return object_id;\r\n    }\r\n\r\n    public void setObject_id(String object_id) {\r\n        this.object_id = object_id;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Object_Entry.java b/src/main/java/domain/Object_Entry.java
+--- a/src/main/java/domain/Object_Entry.java	
++++ b/src/main/java/domain/Object_Entry.java	
+@@ -3,12 +3,12 @@
+ import java.io.Serializable;
+ 
+ /**
+- *物品行实体类
++ *用户实体类
+  */
+ public class Object_Entry implements Serializable {
+-    private String object_entry_id;//物品行id(PK)
+-    private String order_id;//物品清单id（借用入库物品清单、出库物品清单、领用借用物品清单、其他入库物品清单、采购入库物品清单、采购申请物品清单、废弃物申请物品清单）(FK)
+-    private String object_id;//物品id(FK)
++    private String object_entry_id;//(PK)
++    private String order_id;//(FK)
++    private String object_id;//(FK)
+ 
+     /**
+      *无参构造方法
+Index: src/main/java/domain/Identity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport java.io.Serializable;\r\n\r\n/**\r\n *身份表实体类\r\n */\r\npublic class Identity implements Serializable {\r\n\r\n    private String identity_id;//身份表id(PK)\r\n    private String user_id;//用户id(FK)\r\n    private int identity;//身份（审批人员、实验室管理员、仓库管理员、领用借用申请人、废弃物管理员）\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Identity() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param identity_id\r\n     * @param user_id\r\n     * @param identity\r\n     */\r\n    public Identity(String identity_id, String user_id, int identity) {\r\n        this.identity_id = identity_id;\r\n        this.user_id = user_id;\r\n        this.identity = identity;\r\n    }\r\n\r\n    public String getIdentity_id() {\r\n        return identity_id;\r\n    }\r\n\r\n    public void setIdentity_id(String identity_id) {\r\n        this.identity_id = identity_id;\r\n    }\r\n\r\n    public String getUser_id() {\r\n        return user_id;\r\n    }\r\n\r\n    public void setUser_id(String user_id) {\r\n        this.user_id = user_id;\r\n    }\r\n\r\n    public int getIdentity() {\r\n        return identity;\r\n    }\r\n\r\n    public void setIdentity(int identity) {\r\n        this.identity = identity;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Identity.java b/src/main/java/domain/Identity.java
+--- a/src/main/java/domain/Identity.java	
++++ b/src/main/java/domain/Identity.java	
+@@ -3,13 +3,13 @@
+ import java.io.Serializable;
+ 
+ /**
+- *身份表实体类
++ *用户实体类
+  */
+ public class Identity implements Serializable {
+ 
+-    private String identity_id;//身份表id(PK)
+-    private String user_id;//用户id(FK)
+-    private int identity;//身份（审批人员、实验室管理员、仓库管理员、领用借用申请人、废弃物管理员）
++    private String identity_id;//(PK)
++    private String user_id;//(FK)
++    private int identity;
+ 
+     /**
+      *无参构造方法
+Index: src/main/java/domain/Ex_Warehouse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport org.joda.time.DateTime;\r\n\r\nimport java.io.Serializable;\r\n/**\r\n *出库实体类\r\n */\r\npublic class Ex_Warehouse implements Serializable {\r\n    private String ex_warehouse_id;//出库登记表id(PK)\r\n    private String ex_order_id;//出库物品清单id\r\n    private String warehouse_id;//仓库编号id(FK)\r\n    private String requisition_id;//领用/借用申请单id(FK)\r\n    private String notes;//备注\r\n    private DateTime date;//出库日期\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Ex_Warehouse() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param ex_warehouse_id\r\n     * @param notes\r\n     * @param date\r\n     * @param warehouse_id\r\n     * @param ex_order_id\r\n     * @param requisition_id\r\n     */\r\n    public Ex_Warehouse(String ex_warehouse_id, String notes, DateTime date, String warehouse_id, String ex_order_id, String requisition_id) {\r\n        this.ex_warehouse_id = ex_warehouse_id;\r\n        this.notes = notes;\r\n        this.date = date;\r\n        this.warehouse_id = warehouse_id;\r\n        this.ex_order_id = ex_order_id;\r\n        this.requisition_id = requisition_id;\r\n    }\r\n\r\n    public String getEx_warehouse_id() {\r\n        return ex_warehouse_id;\r\n    }\r\n\r\n    public void setEx_warehouse_id(String ex_warehouse_id) {\r\n        this.ex_warehouse_id = ex_warehouse_id;\r\n    }\r\n\r\n    public String getNotes() {\r\n        return notes;\r\n    }\r\n\r\n    public void setNotes(String notes) {\r\n        this.notes = notes;\r\n    }\r\n\r\n    public DateTime getDate() {\r\n        return date;\r\n    }\r\n\r\n    public void setDate(DateTime date) {\r\n        this.date = date;\r\n    }\r\n\r\n    public String getWarehouse_id() {\r\n        return warehouse_id;\r\n    }\r\n\r\n    public void setWarehouse_id(String warehouse_id) {\r\n        this.warehouse_id = warehouse_id;\r\n    }\r\n\r\n    public String getEx_order_id() {\r\n        return ex_order_id;\r\n    }\r\n\r\n    public void setEx_order_id(String ex_order_id) {\r\n        this.ex_order_id = ex_order_id;\r\n    }\r\n\r\n    public String getRequisition_id() {\r\n        return requisition_id;\r\n    }\r\n\r\n    public void setRequisition_id(String requisition_id) {\r\n        this.requisition_id = requisition_id;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Ex_Warehouse.java b/src/main/java/domain/Ex_Warehouse.java
+--- a/src/main/java/domain/Ex_Warehouse.java	
++++ b/src/main/java/domain/Ex_Warehouse.java	
+@@ -4,15 +4,15 @@
+ 
+ import java.io.Serializable;
+ /**
+- *出库实体类
++ *用户实体类
+  */
+ public class Ex_Warehouse implements Serializable {
+-    private String ex_warehouse_id;//出库登记表id(PK)
+-    private String ex_order_id;//出库物品清单id
+-    private String warehouse_id;//仓库编号id(FK)
+-    private String requisition_id;//领用/借用申请单id(FK)
+-    private String notes;//备注
+-    private DateTime date;//出库日期
++    private String ex_warehouse_id;//(PK)
++    private String ex_order_id;
++    private String warehouse_id;//(FK)
++    private String requisition_id;//(FK)
++    private String notes;
++    private DateTime date;
+ 
+     /**
+      *无参构造方法
+Index: src/main/java/domain/Other_in_Warehouse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport org.joda.time.DateTime;\r\n\r\nimport java.io.Serializable;\r\n/**\r\n *其他入库实体类\r\n */\r\npublic class Other_in_Warehouse implements Serializable {\r\n    private String other_in_warehouse_id;//其他入库登记表id(PK)\r\n    private String other_in_order_id;//其他入库物品清单\r\n    private String warehouse_id;//仓库编号id(FK)\r\n    private String notes;//备注\r\n    private DateTime date;//入库时间\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Other_in_Warehouse() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param other_in_warehouse_id\r\n     * @param notes\r\n     * @param date\r\n     * @param warehouse_id\r\n     * @param other_in_order_id\r\n     */\r\n    public Other_in_Warehouse(String other_in_warehouse_id, String notes, DateTime date, String warehouse_id, String other_in_order_id) {\r\n        this.other_in_warehouse_id = other_in_warehouse_id;\r\n        this.notes = notes;\r\n        this.date = date;\r\n        this.warehouse_id = warehouse_id;\r\n        this.other_in_order_id = other_in_order_id;\r\n    }\r\n\r\n    public String getOther_in_warehouse_id() {\r\n        return other_in_warehouse_id;\r\n    }\r\n\r\n    public void setOther_in_warehouse_id(String other_in_warehouse_id) {\r\n        this.other_in_warehouse_id = other_in_warehouse_id;\r\n    }\r\n\r\n    public String getNotes() {\r\n        return notes;\r\n    }\r\n\r\n    public void setNotes(String notes) {\r\n        this.notes = notes;\r\n    }\r\n\r\n    public DateTime getDate() {\r\n        return date;\r\n    }\r\n\r\n    public void setDate(DateTime date) {\r\n        this.date = date;\r\n    }\r\n\r\n    public String getWarehouse_id() {\r\n        return warehouse_id;\r\n    }\r\n\r\n    public void setWarehouse_id(String warehouse_id) {\r\n        this.warehouse_id = warehouse_id;\r\n    }\r\n\r\n    public String getOther_in_order_id() {\r\n        return other_in_order_id;\r\n    }\r\n\r\n    public void setOther_in_order_id(String other_in_order_id) {\r\n        this.other_in_order_id = other_in_order_id;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Other_in_Warehouse.java b/src/main/java/domain/Other_in_Warehouse.java
+--- a/src/main/java/domain/Other_in_Warehouse.java	
++++ b/src/main/java/domain/Other_in_Warehouse.java	
+@@ -4,14 +4,14 @@
+ 
+ import java.io.Serializable;
+ /**
+- *其他入库实体类
++ *用户实体类
+  */
+ public class Other_in_Warehouse implements Serializable {
+-    private String other_in_warehouse_id;//其他入库登记表id(PK)
+-    private String other_in_order_id;//其他入库物品清单
+-    private String warehouse_id;//仓库编号id(FK)
+-    private String notes;//备注
+-    private DateTime date;//入库时间
++    private String other_in_warehouse_id;//(PK)
++    private String other_in_order_id;
++    private String warehouse_id;//(FK)
++    private String notes;
++    private DateTime date;
+ 
+     /**
+      *无参构造方法
+Index: src/main/java/domain/Purchase_in_Warehouse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\nimport java.io.Serializable;\r\nimport org.joda.time.DateTime;\r\n/**\r\n *采购入库实体类\r\n */\r\npublic class Purchase_in_Warehouse implements Serializable {\r\n    private String purchase_in_warehouse_id;//采购入库登记表id（PK）\r\n    private String warehouse_id;//仓库编号（FK）\r\n    private String purchase_in_order_id;//采购入库物品清单的表头，用于归类标识该清单内采购入库的物品行\r\n    private String purchase_order_id;//被入库的采购物品清单id（FK）\r\n    private String notes;//备注\r\n    private DateTime date;//入库时间\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Purchase_in_Warehouse() {}\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param purchase_in_warehouse_id\r\n     * @param notes\r\n     * @param date\r\n     * @param warehouse_id\r\n     * @param purchase_in_order_id\r\n     * @param purchase_order_id\r\n     */\r\n    public Purchase_in_Warehouse(String purchase_in_warehouse_id, String notes, DateTime date, String warehouse_id, String purchase_in_order_id, String purchase_order_id) {\r\n        this.purchase_in_warehouse_id = purchase_in_warehouse_id;\r\n        this.notes = notes;\r\n        this.date = date;\r\n        this.warehouse_id = warehouse_id;\r\n        this.purchase_in_order_id = purchase_in_order_id;\r\n        this.purchase_order_id = purchase_order_id;\r\n    }\r\n\r\n    public String getPurchase_in_warehouse_id() {\r\n        return purchase_in_warehouse_id;\r\n    }\r\n\r\n    public void setPurchase_in_warehouse_id(String purchase_in_warehouse_id) {\r\n        this.purchase_in_warehouse_id = purchase_in_warehouse_id;\r\n    }\r\n\r\n    public String getNotes() {\r\n        return notes;\r\n    }\r\n\r\n    public void setNotes(String notes) {\r\n        this.notes = notes;\r\n    }\r\n\r\n    public DateTime getDate() {\r\n        return date;\r\n    }\r\n\r\n    public void setDate(DateTime date) {\r\n        this.date = date;\r\n    }\r\n\r\n    public String getWarehouse_id() {\r\n        return warehouse_id;\r\n    }\r\n\r\n    public void setWarehouse_id(String warehouse_id) {\r\n        this.warehouse_id = warehouse_id;\r\n    }\r\n\r\n    public String getPurchase_in_order_id() {\r\n        return purchase_in_order_id;\r\n    }\r\n\r\n    public void setPurchase_in_order_id(String purchase_in_order_id) {\r\n        this.purchase_in_order_id = purchase_in_order_id;\r\n    }\r\n\r\n    public String getPurchase_order_id() {\r\n        return purchase_order_id;\r\n    }\r\n\r\n    public void setPurchase_order_id(String purchase_order_id) {\r\n        this.purchase_order_id = purchase_order_id;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Purchase_in_Warehouse.java b/src/main/java/domain/Purchase_in_Warehouse.java
+--- a/src/main/java/domain/Purchase_in_Warehouse.java	
++++ b/src/main/java/domain/Purchase_in_Warehouse.java	
+@@ -2,19 +2,20 @@
+ import java.io.Serializable;
+ import org.joda.time.DateTime;
+ /**
+- *采购入库实体类
++ *用户实体类
+  */
+ public class Purchase_in_Warehouse implements Serializable {
+-    private String purchase_in_warehouse_id;//采购入库登记表id（PK）
++    private String purchase_in_warehouse_id;//入库登记表id（PK）
+     private String warehouse_id;//仓库编号（FK）
+-    private String purchase_in_order_id;//采购入库物品清单的表头，用于归类标识该清单内采购入库的物品行
+-    private String purchase_order_id;//被入库的采购物品清单id（FK）
++    private String purchase_in_order_id;//采购清单表头，用于归类该清单内采购的物品行
++    private String purchase_order_id;//被入库的采购清单id（FK）
+     private String notes;//备注
+     private DateTime date;//入库时间
+     /**
+      *无参构造方法
+      */
+-    public Purchase_in_Warehouse() {}
++    public Purchase_in_Warehouse() {
++    }
+ 
+     /**
+      * 有参构方法
+Index: src/main/java/domain/Warehouse.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\nimport java.io.Serializable;\r\n\r\n/**\r\n *仓库实体类\r\n */\r\npublic class Warehouse implements Serializable {\r\n    private String warehouse_id;//仓库id（PK）\r\n    private String warehouse_keeper_user_id;//仓库管理员id（FK）\r\n    private String name;//姓名\r\n    private int level;//火灾危险性类别等级（甲-乙-丙-丁-戊-普通）甲最高（管理最严格） 戊最低 普通仓库存放其他一般物品\r\n\r\n   /**\r\n    *无参构造方法\r\n    */\r\n    public Warehouse(){\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param warehouse_id\r\n     * @param warehouse_keeper_user_id\r\n     * @param name\r\n     * @param level\r\n     */\r\n    public Warehouse(String warehouse_id, String warehouse_keeper_user_id, String name, int level) {\r\n        this.warehouse_id = warehouse_id;\r\n        this.warehouse_keeper_user_id = warehouse_keeper_user_id;\r\n        this.name = name;\r\n        this.level = level;\r\n    }\r\n\r\n    public String getWarehouse_id() {\r\n        return warehouse_id;\r\n    }\r\n\r\n    public void setWarehouse_id(String warehouse_id) {\r\n        this.warehouse_id = warehouse_id;\r\n    }\r\n\r\n    public String getWarehouse_keeper_user_id() {\r\n        return warehouse_keeper_user_id;\r\n    }\r\n\r\n    public void setWarehouse_keeper_user_id(String warehouse_keeper_user_id) {\r\n        this.warehouse_keeper_user_id = warehouse_keeper_user_id;\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public int getLevel() {\r\n        return level;\r\n    }\r\n\r\n    public void setLevel(int level) {\r\n        this.level = level;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/domain/Warehouse.java b/src/main/java/domain/Warehouse.java
+--- a/src/main/java/domain/Warehouse.java	
++++ b/src/main/java/domain/Warehouse.java	
+@@ -2,13 +2,13 @@
+ import java.io.Serializable;
+ 
+ /**
+- *仓库实体类
++ *用户实体类
+  */
+ public class Warehouse implements Serializable {
+     private String warehouse_id;//仓库id（PK）
+     private String warehouse_keeper_user_id;//仓库管理员id（FK）
+     private String name;//姓名
+-    private int level;//火灾危险性类别等级（甲-乙-丙-丁-戊-普通）甲最高（管理最严格） 戊最低 普通仓库存放其他一般物品
++    private int level;//等级
+ 
+    /**
+     *无参构造方法
+Index: .idea/libraries/Maven__joda_time_joda_time_2_9_8.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"libraryTable\">\r\n  <library name=\"Maven: joda-time:joda-time:2.9.8\">\r\n    <CLASSES>\r\n      <root url=\"jar://$PROJECT_DIR$/../../Tools/maven_repository/joda-time/joda-time/2.9.8/joda-time-2.9.8.jar!/\" />\r\n    </CLASSES>\r\n    <JAVADOC>\r\n      <root url=\"jar://$PROJECT_DIR$/../../Tools/maven_repository/joda-time/joda-time/2.9.8/joda-time-2.9.8-javadoc.jar!/\" />\r\n    </JAVADOC>\r\n    <SOURCES>\r\n      <root url=\"jar://$PROJECT_DIR$/../../Tools/maven_repository/joda-time/joda-time/2.9.8/joda-time-2.9.8-sources.jar!/\" />\r\n    </SOURCES>\r\n  </library>\r\n</component>
+===================================================================
+diff --git a/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml b/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml
+--- a/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml	
++++ b/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml	
+@@ -1,13 +1,13 @@
+ <component name="libraryTable">
+   <library name="Maven: joda-time:joda-time:2.9.8">
+     <CLASSES>
+-      <root url="jar://$PROJECT_DIR$/../../Tools/maven_repository/joda-time/joda-time/2.9.8/joda-time-2.9.8.jar!/" />
++      <root url="jar://$PROJECT_DIR$/../develop/Java/jar_tools/.m2/repository/joda-time/joda-time/2.9.8/joda-time-2.9.8.jar!/" />
+     </CLASSES>
+     <JAVADOC>
+-      <root url="jar://$PROJECT_DIR$/../../Tools/maven_repository/joda-time/joda-time/2.9.8/joda-time-2.9.8-javadoc.jar!/" />
++      <root url="jar://$PROJECT_DIR$/../develop/Java/jar_tools/.m2/repository/joda-time/joda-time/2.9.8/joda-time-2.9.8-javadoc.jar!/" />
+     </JAVADOC>
+     <SOURCES>
+-      <root url="jar://$PROJECT_DIR$/../../Tools/maven_repository/joda-time/joda-time/2.9.8/joda-time-2.9.8-sources.jar!/" />
++      <root url="jar://$PROJECT_DIR$/../develop/Java/jar_tools/.m2/repository/joda-time/joda-time/2.9.8/joda-time-2.9.8-sources.jar!/" />
+     </SOURCES>
+   </library>
+ </component>
+\ No newline at end of file
