@@ -190,17 +190,11 @@ public class GetOrBorrowServlet extends BaseServlet {
     public void deleteTable(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
         // TODO : 前端获取申请表ID：table_id
-        String tableId = request.getParameter("table_id");
-        boolean flag = service.deleteTable(tableId);
-        ResultInfo info = new ResultInfo();
-        // 4. 响应结果
-        info.setFlag(flag);
-        // 将 info 对象序列化为 json
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(info);
-        // 将 json 数据写回客户端
-        response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(json);
+        String tableId = request.getParameter("get_or_borrow_requisition_id");
+        String orderID = request.getParameter("order_id");
+        // 调用service删除
+        o_service.deleteEntryByOrder(orderID);
+        service.deleteTable(tableId);
     }
 
     // 初始化 物品清单列表

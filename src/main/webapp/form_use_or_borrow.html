@@ -738,6 +738,20 @@
             // 申请单点击删除按钮，触发删除行脚本
             $(document).on("click",'.delete',function(){
                 $('#table').dataTable().fnDeleteRow($(this).closest('tr')[0]);
+                var tds=$(this).parents("tr").children();
+                console.log("两个编号"+tds[0].innerText+"|"+tds[1].innerText);
+                $.ajax({
+                    async: true,  // true 同步，false异步
+                    data: {
+                        get_or_borrow_requisition_id: tds[0].innerText,
+                        order_id: tds[1].innerText},
+                    type: "post",
+                    url : "getorborrow/deleteTable",
+                    success : function(data) {
+                        console.log("--物品清单行修改保存后，更新一次窗口数据--");
+                        console.log("return flag" + data.flag);
+                    }
+                });
             });
             // 物品清单点击删除按钮，触发删除行脚本
             $(document).on("click",'.list-delete',function(){

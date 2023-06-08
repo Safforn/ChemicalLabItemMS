@@ -37,7 +37,8 @@ public class PurchaseServlet extends BaseServlet {
     private static Map<String, List<Item>> temp_items = new HashMap<>();
     private static String order_id = "";
 
-    public void createOrUpdateItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void createOrUpdateItems(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         System.out.println("PurchaseServlet：进入 采购申请 后端");
         //1.获取数据（领用申请表基本信息 + 领用申请物品清单）
         Purchase_Requisition purchase_requisition = new Purchase_Requisition();
@@ -62,9 +63,9 @@ public class PurchaseServlet extends BaseServlet {
 
         Map<String, String[]> map = request.getParameterMap(); //获取前端数据，考虑分两次传输 申请表信息和物品清单
 
-        for (Map.Entry<String, String[]> entry : map.entrySet()) {
-            System.out.println("key = " + entry.getKey() + ", value = " + Arrays.toString(entry.getValue()));
-        }
+//        for (Map.Entry<String, String[]> entry : map.entrySet()) {
+//            System.out.println("key = " + entry.getKey() + ", value = " + Arrays.toString(entry.getValue()));
+//        }
         //2.封装对象
 
         try {
@@ -72,51 +73,58 @@ public class PurchaseServlet extends BaseServlet {
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-//        List<Item> items = new ArrayList<>();
-//        try {
-//            BeanUtils.populate(items, map);
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        } catch (InvocationTargetException e) {
-//            e.printStackTrace();
-//        }
-
 
         purchase_requisition.print();  // 调试，显示前端传回的数据
 
         // TODO: 前端表格里的物品清单数据还没传进来
-        List<Object_Entry> object_entries = new ArrayList<>();
-        Object_Entry objectEntry = new Object_Entry();
-        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
-        System.out.println("OrderId : " + purchase_requisition.getPurchase_order_id() + "====");
+        List<Object_Entry> objectEntries = new ArrayList<>();
+        Object_Entry object_entry = new Object_Entry();
         if (purchase_requisition.getPurchase_order_id() == null) {
             purchase_requisition.setPurchase_order_id(order_id);
-            System.out.println("OrderId : " + purchase_requisition.getPurchase_order_id() + "====");
         }
-        // 缓冲中没有order_id对应的物品信息，则新建该缓存区
-        if (order_id == "") {
-            order_id = UuidUtil.getUuid();
-        }
-        temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
-        System.out.println(temp_items.get(order_id));
 
         if (temp_items.get(order_id) != null) {
             for (Item item : temp_items.get(order_id)) {
-                objectEntry.setObject_id(item.getObject_id());
-                objectEntry.setNum((int) (item.getQuantity()));
-                objectEntry.setOrder_id(purchase_requisition.getPurchase_order_id());
-                object_entries.add(objectEntry);
+                object_entry.setObject_id(item.getObject_id());
+                object_entry.setNum((int) (item.getQuantity()));
+                object_entry.setOrder_id(purchase_requisition.getPurchase_order_id());
+                objectEntries.add(object_entry);
                 item.setQuantity(0);
-                System.out.println(item.getNotes());
             }
         }
+
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
 
-        if (temp_items.get(order_id) != null) i_service.add(temp_items.get(order_id));
+        if (order_id.equals("")) {
+            order_id = UuidUtil.getUuid();
+        }
+        // 缓冲中没有order_id对应的物品信息，则新建该缓存区
+        temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
 
-        System.out.println("Servlt : " + purchase_requisition.getPurchase_requisition_id());
-        template_order to = new template_order(purchase_requisition, object_entries);
-        service.createOrUpdate(to);
+        if (temp_items.get(order_id) != null)
+            i_service.add(temp_items.get(order_id));
+
+        List<Object_Entry> result = new ArrayList<>();
+        for (Object_Entry objectEntry : objectEntries) {
+            result.add(objectEntry);
+        }
+        List<Object_Entry> ls = o_service.search(order_id);
+        for (Object_Entry objectEntry : ls) {
+            boolean b = true;
+            for (Object_Entry j : objectEntries) {
+                if (j.getObject_id().equals(objectEntry.getObject_id())) {
+                    b = false;
+                    break;
+                }
+            }
+            if (b) {
+                result.add(objectEntry);
+            }
+        }
+        template_order templateOrder = new template_order(purchase_requisition, result);
+
+
+        service.createOrUpdate(templateOrder);
         ResultInfo info = new ResultInfo();
         // 4. 响应结果
         info.setFlag(true);
@@ -176,8 +184,10 @@ public class PurchaseServlet extends BaseServlet {
     public void deleteTable(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
         // 从前端获取 待删除申请表行的 tableId
-        String tableId = request.getParameter("tableId");
+        String tableId = request.getParameter("purchase_requisition_id");
+        String orderID = request.getParameter("order_id");
         // 调用service删除
+        o_service.deleteEntryByOrder(orderID);
         service.deleteTable(tableId);
         // TODO: 更新前端表格页面，这个好像不需要做，前端会自动删除（加个"确认删除"的弹窗）
         //  只需要把tableId传给后端即可
