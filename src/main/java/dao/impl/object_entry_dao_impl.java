@@ -12,7 +12,7 @@ public class object_entry_dao_impl implements object_entry_dao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
     @Override
     public boolean addEntry(List<Object_Entry> lists, String orderId) {
-        String sql = "insert into object_entry(object_entry_id, order_id, object_id, num)" +
+        String sql = "insert into object_entry(object_entry_id, order_id, object_id, quantity)" +
                      "values(?, ?, ?, ?)";
         for (Object_Entry list : lists) {
             try {

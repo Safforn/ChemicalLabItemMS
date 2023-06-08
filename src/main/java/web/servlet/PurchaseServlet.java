@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.*;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.Converter;
+import org.apache.commons.beanutils.converters.DateConverter;
 import service.impl.item_service_impl;
 import service.impl.order_service_impl;
 import service.impl.purchase_requisition_service_impl;
@@ -11,6 +14,7 @@ import service.item_service;
 import service.order_service;
 import service.purchase_requisition_service;
 import util.JsonUtil;
+import util.UuidUtil;
 import web.servlet.BaseServlet;
 
 import javax.servlet.ServletException;
@@ -19,10 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 @WebServlet("/purchase/*")
@@ -31,42 +34,69 @@ public class PurchaseServlet extends BaseServlet {
     private purchase_requisition_service service = new purchase_requisition_service_impl();
     private order_service o_service = new order_service_impl();
     private item_service i_service = new item_service_impl();
+    private static Map<String, List<Item>> temp_items = new HashMap<>();
+    private static String order_id = "";
 
     public void createOrUpdateItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("PurchaseServlet：进入 采购申请 后端");
         //1.获取数据（领用申请表基本信息 + 领用申请物品清单）
+        Purchase_Requisition purchase_requisition = new Purchase_Requisition();
+        ConvertUtils.register(new Converter() {
+            @Override
+            public Object convert(Class aClass, Object o) {
+                // 如果字符串为null，则返回null
+                if(o == null) return null;
+                // 如果字符串为空格，则返回null
+                String str = (String) o;
+                if(str.trim().equals("")) return null;
+                // 将字符串转为Date类型
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                try {
+                    return formatter.parse(o.toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return new Date();
+            }
+        }, Date.class);
+
         Map<String, String[]> map = request.getParameterMap(); //获取前端数据，考虑分两次传输 申请表信息和物品清单
+
         for (Map.Entry<String, String[]> entry : map.entrySet()) {
             System.out.println("key = " + entry.getKey() + ", value = " + Arrays.toString(entry.getValue()));
         }
         //2.封装对象
-        Purchase_Requisition purchase_requisition = new Purchase_Requisition();
+
         try {
             BeanUtils.populate(purchase_requisition, map);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        List<Item> items = new ArrayList<>();
-        try {
-            BeanUtils.populate(items, map);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
+//        List<Item> items = new ArrayList<>();
+//        try {
+//            BeanUtils.populate(items, map);
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        }
 
         purchase_requisition.print();  // 调试，显示前端传回的数据
 
         // TODO: 前端表格里的物品清单数据还没传进来
         List<Object_Entry> object_entries = new ArrayList<>();
         Object_Entry objectEntry = new Object_Entry();
-        for (Item item : items) {
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
+        for (Item item : temp_items.get(purchase_requisition.getPurchase_order_id())) {
             objectEntry.setObject_id(item.getObject_id());
             objectEntry.setNum((int)(item.getQuantity()));
+            object_entries.add(objectEntry);
             item.setQuantity(0);
+            System.out.println(item.getNotes());
         }
+        System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
 
-        i_service.add(items);
+        i_service.add(temp_items.get(purchase_requisition.getPurchase_order_id()));
 
         template_order to = new template_order(purchase_requisition, object_entries);
         service.createOrUpdate(to);
@@ -79,6 +109,47 @@ public class PurchaseServlet extends BaseServlet {
         // 将 json 数据写回客户端
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().write(json);
+    }
+
+
+    // 更新清单
+    public void UpdateItemsList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Item item_changed = new Item();
+        Map<String, String[]> map = request.getParameterMap();
+        try {
+            BeanUtils.populate(item_changed, map);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        // 如果当前order_id没有关联的物品行，新建一个对应的缓存
+        temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
+
+        if (item_changed.getObject_id()!= null) {  // 不是新建的item
+            for (Item i : temp_items.get(order_id)) {  // 遍历已经缓存的关联该订单的Item
+                if (i.getObject_id().equals(item_changed.getObject_id())) {  // 如果修改过的Item已经缓存过了
+                    temp_items.get(order_id).remove(i);  // 从缓存中删除
+                    break;  // 结束遍历
+                }
+            }
+        } else {  // 新建的Item 补充id属性
+            item_changed.setObject_id(UuidUtil.getUuid());
+        }
+        temp_items.get(order_id).add(item_changed);  // 缓存 前端修改的item
+
+
+        ResultInfo info = new ResultInfo();
+        // 4. 响应结果
+        info.setFlag(true);
+        // 将 info 对象序列化为 json
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);
+        // 将 json 数据写回客户端
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(json);
+    }
+
+    public void getOrderId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        order_id = request.getParameter("order_id");
     }
 
 
@@ -168,6 +239,9 @@ public class PurchaseServlet extends BaseServlet {
     }
 
     public String updatePurchaseListData(String order_id) throws IOException {
+        System.out.println("===================");
+        System.out.println("长度："+temp_items.keySet());
+        System.out.println("===================");
         System.out.println("更新 物品清单列表"+order_id);
 
         // 获取物品清单的 全部物品行
@@ -182,10 +256,33 @@ public class PurchaseServlet extends BaseServlet {
             item.print();  // 显示对象信息
             items.add(item);  //添加进 物品信息表
         }
+        List<Item> result = new ArrayList<>();
+        for (Item item : items) {
+            result.add(item);
+        }
+        if (temp_items.get(order_id) != null) {
+            for (Item item1 : temp_items.get(order_id)) {
+                for (Item i2 : items) {
+                    if (item1.getObject_id().equals(i2.getObject_id())) {
+                        result.remove(i2);
+                        result.add(item1);
+                        break;
+                    } else {
+                        result.add(item1);
+                    }
+                }
+            }
+        }
+        System.out.println("-------*************************----------"+items.size());
+        for(Item i : result) {
+            i.print();
+        }
+        System.out.println("--------*************************---------");
+
 
         // 拼串
         String json = "";
-        for (Item i : items) {
+        for (Item i : result) {
             try {
                 json += writeValueAsString(i);
             } catch (JsonProcessingException e) {

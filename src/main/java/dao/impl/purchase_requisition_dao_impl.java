@@ -35,20 +35,22 @@ public class purchase_requisition_dao_impl implements purchase_requisition_dao {
 
     @Override
     public boolean updateTable(Purchase_Requisition table) {
-        String sql = "update purchase_requisition set purchase_requisition_id = ?," +
-                "purchase_order_id = ?, requisition_user_id = ?, state = ?, purpose = ?, requisition_date = ?," +
-                "approval_user_id = ?, approval_opinions = ?, approval_date = ?";
+        // TODO : 时间问题
+        String sql = "update purchase_requisition set " +
+                "requisition_user_id = ?, state = ?, purpose = ?, " +
+                "requisition_date = ?, approval_user_id = ?, approval_opinions = ?, approval_date = ?" +
+                "where purchase_requisition_id = ?";
         try {
             template.update(sql,
-                    table.getPurchase_requisition_id(),
-                    table.getPurchase_order_id(),
                     table.getRequisition_user_id(),
                     table.getState(),
                     table.getPurpose(),
                     table.getRequisition_date(),
                     table.getApproval_user_id(),
                     table.getApproval_opinions(),
-                    table.getApproval_date());
+                    table.getApproval_date(),
+                    table.getPurchase_requisition_id()
+                    );
             return true;
         } catch (Exception e) {
             e.printStackTrace();

@@ -37,14 +37,12 @@ public class waste_requisition_dao_impl implements waste_requisition_dao {
 
     @Override
     public boolean updateTable(Waste_Requisition table) {
-        String sql = "update waste_requisition set waste_requisition_id = ?, " +
-                "waste_order_id = ?, requisition_user_id = ?, waste_reason = ?, position = ?, " +
+        String sql = "update waste_requisition set " +
+                "requisition_user_id = ?, waste_reason = ?, position = ?, " +
                 "state = ?, requisition_date = ?, , approval_user_id = ?, approval_opinions = ?, " +
-                "approval_date = ?)";
+                "approval_date = ? where waste_requisition_id = ?";
         try {
             template.update(sql,
-                    table.getWaste_requisition_id(),
-                    table.getWaste_order_id(),
                     table.getRequisition_user_id(),
                     table.getWaste_reason(),
                     table.getPosition(),
@@ -52,7 +50,8 @@ public class waste_requisition_dao_impl implements waste_requisition_dao {
                     table.getRequisition_date(),
                     table.getApproval_user_id(),
                     table.getApproval_opinions(),
-                    table.getApproval_date());
+                    table.getApproval_date(),
+                    table.getWaste_requisition_id());
             return true;
         } catch (Exception e) {
             e.printStackTrace();

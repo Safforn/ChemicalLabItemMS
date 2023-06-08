@@ -37,15 +37,13 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
 
     @Override
     public boolean updateTable(get_or_borrow_Requisition table) {
-        String sql = "update get_or_borrow_requisition set get_or_borrow_requisition_id = ?, " +
-                "get_or_borrow_order_id = ?, applicant_user_id = ?, purpose = ?, requisition_date = ?, " +
+        String sql = "update get_or_borrow_requisition set " +
+                "applicant_user_id = ?, purpose = ?, requisition_date = ?, " +
                 "borrow_date = ?, return_date = ?,state = ?, type = ?," +
                 "applicant_user_id = ?, approval_user_id = ?, approval_opinions = ?, " +
-                "approval_date = ?) ";
+                "approval_date = ? where get_or_borrow_requisition_id = ?";
         try {
             template.update(sql,
-                    table.getGet_or_borrow_requisition_id(),
-                    table.getGet_or_borrow_order_id(),
                     table.getApplicant_user_id(),
                     table.getPurpose(),
                     table.getRequisition_date(),
@@ -56,7 +54,8 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
                     table.getApplicant_user_id(),
                     table.getApproval_user_id(),
                     table.getApproval_opinions(),
-                    table.getApproval_date());
+                    table.getApproval_date(),
+                    table.getGet_or_borrow_requisition_id());
             return true;
         } catch (Exception e) {
             e.printStackTrace();
