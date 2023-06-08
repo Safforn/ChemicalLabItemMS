@@ -11,16 +11,9 @@
   <component name="ChangeListManager">
     <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="更新item的dao和service">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/object_entry_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/object_entry_dao_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/waste_requisition_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/waste_requisition_dao_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/item_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/item_service_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/json/PurchaseData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/json/PurchaseData.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/json/PurchaseListData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/json/PurchaseListData.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/ex_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/ex_service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/ex_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/ex_service_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/ExServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/ExServlet.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,17 +97,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Maven.ChemicalLabItemMS">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ChemicalLabItemMS" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
