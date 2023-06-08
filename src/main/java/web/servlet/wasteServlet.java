@@ -4,14 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import domain.*;
 import org.apache.commons.beanutils.BeanUtils;
-import service.ex_service;
-import service.get_or_borrow_service;
-import service.impl.ex_service_impl;
-import service.impl.get_or_borrow_service_impl;
 import service.impl.item_service_impl;
 import service.impl.order_service_impl;
+import service.impl.waste_requisition_service_impl;
 import service.item_service;
 import service.order_service;
+import service.waste_requisition_service;
 import util.JsonUtil;
 import util.UuidUtil;
 
@@ -26,46 +24,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/ex/*")
-public class ExServlet extends BaseServlet {
-    private static final int APPROVED = 2;
-    private final ex_service exService = new ex_service_impl();
-    private final get_or_borrow_service getOrBorrowService = new get_or_borrow_service_impl();
-    private final order_service orderService = new order_service_impl();
-    private final item_service itemService = new item_service_impl();
-    private static final Map<String, List<Item>> temp_items = new HashMap<>();
+@WebServlet("/waste/*")
+public class wasteServlet extends BaseServlet{
+    private waste_requisition_service wasteRequisitionService = new waste_requisition_service_impl();
+    private order_service orderService = new order_service_impl();
+    private item_service itemService = new item_service_impl();
+    private static Map<String, List<Item>> temp_items = new HashMap<>();
     private static String order_id = "";
-    /**
-     * 出库
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
-    public void exWarehouse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO : 前端填写出库单
-        Map<String, String[]> map = request.getParameterMap();
 
-        Ex_Warehouse ex_warehouse = new Ex_Warehouse();
+    public void createOrUpdateItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //1.获取数据（领用申请表基本信息 + 领用申请物品清单）
+        Map<String, String[]> map = request.getParameterMap(); //获取前端数据，考虑分两次传输 申请表信息和物品清单
+
+        //2.封装对象
+        Waste_Requisition wasteRequisition = new Waste_Requisition();
+        // 前端传回申请表和物品列表的集合
         try {
-            BeanUtils.populate(ex_warehouse, map);
+            BeanUtils.populate(wasteRequisition, map);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-
         List<Object_Entry> objectEntries = new ArrayList<>();
         Object_Entry object_entry = new Object_Entry();
-        for (Item item : temp_items.get(ex_warehouse.getEx_order_id())) {
-            object_entry.setQuantity((int)item.getQuantity());
+        for (Item item : temp_items.get(wasteRequisition.getWaste_order_id())) {
+//            item.setOrder_id(wasteRequisition.getWaste_order_id());
+            object_entry.setOrder_id(wasteRequisition.getWaste_order_id());
+            object_entry.setNum((int)item.getQuantity());
             object_entry.setObject_id(item.getObject_id());
-            object_entry.setOrder_id(item.getObject_id());
+            objectEntries.add(object_entry);
         }
 
-
-        boolean flag = exService.add(ex_warehouse, objectEntries);
+        template_order templateOrder = new template_order(wasteRequisition, objectEntries);
+        wasteRequisitionService.createOrUpdate(templateOrder);
         ResultInfo info = new ResultInfo();
         // 4. 响应结果
-        info.setFlag(flag);
+        info.setFlag(true);
         // 将 info 对象序列化为 json
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(info);
@@ -127,82 +120,31 @@ public class ExServlet extends BaseServlet {
         order_id = request.getParameter("order_id");
     }
 
-    /**
-     * 查询所有领用、借用单 状态：审批已通过
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
-    public void searchAll(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<get_or_borrow_Requisition> getOrBorrowRequisitionList = getOrBorrowService.searchTableByState(APPROVED);
-        ResultInfo info = new ResultInfo();
-        // 4. 响应结果
-        info.setData(getOrBorrowRequisitionList);
-        // 将 info 对象序列化为 json
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(info);
-        // 将 json 数据写回客户端
-        response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(json);
-    }
 
-    /**
-     * 查询一个申请单的物品列表
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
-    public void searchOneOrder(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO : 前端获取order_id ： order_id
-        String orderId = request.getParameter("order_id");
-        List<Object_Entry> objectEntries = orderService.search(orderId);
-        ResultInfo info = new ResultInfo();
-        // 4. 响应结果
-        info.setData(objectEntries);
-        // 将 info 对象序列化为 json
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(info);
-        // 将 json 数据写回客户端
-        response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(json);
-    }
+    public void deleteTable(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
+        // 从前端获取 待删除申请表行的 tableId
+        String tableId = request.getParameter("tableId");
+        // 调用service删除
+        wasteRequisitionService.deleteTable(tableId);
+        // TODO: 更新前端表格页面，这个好像不需要做，前端会自动删除（加个"确认删除"的弹窗）
+        //  只需要把tableId传给后端即可
 
-    /**
-     * 查询所有出库单
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
-    public void searchAllExTable(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<Ex_Warehouse> exWarehouses = exService.search();
-        ResultInfo info = new ResultInfo();
-        // 4. 响应结果
-        info.setData(exWarehouses);
-        // 将 info 对象序列化为 json
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(info);
-        // 将 json 数据写回客户端
-        response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(json);
     }
-
 
     public void initTable(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
-        System.out.println("EWServlet：进入 初始化表格 后端");
+        System.out.println("WasteServlet：进入 初始化表格 后端");
         String user_id = request.getParameter("user_id");
-        System.out.println("EWServlet user_id="+user_id);
-        String exDataList = "";
+        System.out.println("WasteServlet user_id="+user_id);
+        String wasteDataList = "";
         if (user_id != null)
-            exDataList = updateExData(user_id);
+            wasteDataList = updatePurchaseData(user_id);
 
         ResultInfo info = new ResultInfo();
         // 4. 响应结果
         info.setFlag(true);
-        info.setData(exDataList);
+        info.setData(wasteDataList);
         // 将 info 对象序列化为 json
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(info);
@@ -212,15 +154,15 @@ public class ExServlet extends BaseServlet {
     }
 
 
-    public String updateExData(String user_id) throws IOException {
-        System.out.println("进入updateExDataList");
-        List<Ex_Warehouse> pr_list = exService.search();
-        for (Ex_Warehouse pr : pr_list) {
-            System.out.println(pr.getEx_warehouse_id());
+    public String updatePurchaseData(String user_id) throws IOException {
+        System.out.println("进入updatePurchaseDataList");
+        List<Waste_Requisition> pr_list = wasteRequisitionService.searchTableByUser(user_id);
+        for (Waste_Requisition pr : pr_list) {
+            System.out.println(pr.getWaste_requisition_id());
         }
         // 拼串
         String json = "";
-        for (Ex_Warehouse pr : pr_list) {
+        for (Waste_Requisition pr : pr_list) {
             try {
                 json += writeValueAsString(pr);
             } catch (JsonProcessingException e) {
@@ -235,7 +177,7 @@ public class ExServlet extends BaseServlet {
         json = buf.toString();  //拼串完成
         System.out.println(json);
 
-        String filename = "ExData.txt";
+        String filename = "WasteData.txt";
         JsonUtil.writeJson(filename, json);  //写入Data.json文件
         return json;
     }
@@ -244,18 +186,18 @@ public class ExServlet extends BaseServlet {
     // 初始化 物品清单列表
     public void initListTable(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
-        System.out.println("ExServlet：进入 初始化物品清单弹窗表格 后端");
+        System.out.println("WasteServlet：进入 初始化物品清单弹窗表格 后端");
         String order_id = request.getParameter("order_id");
-        System.out.println("ExServlet order_id="+order_id);
-        String exDataList = "";
+        System.out.println("WasteServlet order_id="+order_id);
+        String WasteDataList = "";
         if (order_id != null)
-            exDataList = updateExListData(order_id);
+            WasteDataList = updateWasteListData(order_id);
 
 
         ResultInfo info = new ResultInfo();
         // 4. 响应结果
         info.setFlag(true);
-        info.setData(exDataList);
+        info.setData(WasteDataList);
         // 将 info 对象序列化为 json
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(info);
@@ -264,7 +206,7 @@ public class ExServlet extends BaseServlet {
         response.getWriter().write(json);
     }
 
-    public String updateExListData(String order_id) throws IOException {
+    public String updateWasteListData(String order_id) throws IOException {
         System.out.println("===================");
         System.out.println("长度："+temp_items.keySet());
         System.out.println("===================");
