@@ -36,10 +36,8 @@ public class purchase_requisition_dao_impl implements purchase_requisition_dao {
     @Override
     public boolean updateTable(Purchase_Requisition table) {
         // TODO : 时间问题
-        String sql = "update purchase_requisition set " +
-                "requisition_user_id = ?, state = ?, purpose = ?, " +
-                "requisition_date = ?, approval_user_id = ?, approval_opinions = ?, approval_date = ?" +
-                "where purchase_requisition_id = ?";
+        String sql = "update purchase_requisition set requisition_user_id = ?, state = ?, purpose = ?, requisition_date = ?, approval_user_id = ?, approval_opinions = ?, approval_date = ? where purchase_requisition_id = ?";
+        System.out.println("DAO : " + table.getPurchase_requisition_id());
         try {
             template.update(sql,
                     table.getRequisition_user_id(),

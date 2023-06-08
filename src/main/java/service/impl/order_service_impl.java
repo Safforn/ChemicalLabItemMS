@@ -13,4 +13,9 @@ public class order_service_impl implements order_service {
     public List<Object_Entry> search(String orderId) {
         return objectEntryDao.search(orderId);
     }
+
+    @Override
+    public boolean deleteEntryByOrder(String orderId) {
+        return objectEntryDao.deleteEntryByOrder(orderId);
+    }
 }

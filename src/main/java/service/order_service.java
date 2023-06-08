@@ -11,4 +11,11 @@ public interface order_service {
      * @return
      */
     List<Object_Entry> search(String orderId);
+
+    /**
+     * 删除订单物品列表
+     * @param orderId
+     * @return
+     */
+    boolean deleteEntryByOrder(String orderId);
 }

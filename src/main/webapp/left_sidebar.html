@@ -48,10 +48,17 @@
                             其他入库表</a></li>
                         <li><a id="form_ex_warehouse"           href="form_ex_warehouse.html" style="display: none;">
                             出库表</a></li>
-                        <li><a id="view_in_warehouse.html" href="view_in_warehouse_old.html" style="display: none;">
+                        <li><a id="view_in_warehouse"           href="view_in_warehouse.html" style="display: none;">
                             查看入库表</a></li>
-                        <li><a id="view_ex_warehouse" href="view_ex_warehouse_old.html" style="display: none;">
-                            查看出库表</a></li>
+                        <li><a id="view_ex_warehouse"           href="view_ex_warehouse.html" style="display: none;">
+                            审批采购申请表</a></li>
+                        <li><a id="approve_purchase"            href="approve_purchase.html" style="display: none;">
+                            审批采购申请表</a></li>
+                        <li><a id="approve_use_or_borrow"            href="approve_use_or_borrow.html" style="display: none;">
+                            审批领用/借用申请表</a></li>
+                        <li><a id="approve_waste"               href="approve_waste.html" style="display: none;">
+                            审批废弃申请表</a></li>
+
                     </ul>
                 </li>
             </ul>
@@ -86,7 +93,11 @@
                     break;
                 //3:审批人员
                 case 3:
-                    $("#form_purchase").css("display","");
+                    $("#approve_purchase").css("display","");
+                    $("#approve_use_or_borrow").css("display","");
+                    $("#approve_waste").css("display","");
+                    $("#form_use_or_borrow").css("display","none");
+                    $("#form_waste").css("display","none");
                     break;
             }
         })
