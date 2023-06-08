@@ -114,14 +114,9 @@
                         </div>
                     </div>
                     <!--   end modal-body  -->
-
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
-
         </form>
-
-
-
     </div>
 </div>
 
@@ -175,41 +170,72 @@
     });
 </script>
 <script>
-    const dataSet = [
-        ['id', 'aaa', 'bb', '30', 'xxxx-xx','30', '1'],
-        ['id1', 'aaa1', 'cc', '20', 'xxxx-xx','30', '2'],
-        ['id2', 'aaa', 'bb', '30', 'xxxx-xx','30', '3'],
-        ['id3', 'aaa1', 'cc', '20', 'xxxx-xx','30', '0'],
-        ['id4', 'aaa', 'bb', '30', 'xxxx-xx','30', '1'],
-        ['id5', 'aaa1', 'cc', '20', 'xxxx-xx','30', '2'],
-        ['id6', 'aaa', 'bb', '30', 'xxxx-xx','30', '3'],
-        ['id7', 'aaa1', 'cc', '20', 'xxxx-xx','30', '0'],
-        ['id8', 'aaa', 'bb', '30', 'xxxx-xx','30', '3'],
-        ['id9', 'aaa1', 'cc', '20', 'xxxx-xx','30', '2'],
-    ];
-    const dataSets = [
-        ['aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa2', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa3', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa4', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa5', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa6', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa7', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa8', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa9', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa10', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa11', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa12', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa13', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa14', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa15', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ];
+    var temp_user_id;
+    var temp_data;
+
+    console.log("--flag-1-");
+
+    $.ajax({
+        async: false,
+        type : "post",
+        url : "user/findOne",
+        success : function(user) {
+            console.log("--flag-findOne-");
+            temp_user_id = user.user_id;
+            console.log("user.user_id"+user.user_id);
+        }
+    });
+    // 初始化，获取首页表格数据
+    $.ajax({
+        async: false,
+        data: {user_id: temp_user_id},
+        type : "post",
+        url : "waste/initTable",
+        success : function(data) {
+            console.log("--flag-inittable-");
+            temp_data=data.data;
+        }
+    });
+
+    function json2Array(jsonData, list_or_not) {
+        var jsonsString = jsonData.slice(1, jsonData.length - 1);
+        var jsonStrings = jsonsString.split("},");
+        var length = jsonStrings.length;
+        var jsons = [];
+        for (var i = 0; i !== length-1; ++i) {
+            jsonStrings[i] += '}';
+        }
+        var source = [[]];
+        for (var i = 0; i !== length; ++i) {
+            //console.log("$"+jsonStrings[i]);
+            jsons[i] = eval('(' + jsonStrings[i] + ')');
+            var data = [];
+            for(var key in jsons[i]) {
+                if(i === 0) {
+                    source[0].push(key);
+                }
+                //console.log("i="+i+"|key="+key+"|json[i,key]="+jsons[i][key]);
+                if(!list_or_not || key !== "object_id" ) {
+                    data.push(jsons[i][key]);
+                } else {
+                    console.log("跳过在执行一次")
+                }
+            }
+            source.push(data);
+        }
+        return source.slice(1); //删除第1行
+    }
+
+    //console.log("temp_data=\n"+temp_data);
+    temp_data = json2Array(temp_data, false)  // 主表格数据
+
+    const dataSets = [];  // 弹窗表格的 物品清单数据
+    //console.log("temp_data1=\n"+temp_data);
     $(document).ready(function() {
         $(function(){
             var table = $('#table').DataTable({
                 retrieve: true,
-                data:dataSet,
+                data:temp_data,
                 columns:[
                     {
                         'field': "waste_requisition_id",
@@ -293,6 +319,53 @@
                 }
             });
 
+            var temp_list_data;
+            var temp_order_id;  // 本条订单的order——id
+
+            // 点击 物品清单 按钮
+            $("table tbody").on("click",".list-btn",function (){
+                // TODO: 待办 - 进入物品清单弹窗，刷新表单
+                //$('#listTable').dataTable().api().draw();
+
+                var tds=$(this).parents("tr").children();
+                temp_order_id = tds[1].innerText;
+                // 向后端请求物品清单数据
+                if(temp_order_id != ""){
+                    $.ajax({
+                        async: false,  // true 同步，false异步
+                        data: {order_id: temp_order_id},
+                        type: "post",
+                        url : "waste/initListTable",
+                        success : function(data) {
+                            //console.log("--flag-initListTable-");
+                            temp_list_data=data.data;
+                            temp_list_data = json2Array(temp_list_data, true);
+                            //alert("刚刚进入点击按钮"+temp_list_data);
+                        }
+                    });
+                }
+                $('#updateModal').modal('show');
+
+                // 更新表格数据
+                $('#listTable').dataTable().api().clear();
+                $('#listTable').dataTable().api().rows.add(temp_list_data);
+                $('#listTable').dataTable().api().draw();
+
+
+                var arr = tds[6].innerText;
+                console.log(arr);
+                if(arr==='已提交'||arr==='审核通过'){
+                    $('.list-edit-btn').attr('disabled',true);
+                    $('.list-delete').attr('disabled',true);
+                    $('.list-top-btn').attr('disabled',true);
+                }
+                if(arr==='未提交'||arr==='审核未通过'){
+                    $('.list-edit-btn').attr('disabled',false);
+                    $('.list-delete').attr('disabled',false);
+                    $('.list-top-btn').attr('disabled',false);
+                }
+            })
+
             var listtable = $('#listTable').DataTable({
                 retrieve: true,
                 data:dataSets,
@@ -316,8 +389,6 @@
                         'field': "unit",
                         'title': '包装单位',
                         'defaultContent' : "",
-
-
                         'sClass': 'text-center'
                     }, {
                         'field': "classification",
@@ -344,11 +415,6 @@
                         'field': "lower_limit",
                         'title': '警戒下限',
                         // width:90,
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "warehouse_id",
-                        'title': '仓库',
                         'defaultContent' : "",
                         'sClass': 'text-center'
                     }, {
@@ -399,26 +465,6 @@
                 }
             });
 
-            //点击物品清单
-            $("table tbody").on("click",".list-btn",function (){
-                // $('#listTable').dataTable().api().draw();
-                // $('#listTable').dataTable().reload();
-                var tds=$(this).parents("tr").children();
-                var arr = tds[6].innerText;
-                console.log(arr);
-                if(arr==='已提交'||arr==='审核通过'){
-                    $('.list-edit-btn').attr('disabled',true);
-                    $('.list-delete').attr('disabled',true);
-                    $('.list-top-btn').attr('disabled',true);
-                }
-                if(arr==='未提交'||arr==='审核未通过'){
-                    $('.list-edit-btn').attr('disabled',false);
-                    $('.list-delete').attr('disabled',false);
-                    $('.list-top-btn').attr('disabled',false);
-                }
-
-                $('#updateModal').modal('show');
-            })
 
             //点击提交按钮
             $("table tbody").on("click",".submit-btn",function (){
@@ -426,21 +472,74 @@
                 var arr = tds[6].innerText;
                 console.log(arr);
                 if(arr==='未提交'||arr==='审核未通过'){
+                    // 提交的代码
+                    if(confirm('确认提交申请？')){  //确认提交
+                        // 拼后端BeanUtils所需的map串
 
-                    //提交的代码
-                    if(confirm('确认提交申请？')){
-                        //点击确认
-                        tds[6].innerText = '已提交';
-                        $(this).attr('disabled',true);
-                        tds.find('.edit-btn').attr('disabled',true);
-                    }else{
-                        //点击取消
+                        // 时间格式纠正
+                        Date.prototype.toLocaleString = function() {
+                            function addZero(num) {
+                                return num < 10 ? "0" + num : num;
+                            }
+                            // 按自定义拼接格式返回
+                            return this.getFullYear() + "/" + addZero(this.getMonth() + 1) + "/" + addZero(this.getDate()) + " " +
+                                addZero((this.getHours()+24-8)%24) + ":" + addZero(this.getMinutes()) + ":" + addZero(this.getSeconds());
+                        };
+                        var requisition_dateTime = "", approval_date = "";
+                        if (tds[5].innerText !== "")
+                            requisition_dateTime = (new Date(eval(tds[5].innerText))).toLocaleString();
+                        if (tds[9].innerText !== "")
+                            approval_date = (new Date(eval(tds[9].innerText))).toLocaleString();
 
-                    }
+                        // 状态改回数值
+                        var shenqing_state = '';
+                        arr = tds[6].innerText;
+                        if(arr==='未提交'){
+                            shenqing_state = '0';
+                        }else if(arr==='已提交'){
+                            shenqing_state = '1';
+                        }else if(arr==='审核通过'){
+                            shenqing_state = '2';
+                        }else if(arr==='审核未通过'){
+                            shenqing_state = '3';
+                        }
 
+                        var front_end_data = "";
+                        if (tds[0].innerText !== "") front_end_data += "waste_requisition_id="+tds[0].innerText+"&";
+                        if (tds[1].innerText !== "") front_end_data += "waste_order_id="+tds[1].innerText+"&";
+                        if (tds[3].innerText !== "") front_end_data += "waste_reason="+tds[3].innerText+"&";
+                        if (tds[4].innerText !== "") front_end_data += "position="+tds[4].innerText+"&";
+                        if (tds[5].innerText !== "") front_end_data += "requisition_date="+requisition_dateTime+"&";
+                        if (tds[6].innerText !== "") front_end_data += "state="+1+"&";
+                        if (tds[7].innerText !== "") front_end_data += "approval_user_id="+tds[7].innerText+"&";
+                        if (tds[8].innerText !== "") front_end_data += "approval_opinions="+tds[8].innerText+"&";
+                        if (tds[9].innerText !== "") front_end_data += "approval_date="+approval_date+"&";
+                        // front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
+
+                        $.get("user/findOne", {}, function (data) {
+                            // 获取当前登陆的用户id
+                            front_end_data += "requisition_user_id="+data.user_id;
+                            //alert("主页面front_end_data="+front_end_data);
+                            // 把前端数据传给后端
+                            $.post("waste/createOrUpdateItems", front_end_data, function (data) {
+                                //alert("在接受后端数据之后");
+                                if (data.flag) {
+                                    alert("提交成功");
+                                    location.reload();
+                                    tds[6].innerText = '已提交';
+                                    // 禁用按钮：应该放入点击确认
+                                    $(this).attr('disabled',true);
+                                    tds.find('.edit-btn').attr('disabled',true);
+                                } else {
+                                    alert("提交失败");
+                                }
+                            })
+                        });  // end of $.get("user/findOne"...
+                    } // end of confirm(确认提交申请？)
+                    else {} //点击取消，无事发生
                 }
-
             })
+
 
             // 申请表修改
             $("#table tbody").on("click",".edit-btn",function(){
@@ -509,6 +608,65 @@
                         listtable.cell(jqob).data(txt);//修改DataTables对象的数据
                     }
                 });
+
+                var front_end_data = "";
+                if (tds[0].innerText !== "") front_end_data += "name="+tds[0].innerText+"&";
+                if (tds[1].innerText !== "") front_end_data += "specification="+tds[1].innerText+"&";
+                if (tds[2].innerText !== "") front_end_data += "quantity="+tds[2].innerText+"&";
+                if (tds[3].innerText !== "") front_end_data += "unit="+tds[3].innerText+"&";
+                if (tds[4].innerText !== "") front_end_data += "classification="+tds[4].innerText+"&";
+                if (tds[5].innerText !== "") front_end_data += "price="+tds[5].innerText+"&";
+                if (tds[6].innerText !== "") front_end_data += "expiration_time="+tds[6].innerText+"&";
+                if (tds[7].innerText !== "") front_end_data += "upper_limit="+tds[7].innerText+"&";
+                if (tds[8].innerText !== "") front_end_data += "lower_limit="+tds[8].innerText+"&";
+                if (tds[9].innerText !== "") front_end_data += "notes="+tds[9].innerText+"&";
+                //front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
+
+
+                $.get("user/findOne", {}, function (data) {
+                    // 获取当前登陆的用户id，写入前端待发送的数据
+                    //front_end_data += "requisition_user_id="+data.user_id;
+                    console.log("front_end_data="+front_end_data);
+                    // 把前端数据传给后端
+                    $.post("waste/getOrderId", {order_id: temp_order_id}, function () {
+                        $.post("waste/UpdateItemsList", front_end_data, function (data) {
+                            console.log("在接受后端数据之后");
+                            if (data.flag) {
+                                alert("提交成功");
+                                // 禁用按钮：应该放入点击确认
+                                $(this).attr('disabled',true);
+                                tds.find('.edit-btn').attr('disabled',true);
+                                // --------更新一次表单窗格-----------
+                                temp_order_id = tds[1].innerText;
+                                $.ajax({
+                                    async: flase,  // true 同步，false异步
+                                    data: {order_id: temp_order_id},
+                                    type: "post",
+                                    url : "waste/initListTable",
+                                    success : function(data) {
+                                        alert("--物品清单行修改保存后，更新一次窗口数据--");
+                                        temp_list_data=data.data;
+                                        //alert("(data.data)=\n"+data.data);
+                                        temp_list_data = json2Array(temp_list_data, true)
+                                    }
+                                });
+
+                                alert("temp_list_data=\n"+temp_list_data);
+                                $('#updateModal').modal('show');  // 显示弹窗表格
+                                // 更新表格数据
+                                $('#listTable').dataTable().api().clear();
+                                $('#listTable').dataTable().api().rows.add(temp_list_data);
+                                $('#listTable').dataTable().api().draw();
+                                //----------------------------------------
+
+                            } else {
+                                alert("提交失败");
+                            }
+                        });
+                    });
+
+                });  // end of $.get("user/findOne"...
+
                 $(this).html("编辑");
                 $(this).toggleClass("list-edit-btn");
                 $(this).toggleClass("list-save-btn");
@@ -565,7 +723,7 @@
         $('#table').dataTable().fnAddData([
             "", "", "", "",
             "", "", "未提交", "", "",
-            "", ""]);}
+            "", "", ""]);}
     function listfnClickAddRow() {
         $('#listTable').dataTable().fnAddData([
             "", "", "", "",
