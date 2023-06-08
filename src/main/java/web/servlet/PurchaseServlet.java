@@ -46,11 +46,28 @@ public class PurchaseServlet extends BaseServlet {
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+        List<Item> items = new ArrayList<>();
+        try {
+            BeanUtils.populate(items, map);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
 
         purchase_requisition.print();  // 调试，显示前端传回的数据
 
         // TODO: 前端表格里的物品清单数据还没传进来
         List<Object_Entry> object_entries = new ArrayList<>();
+        Object_Entry objectEntry = new Object_Entry();
+        for (Item item : items) {
+            objectEntry.setObject_id(item.getObject_id());
+            objectEntry.setNum((int)(item.getQuantity()));
+            item.setQuantity(0);
+        }
+
+        i_service.add(items);
+
         template_order to = new template_order(purchase_requisition, object_entries);
         service.createOrUpdate(to);
         ResultInfo info = new ResultInfo();

@@ -1,8 +1,10 @@
 package service.impl;
 
+import dao.impl.item_dao_impl;
 import dao.impl.object_entry_dao_impl;
 import dao.impl.purchase_in_dao_impl;
 import dao.impl.purchase_requisition_dao_impl;
+import dao.item_dao;
 import dao.object_entry_dao;
 import dao.purchase_in_dao;
 import dao.purchase_requisition_dao;
@@ -18,6 +20,7 @@ public class purchase_in_service_impl implements purchase_in_service {
     private object_entry_dao objectEntryDao = new object_entry_dao_impl();
     private purchase_in_dao purchaseInDao = new purchase_in_dao_impl();
     private purchase_requisition_dao purchaseRequisitionDao = new purchase_requisition_dao_impl();
+    private item_dao itemDao = new item_dao_impl();
     @Override
     public boolean add(template_order temp) {
         Purchase_in_Warehouse table = (Purchase_in_Warehouse)temp.getTable();//采购入库表

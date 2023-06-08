@@ -6,6 +6,7 @@ import dao.item_dao;
 import dao.object_entry_dao;
 import domain.Item;
 import service.item_service;
+import util.UuidUtil;
 
 
 import java.util.List;
@@ -15,5 +16,14 @@ public class item_service_impl implements item_service {
     @Override
     public Item search(String object_id) {
         return i_dao.findByObjectId(object_id);
+    }
+
+    @Override
+    public boolean add(List<Item> items) {
+        for (Item item : items) {
+            item.setObject_id(UuidUtil.getUuid());
+            i_dao.add(item);
+        }
+        return false;
     }
 }
