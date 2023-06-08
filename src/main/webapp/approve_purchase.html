@@ -414,7 +414,7 @@
                     async: false,  // true 异步，false 同步
                     data: {order_id: temp_order_id},
                     type: "post",
-                    url : "purchase/initPurchaseListTable",
+                    url : "approve /initPurchaseListTable",
                     success : function(data) {
                         //console.log("--flag-initListTable-");
                         temp_list_data=data.data;
@@ -430,7 +430,7 @@
                     async: false,  // true 同步，false异步
                     data: {order_id: temp_order_id},
                     type: "post",
-                    url : "purchase/initPurchaseListTable",
+                    url : "approve/initPurchaseListTable",
                     success : function(data) {
                         //console.log("--flag-initListTable-");
                         temp_list_data=data.data;
@@ -472,7 +472,7 @@
                         // 把前端数据传给后端
                         $.get("user/findOne", {}, function (data) {
                             // 获取当前登陆的用户id
-                            $.post("approve/approveOver", front_end_data, function (data) {
+                            $.post("approve/purchaseApproveOver", front_end_data, function (data) {
                                 console.log("在接受后端数据之后");
                                 if (data.flag) {
                                     //alert("提交成功");
@@ -514,7 +514,7 @@
 
                         $.get("user/findOne", {}, function (data) {
                             // 把前端数据传给后端
-                            $.post("approve/approveOver", front_end_data, function (data) {
+                            $.post("approve/purchaseApproveOver", front_end_data, function (data) {
                                 console.log("在接受后端数据之后");
                                 if (data.flag) {
                                     alert("提交成功");

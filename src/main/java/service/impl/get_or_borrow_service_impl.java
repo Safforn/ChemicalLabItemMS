@@ -26,7 +26,6 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
     public boolean createOrUpdate(template_order tando) {
         get_or_borrow_Requisition table = (get_or_borrow_Requisition) tando.getTable();
         List<Object_Entry> order = tando.getOrder();
-        System.out.println("-- service : " + table.getGet_or_borrow_requisition_id());
         if (table.getGet_or_borrow_requisition_id() == null) {
             return createTable(table, order);
         }
@@ -42,6 +41,7 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
          */
         table.setRequisition_date(getCurrentTime());
         table.setGet_or_borrow_requisition_id(UuidUtil.getUuid());
+        System.out.println("-- service : " + table.getGet_or_borrow_requisition_id());
 //        String orderId = UuidUtil.getUuid();
 //        table.setGet_or_borrow_order_id(orderId);
         for (Object_Entry object_entry : order) {

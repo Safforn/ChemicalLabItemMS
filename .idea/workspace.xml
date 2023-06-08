@@ -9,20 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="删除优化">
+    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="first">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/get_or_borrow_dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/get_or_borrow_dao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/get_or_borrow_dao_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/purchase_requisition_dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/purchase_requisition_dao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/get_or_borrow_service.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/purchase_requisition_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/purchase_requisition_service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/ApproveServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/ApproveServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/item_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/item_service_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/GetOrBorrowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/GetOrBorrowServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/approve_purchase.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/approve_purchase.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/approve_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/approve_use_or_borrow.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,6 +113,19 @@
     </key>
   </component>
   <component name="RunManager" selected="Maven.ChemicalLabItemMS">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ChemicalLabItemMS" type="MavenRunConfiguration" factoryName="Maven">
       <MavenSettings>
         <option name="myGeneralSettings" />
@@ -280,7 +287,7 @@
       <workItem from="1686186044285" duration="1925000" />
       <workItem from="1686252945405" duration="1705000" />
       <workItem from="1686254694370" duration="4340000" />
-      <workItem from="1686259302143" duration="314000" />
+      <workItem from="1686259302143" duration="5652000" />
     </task>
     <task id="LOCAL-00001" summary="添加GoodsService及其实现，实体类Date-&gt;String">
       <created>1655902015448</created>
@@ -366,7 +373,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686255439291</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="first">
+      <created>1686259864229</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1686259864229</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -399,7 +413,8 @@
     <MESSAGE value="更新出库，废弃" />
     <MESSAGE value="采购ok0.5+借用ok" />
     <MESSAGE value="删除优化" />
-    <option name="LAST_COMMIT_MESSAGE" value="删除优化" />
+    <MESSAGE value="first" />
+    <option name="LAST_COMMIT_MESSAGE" value="first" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

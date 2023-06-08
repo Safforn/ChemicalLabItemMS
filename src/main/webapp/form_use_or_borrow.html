@@ -554,12 +554,12 @@
                         if (tds[0].innerText !== "") front_end_data += "get_or_borrow_requisition_id="+tds[0].innerText+"&";
                         if (tds[1].innerText !== "") front_end_data += "get_or_borrow_order_id="+tds[1].innerText+"&";
                         if (tds[2].innerText !== "") front_end_data += "type="+tds[2].innerText+"&";
-                        if (tds[3].innerText !== "") front_end_data += "applicant_user_id="+tds[3].innerText+"&";
+                        //if (tds[3].innerText !== "") front_end_data += "applicant_user_id="+tds[3].innerText+"&";
                         if (tds[4].innerText !== "") front_end_data += "purpose="+tds[4].innerText+"&";
                         if (tds[5].innerText !== "") front_end_data += "borrow_date="+tds[5].innerText+"&";
                         if (tds[6].innerText !== "") front_end_data += "return_date="+tds[6].innerText+"&";
                         if (tds[7].innerText !== "") front_end_data += "requisition_date="+requisition_dateTime+"&";
-                        if (tds[8].innerText !== "") front_end_data += "state="+tds[8].innerText+"&";
+                        if (tds[8].innerText !== "") front_end_data += "state="+1+"&";
                         if (tds[9].innerText !== "") front_end_data += "approval_user_id="+tds[9].innerText+"&";
                         if (tds[10].innerText !== "") front_end_data += "approval_opinions="+tds[10].innerText+"&";
                         if (tds[11].innerText !== "") front_end_data += "approval_date="+approval_date+"&";
@@ -567,7 +567,7 @@
 
                         $.get("user/findOne", {}, function (data) {
                             // 获取当前登陆的用户id
-                            front_end_data += "requisition_user_id="+data.user_id;
+                            front_end_data += "applicant_user_id="+data.user_id;
                             console.log("front_end_data="+front_end_data);
                             // 把前端数据传给后端
                             $.post("getorborrow/createOrUpdateItems", front_end_data, function (data) {
@@ -657,25 +657,23 @@
                 });
 
                 var front_end_data = "";
-                if (tds[0].innerText !== "") front_end_data += "get_or_borrow_requisition_id="+tds[0].innerText+"&";
-                if (tds[1].innerText !== "") front_end_data += "get_or_borrow_order_id="+tds[1].innerText+"&";
-                if (tds[2].innerText !== "") front_end_data += "type="+tds[2].innerText+"&";
-                if (tds[3].innerText !== "") front_end_data += "applicant_user_id="+tds[3].innerText+"&";
-                if (tds[4].innerText !== "") front_end_data += "purpose="+tds[4].innerText+"&";
-                if (tds[5].innerText !== "") front_end_data += "borrow_date="+tds[5].innerText+"&";
-                if (tds[6].innerText !== "") front_end_data += "return_date="+tds[6].innerText+"&";
-                if (tds[7].innerText !== "") front_end_data += "requisition_date="+tds[7].innerText+"&";
-                if (tds[8].innerText !== "") front_end_data += "state="+tds[8].innerText+"&";
-                if (tds[9].innerText !== "") front_end_data += "approval_user_id="+tds[9].innerText+"&";
-                if (tds[10].innerText !== "") front_end_data += "approval_opinions="+tds[10].innerText+"&";
-                if (tds[11].innerText !== "") front_end_data += "approval_date="+tds[11].innerText+"&";
-                // front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
+                if (tds[0].innerText !== "") front_end_data += "name="+tds[0].innerText+"&";
+                if (tds[1].innerText !== "") front_end_data += "specification="+tds[1].innerText+"&";
+                if (tds[2].innerText !== "") front_end_data += "quantity="+tds[2].innerText+"&";
+                if (tds[3].innerText !== "") front_end_data += "unit="+tds[3].innerText+"&";
+                if (tds[4].innerText !== "") front_end_data += "classification="+tds[4].innerText+"&";
+                if (tds[5].innerText !== "") front_end_data += "price="+tds[5].innerText+"&";
+                if (tds[6].innerText !== "") front_end_data += "expiration_time="+tds[6].innerText+"&";
+                if (tds[7].innerText !== "") front_end_data += "lower_limit="+tds[7].innerText+"&";
+                if (tds[8].innerText !== "") front_end_data += "upper_limit="+tds[8].innerText+"&";
+                if (tds[9].innerText !== "") front_end_data += "notes="+tds[9].innerText+"&";
+                front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
 
-                console.log("front_end_data"+front_end_data)
+                console.log("front_end_data=\n"+front_end_data+"\nnotes="+tds[9].innerText);
                 $.get("user/findOne", {}, function (data) {
                     // 获取当前登陆的用户id，写入前端待发送的数据
-                    front_end_data += "requisition_user_id="+data.user_id;
-                    console.log("front_end_data="+front_end_data);
+                    //front_end_data += "requisition_user_id="+data.user_id;
+                    //console.log("front_end_data="+front_end_data);
                     // 把前端数据传给后端
                     $.post("getorborrow/getOrderId", {order_id: temp_order_id}, function () {
                         $.post("getorborrow/UpdateItemsList", front_end_data, function (data) {
