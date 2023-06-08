@@ -58,8 +58,9 @@ public class Item implements Serializable {
         System.out.println("输出Item对象信息:\n"+
                 "object_id="+object_id+
                 "|name="+name+
-                "|specification="+specification+
-                "|quantity="+quantity);
+                "|classification="+classification+
+                "|quantity="+quantity+
+                "|notes="+notes);
     }
 
     public String getObject_id() {

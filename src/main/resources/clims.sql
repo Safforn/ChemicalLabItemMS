@@ -2,7 +2,8 @@
 SQLyog Ultimate v12.09 (64 bit)
 MySQL - 5.7.33-log : Database - chemical_lab_item_ms
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -130,7 +131,7 @@ CREATE TABLE `object` (
   `specification` varchar(20) DEFAULT NULL,
   `quantity` float DEFAULT NULL,
   `unit` varchar(10) DEFAULT NULL,
-  `classfication` varchar(20) DEFAULT NULL,
+  `classification` varchar(20) DEFAULT NULL,
   `price` float DEFAULT NULL,
   `experation_time` date DEFAULT NULL,
   `upper_limit` float DEFAULT NULL,

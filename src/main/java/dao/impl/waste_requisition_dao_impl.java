@@ -85,7 +85,7 @@ public class waste_requisition_dao_impl implements waste_requisition_dao {
 
     @Override
     public List<Waste_Requisition> searchTableByUser(String userId) {
-        String sql = "select * from waste_requisition where applicant_user_id = ?";
+        String sql = "select * from waste_requisition where requisition_user_id = ?";
         return template.query(sql, new BeanPropertyRowMapper<Waste_Requisition>(Waste_Requisition.class), userId);
     }
 

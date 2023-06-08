@@ -24,7 +24,7 @@ public class waste_requisition_service_impl implements waste_requisition_service
     public boolean createOrUpdate(template_order tando) {
         Waste_Requisition table = (Waste_Requisition) tando.getTable();
         List<Object_Entry> order = tando.getOrder();
-        if (table.getWaste_requisition_id().length() == 0) {
+        if (table.getWaste_requisition_id() == null) {
             return createTable(table, order);
         }
         else {
@@ -39,6 +39,7 @@ public class waste_requisition_service_impl implements waste_requisition_service
         table.setWaste_order_id(orderId);
         for (Object_Entry object_entry : order) {
             object_entry.setObject_entry_id(UuidUtil.getUuid());
+            System.out.println("Waste Service Creat Object_entry_id : " + object_entry.getObject_id());
         }
         return objectEntryDao.addEntry(order, orderId) && wasteRequisitionDao.createTable(table);
     }
