@@ -1,57 +1,13 @@
 [{
-	"purchase_requisition_id":"0cd5b2266a304efca4bec0ef22e9769a",
-	"purchase_order_id":"c5f25227bab24b3da35eb71fdf3ebc0e",
-	"requisition_user_id":"0001",
-	"purpose":"搞99台设备",
-	"requisition_date":1686237339000,
-	"state":0,
-	"approval_user_id":"0005",
-	"approval_opinions":"设备好搞，朕允了",
-	"approval_date":null
-},
-{
-	"purchase_requisition_id":"195ecd93bb1849b4b885195b5b9b6518",
-	"purchase_order_id":"047025b7b1dd4261a28748d48be18cff",
-	"requisition_user_id":"0001",
-	"purpose":"搞1台设备",
-	"requisition_date":1686184662000,
-	"state":0,
-	"approval_user_id":"0005",
-	"approval_opinions":"设备好搞，朕允了",
-	"approval_date":null
-},
-{
-	"purchase_requisition_id":"474266a2b5ed451bb9713ded8e866419",
-	"purchase_order_id":"5310cb92e614409d8ad2caadd091fd3d",
-	"requisition_user_id":"0001",
-	"purpose":"搞一只猫猫",
-	"requisition_date":1686238299000,
-	"state":0,
-	"approval_user_id":null,
-	"approval_opinions":null,
-	"approval_date":null
-},
-{
-	"purchase_requisition_id":"c7852649d2c248c5b272430cb5b485ec",
-	"purchase_order_id":"b47fedd1218042b1b0013dbedcff94d5",
-	"requisition_user_id":"0001",
-	"purpose":null,
-	"requisition_date":1686239445000,
-	"state":0,
-	"approval_user_id":null,
-	"approval_opinions":null,
-	"approval_date":null
-},
-{
 	"purchase_requisition_id":"PR-0000001",
 	"purchase_order_id":"PRO-0000001",
 	"requisition_user_id":"0001",
-	"purpose":"搞100台设备",
-	"requisition_date":1686187735000,
+	"purpose":"搞10台设备",
+	"requisition_date":1686216535000,
 	"state":0,
 	"approval_user_id":"0005",
 	"approval_opinions":"设备好搞，朕允了",
-	"approval_date":1686187735000
+	"approval_date":1686216535000
 },
 {
 	"purchase_requisition_id":"PR-0000002",

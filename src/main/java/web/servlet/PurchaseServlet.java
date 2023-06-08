@@ -81,6 +81,7 @@ public class PurchaseServlet extends BaseServlet {
 //            e.printStackTrace();
 //        }
 
+
         purchase_requisition.print();  // 调试，显示前端传回的数据
 
         // TODO: 前端表格里的物品清单数据还没传进来
@@ -92,21 +93,28 @@ public class PurchaseServlet extends BaseServlet {
             purchase_requisition.setPurchase_order_id(order_id);
             System.out.println("OrderId : " + purchase_requisition.getPurchase_order_id() + "====");
         }
-
+        // 缓冲中没有order_id对应的物品信息，则新建该缓存区
+        if (order_id == "") {
+            order_id = UuidUtil.getUuid();
+        }
         temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
-        System.out.println(temp_items.get(purchase_requisition.getPurchase_order_id()));
-        for (Item item : temp_items.get(purchase_requisition.getPurchase_order_id())) {
-            objectEntry.setObject_id(item.getObject_id());
-            objectEntry.setNum((int)(item.getQuantity()));
-            objectEntry.setOrder_id(purchase_requisition.getPurchase_order_id());
-            object_entries.add(objectEntry);
-            item.setQuantity(0);
-            System.out.println(item.getNotes());
+        System.out.println(temp_items.get(order_id));
+
+        if (temp_items.get(order_id) != null) {
+            for (Item item : temp_items.get(order_id)) {
+                objectEntry.setObject_id(item.getObject_id());
+                objectEntry.setNum((int) (item.getQuantity()));
+                objectEntry.setOrder_id(purchase_requisition.getPurchase_order_id());
+                object_entries.add(objectEntry);
+                item.setQuantity(0);
+                System.out.println(item.getNotes());
+            }
         }
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
 
-        i_service.add(temp_items.get(purchase_requisition.getPurchase_order_id()));
+        if (temp_items.get(order_id) != null) i_service.add(temp_items.get(order_id));
 
+        System.out.println("Servlt : " + purchase_requisition.getPurchase_requisition_id());
         template_order to = new template_order(purchase_requisition, object_entries);
         service.createOrUpdate(to);
         ResultInfo info = new ResultInfo();
@@ -285,7 +293,7 @@ public class PurchaseServlet extends BaseServlet {
                 }
             }
         }
-        System.out.println("-------*************************----------"+items.size());
+        System.out.println("-------*************************----------"+result.size());
         for(Item i : result) {
             i.print();
         }

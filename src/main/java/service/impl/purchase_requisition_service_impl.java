@@ -65,6 +65,7 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
      */
     private boolean changeTable(Purchase_Requisition table, List<Object_Entry> order) {
         System.out.println("====Purchase_Requisition  changeTable====");
+        System.out.println("Service : " + table.getPurchase_requisition_id());
         if (purchaseRequisitionDao.updateTable(table)) {
             if (!objectEntryDao.deleteEntryByOrder(table.getPurchase_order_id())) {
                 return false;

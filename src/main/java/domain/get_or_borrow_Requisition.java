@@ -9,14 +9,14 @@ import java.util.Date;
 public class get_or_borrow_Requisition implements Serializable {
     private String get_or_borrow_requisition_id;//领用/借用申请表id(PK)
     private String get_or_borrow_order_id;//领用/借用申请物品清单id
+    private int type;//类型（借用/领用）
     private String applicant_user_id;//申领人(FK)
-    private String approval_user_id;//审批人(FK)
     private String purpose;//领用用途
-    private Date requisition_date;//申请提交时间
     private Date borrow_date;//借用/领用日期
     private Date return_date;//归还日期
+    private Date requisition_date;//申请提交时间
     private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
-    private int type;//类型（借用/领用）
+    private String approval_user_id;//审批人(FK)
     private String approval_opinions;//审批意见
     private Date approval_date;//审批的时间
 

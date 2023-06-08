@@ -9,13 +9,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="更新出库，废弃">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/other_in_dao_impl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dao/other_in_dao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/impl/other_in_service_impl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/service/other_in_service.java" afterDir="false" />
+    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="采购清单ok">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Other_in_Warehouse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Other_in_Warehouse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/object_entry_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/object_entry_dao_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/get_or_borrow_Requisition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/get_or_borrow_Requisition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/get_or_borrow_service_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/item_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/item_service_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/GetOrBorrowServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/GetOrBorrowServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/druid.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/druid.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/json/PurchaseData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/json/PurchaseData.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/json/PurchaseListData.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/json/PurchaseListData.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,15 +107,13 @@
     </key>
   </component>
   <component name="RunManager" selected="Maven.ChemicalLabItemMS">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
 
-    <title>采购申请</title>
+    <title>基本表单</title>
     <meta name="keywords" >
     <meta name="description" >
     <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
@@ -12,6 +12,17 @@
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css?v=2.2.0" rel="stylesheet">
+<!--    TODO: laz -->
+    <style>
+
+        .table td{
+            word-break: break-all;
+        }
+
+        .table th{
+            word-break: break-all;
+        }
+    </style>
 </head>
 <body>
 <!--<button type="button" id="batch-edit-btn">批量编辑</button>-->
@@ -138,7 +149,7 @@
 
 <!-- Data Tables -->
 <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
-<script s’‘rc="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
 <!--&lt;!&ndash;引入css&ndash;&gt;-->
 <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">-->
@@ -222,52 +233,63 @@
         return source.slice(1); //删除第1行
     }
     //console.log("temp_data=\n"+temp_data);
-    temp_data = json2Array(temp_data, false)
+    temp_data = json2Array(temp_data, false)  // 主表格数据
 
-    const dataSets = [];  //初始化物品清单数据源
+    const dataSets = [];  // 弹窗表格的 物品清单数据
     //console.log("temp_data1=\n"+temp_data);
     $(document).ready(function() {
         $(function(){
             var table = $('#table').DataTable({
                 retrieve: true,
+                autoWidth:true,
+                // TODO LAZ 所以textcenter
                 data:temp_data,
                 columns:[
                     {
                         'field': "purchase_requisition_id",
                         'title': '采购申请表编号',
-                        'defaultContent' : ""
+                        'defaultContent' : "",
+                        sClass: 'text-center'
                     }, {
                         'field': "purchase_order_id",
                         'title': '采购物品清单编号',
-                        'defaultContent' : ""
+                        'defaultContent' : "",
+                        sClass: 'text-center'
                     }, {
                         'field': "requisition_user_id",
                         'title': '申请人',
-                        'defaultContent' : ""
+                        'defaultContent' : "",
+                        sClass: 'text-center'
                     }, {
                         'field': "purpose",
                         'title': '采购用途',
-                        'defaultContent' : ""
+                        'defaultContent' : "",
+                        sClass: 'text-center'
                     }, {
                         'field': "requisition_date",
                         'title': '申请提交日期',
-                        'defaultContent' : ""
+                        'defaultContent' : "",
+                        sClass: 'text-center'
                     }, {
                         'field': "state",
                         'title': '申请当前状态',
-                        'defaultContent' : "0"
+                        'defaultContent' : "0",
+                        sClass: 'text-center'
                     }, {
                         'field': "approval_user_id",
                         'title': '审批人',
-                        'defaultContent' : ""
+                        'defaultContent' : "",
+                        sClass: 'text-center'
                     }, {
                         'field': "approval_opinions",
                         'title': '审批意见',
-                        'defaultContent' : ""
+                        'defaultContent' : "",
+                        sClass: 'text-center'
                     }, {
                         'field': "approval_date",
                         'title': '审批日期',
-                        'defaultContent' : ""
+                        'defaultContent' : "",
+                        sClass: 'text-center'
                     }, {
                         field: "operate",
                         sTitle: '操作',
@@ -313,16 +335,16 @@
             var temp_list_data;
             var temp_order_id;  // 本条订单的order——id
 
-            // 点击 物品清单
+            // 点击 物品清单 按钮
             $("table tbody").on("click",".list-btn",function (){
                 // TODO: 待办 - 进入物品清单弹窗，刷新表单
                 //$('#listTable').dataTable().api().draw();
 
                 var tds=$(this).parents("tr").children();
                 temp_order_id = tds[1].innerText;
-                //console.log("temp_order_id"+temp_order_id);
+                // 向后端请求物品清单数据
                 $.ajax({
-                    async: true,  // true 同步，false异步
+                    async: false,  // true 同步，false异步
                     data: {order_id: temp_order_id},
                     type: "post",
                     url : "purchase/initListTable",
@@ -354,6 +376,26 @@
                 }
 
                 $('#updateModal').modal('show');
+
+                $.ajax({
+                    async: false,  // true 同步，false异步
+                    data: {order_id: temp_order_id},
+                    type: "post",
+                    url : "purchase/initListTable",
+                    success : function(data) {
+                        //console.log("--flag-initListTable-");
+                        temp_list_data=data.data;
+                        temp_list_data = json2Array(temp_list_data, true)
+                    }
+                })
+                // 更新表格数据
+                $('#listTable').dataTable().api().clear();
+                $('#listTable').dataTable().api().rows.add(temp_list_data);
+                $('#listTable').dataTable().api().draw();
+
+
+
+
             })
 
             var listtable = $('#listTable').DataTable({
@@ -482,6 +524,7 @@
 
                         // 状态改回数值
                         var shenqing_state = '';
+                        arr = tds[5].innerText;
                         if(arr==='未提交'){
                             shenqing_state = '0';
                         }else if(arr==='已提交'){
@@ -497,10 +540,10 @@
                         if (tds[1].innerText !== "") front_end_data += "purchase_order_id="+tds[1].innerText+"&";
                         if (tds[3].innerText !== "") front_end_data += "purpose="+tds[3].innerText+"&";
                         if (tds[4].innerText !== "") front_end_data += "requisition_date="+requisition_dateTime+"&";
-                        if (tds[5].innerText !== "") front_end_data += "&state="+shenqing_state+"&";
-                        if (tds[6].innerText !== "") front_end_data += "&approval_user_id="+tds[6].innerText+"&";
-                        if (tds[7].innerText !== "") front_end_data += "&approval_opinions="+tds[7].innerText+"&";
-                        if (tds[8].innerText !== "") front_end_data += "&approval_date="+approval_date+"&";
+                        if (tds[5].innerText !== "") front_end_data += "state="+shenqing_state+"&";
+                        if (tds[6].innerText !== "") front_end_data += "approval_user_id="+tds[6].innerText+"&";
+                        if (tds[7].innerText !== "") front_end_data += "approval_opinions="+tds[7].innerText+"&";
+                        if (tds[8].innerText !== "") front_end_data += "approval_date="+approval_date+"&";
                         // front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
 
                         $.get("user/findOne", {}, function (data) {
@@ -607,7 +650,7 @@
                 //front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
                 console.log("front_end_data"+front_end_data)
                 $.get("user/findOne", {}, function (data) {
-                    // 获取当前登陆的用户id
+                    // 获取当前登陆的用户id，写入前端待发送的数据
                     front_end_data += "requisition_user_id="+data.user_id;
                     console.log("front_end_data="+front_end_data);
                     // 把前端数据传给后端
@@ -619,6 +662,27 @@
                                 // 禁用按钮：应该放入点击确认
                                 $(this).attr('disabled',true);
                                 tds.find('.edit-btn').attr('disabled',true);
+
+                                // --------更新一次表单窗格-----------
+                                temp_order_id = tds[1].innerText;
+                                $.ajax({
+                                    async: true,  // true 同步，false异步
+                                    data: {order_id: temp_order_id},
+                                    type: "post",
+                                    url : "purchase/initListTable",
+                                    success : function(data) {
+                                        console.log("--物品清单行修改保存后，更新一次窗口数据--");
+                                        temp_list_data=data.data;
+                                        temp_list_data = json2Array(temp_list_data, true)
+                                    }
+                                });
+                                $('#updateModal').modal('show');  // 显示弹窗表格
+                                // 更新表格数据
+                                $('#listTable').dataTable().api().clear();
+                                $('#listTable').dataTable().api().rows.add(temp_list_data);
+                                $('#listTable').dataTable().api().draw();
+                                //----------------------------------------
+
                             } else {
                                 alert("提交失败");
                             }
