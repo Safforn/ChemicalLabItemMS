@@ -15,7 +15,7 @@ public class item_dao_impl implements item_dao {
 
     @Override
     public boolean add(Item item) {
-        String sql = "insert into item(object_id, name, specification, quantity, unit, classification, price, experation_time, upper_limit, lower_limit, notes)" +
+        String sql = "insert into item(object_id, name, specification, quantity, unit, classfication, price, experation_time, upper_limit, lower_limit, notes)" +
                 "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             template.update(sql,
