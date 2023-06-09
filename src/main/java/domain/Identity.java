@@ -14,8 +14,7 @@ public class Identity implements Serializable {
     /**
      *无参构造方法
      */
-    public Identity() {
-    }
+    public Identity() {}
 
     /**
      * 有参构方法
@@ -27,6 +26,9 @@ public class Identity implements Serializable {
         this.identity_id = identity_id;
         this.user_id = user_id;
         this.identity = identity;
+    }
+
+    public Identity(String u) {
     }
 
     public String getIdentity_id() {

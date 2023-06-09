@@ -7,6 +7,7 @@ import domain.User;
 import org.apache.commons.beanutils.BeanUtils;
 import service.UserService;
 import service.impl.user_service_impl;
+import util.UuidUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +24,7 @@ public class UserServlet extends BaseServlet {
 
     public void regist(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
-        System.out.println("进入注册的后端");
+        //System.out.println("进入注册的后端");
         //1.获取数据
         Map<String, String[]> map = request.getParameterMap();
         //2.封装对象
@@ -136,5 +137,36 @@ public class UserServlet extends BaseServlet {
         response.setContentType("application/json;charset=utf-8");
         mapper.writeValue(response.getOutputStream(), identity);
     }
+
+    public void setRegistId(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException,IOException {
+        int identity_num = new Integer(request.getParameter("registId"));
+
+        //2.封装对象
+        Identity idtt = new Identity(UuidUtil.getIDTT(),UuidUtil.getU(),identity_num);
+
+        // 3.调用 service 完成注册
+        boolean flag = service.setRegistId(idtt);
+
+        ResultInfo info = new ResultInfo();
+        //4.响应结果
+        if(flag){
+            //注册成功
+            info.setFlag(true);
+        }else{
+            //注册失败
+            info.setFlag(false);
+            info.setErrorMsg("身份设置失败!");
+        }
+        //将 info 对象序列化为 json
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);
+        //将 json 数据写回客户端
+        //设置 content-type
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(json);
+    }
+
+
 }
 

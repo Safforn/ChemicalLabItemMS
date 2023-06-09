@@ -77,7 +77,7 @@ public class PurchaseServlet extends BaseServlet {
         purchase_requisition.print();  // 调试，显示前端传回的数据
 
 
-        if (order_id.equals("")) order_id = UuidUtil.getUuid();
+        if (order_id.equals("")) order_id = UuidUtil.getOE();
         List<Object_Entry> objectEntries = new ArrayList<>();
         Object_Entry object_entry = new Object_Entry();
         if (purchase_requisition.getPurchase_order_id() == null) {

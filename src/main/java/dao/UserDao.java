@@ -12,4 +12,7 @@ public interface UserDao {
     Identity findByUserId(String uid);
 //    void updateUser(User user);
     List<User> getMaxId();
+    Identity findByIdentity(int identity);
+
+    void saveId(Identity idtt);
 }

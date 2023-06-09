@@ -2,6 +2,7 @@ package dao.impl;
 
 import dao.UserDao;
 import domain.Identity;
+import domain.Object_Entry;
 import domain.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -81,6 +82,20 @@ public class UserDaoImpl implements UserDao {
     public List<User> getMaxId() {
         String sql = "SELECT user_id FROM user ORDER BY user_id DESC LIMIT 1";
         return template.query(sql, new BeanPropertyRowMapper<User>(User.class));
+    }
+
+    @Override
+    public Identity findByIdentity(int identity) {
+        return null;
+    }
+
+    @Override
+    public void saveId(Identity idtt) {
+        String sql = "insert into identity (identity_id, user_id, identity) values (?,?,?)";
+        template.update(sql,
+                idtt.getIdentity_id(),
+                idtt.getUser_id(),
+                idtt.getIdentity());
     }
 
 }

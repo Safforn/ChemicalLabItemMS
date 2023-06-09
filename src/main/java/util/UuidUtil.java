@@ -44,6 +44,8 @@ public final class UuidUtil {
 	public static int WRNUM = 0;
 	public static String PRO = "PRO";
 	public static int PRONUM = 0;
+	public static String IDTT = "ID";
+	public static int IDTTNUM = 0;
 
 	public static String getPRO() {
 		object_entry_dao objectEntryDao = new object_entry_dao_impl();
@@ -115,6 +117,13 @@ public final class UuidUtil {
 		waste_requisition_dao wasteRequisitionDao = new waste_requisition_dao_impl();
 		int num = stringToNum(wasteRequisitionDao.getMaxId().get(0).getWaste_requisition_id());
 		return WR + "-" + String.valueOf((WRNUM++) + num);
+	}
+
+	public static String getIDTT() {
+		UserDao userDao = new UserDaoImpl();
+		object_entry_dao objectEntryDao = new object_entry_dao_impl();
+		int num = stringToNum(objectEntryDao.getMaxOrderId().get(0).getObject_entry_id());
+		return PRO+ "-" + String.valueOf((PRONUM++) + num);
 	}
 
 

@@ -5,6 +5,7 @@ import dao.impl.UserDaoImpl;
 import domain.Identity;
 import domain.User;
 import service.UserService;
+import util.UuidUtil;
 
 
 public class user_service_impl implements UserService {
@@ -24,9 +25,7 @@ public class user_service_impl implements UserService {
             //用户名存在，注册失败
             return false;
         }
-
-        // TODO: 临时代码为新用户创建user_id
-        user.setUser_id("0012");
+        user.setUser_id(UuidUtil.getU());
 
         //2.保存用户信息
         userDao.save(user);
@@ -46,6 +45,18 @@ public class user_service_impl implements UserService {
     @Override
     public Identity findIdentity(User user) {
         return userDao.findByUserId(user.getUser_id());
+    }
+
+    @Override
+    public boolean setRegistId(Identity idtt) {
+        //1.根据用户名查询用户对象,判断 u 是否为 null
+        if(userDao.findByIdentity(idtt.getIdentity()) != null){
+            //用户名存在，注册失败
+            return false;
+        }
+        //2.保存用户信息
+        userDao.saveId(idtt);
+        return true;
     }
 
 //    @Override

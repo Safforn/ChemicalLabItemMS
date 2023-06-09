@@ -75,7 +75,7 @@ public class GetOrBorrowServlet extends BaseServlet {
         List<Object_Entry> object_entries = new ArrayList<>();
         Object_Entry objectEntry = new Object_Entry();
 
-        if (order_id.equals("")) order_id = UuidUtil.getUuid();
+        if (order_id.equals("")) order_id = UuidUtil.getOE();
 
         if (get_or_borrow_requisition.getGet_or_borrow_order_id() == null) {
             get_or_borrow_requisition.setGet_or_borrow_order_id(order_id);
