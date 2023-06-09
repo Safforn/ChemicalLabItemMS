@@ -244,22 +244,22 @@
                 data:temp_data,
                 columns:[
                     {
-                        'field': "purchase_requisition_id",
+                        'field': "get_or_borrow_requisition_id",
                         'title': '领用/借用申请表编号',
                         'defaultContent' : "",
                         sClass: 'text-center'
                     }, {
-                        'field': "purchase_order_id",
+                        'field': "get_or_borrow_order_id",
                         'title': '领用/借用物品清单编号',
                         'defaultContent' : "",
                         sClass: 'text-center'
                     }, {
-                        'field': "requisition_user_id",
+                        'field': "type",
                         'title': '申请单类型',
                         'defaultContent' : "",
                         sClass: 'text-center'
                     },{
-                        'field': "requisition_user_id",
+                        'field': "applicant_user_id",
                         'title': '申请人',
                         'defaultContent' : "",
                         sClass: 'text-center'
@@ -269,12 +269,12 @@
                         'defaultContent' : "",
                         sClass: 'text-center'
                     }, {
-                        'field': "requisition_date",
+                        'field': "borrow_date",
                         'title': '借用开始日期',
                         'defaultContent' : "",
                         sClass: 'text-center'
                     },{
-                        'field': "requisition_date",
+                        'field': "return_date",
                         'title': '借用结束日期',
                         'defaultContent' : "",
                         sClass: 'text-center'
@@ -356,20 +356,29 @@
                 var tds=$(this).parents("tr").children();
                 temp_order_id = tds[1].innerText;
                 // 向后端请求物品清单数据
-                $.ajax({
-                    async: false,  // true 同步，false异步
-                    data: {order_id: temp_order_id},
-                    type: "post",
-                    url : "getorborrow/initListTable",
-                    success : function(data) {
-                        //console.log("--flag-initListTable-");
-                        temp_list_data=data.data;
-                        temp_list_data = json2Array(temp_list_data, true)
-                    }
-                });
+                if(temp_order_id != ""){
+                    $.ajax({
+                        async: false,  // true 同步，false异步
+                        data: {order_id: temp_order_id},
+                        type: "post",
+                        url : "getorborrow/initListTable",
+                        success : function(data) {
+                            //console.log("--flag-initListTable-");
+                            temp_list_data=data.data;
+                            temp_list_data = json2Array(temp_list_data, true)
+                        }
+                    });
+                }
+
+                $('#updateModal').modal('show');
+
+                // 更新表格数据
+                $('#listTable').dataTable().api().clear();
+                $('#listTable').dataTable().api().rows.add(temp_list_data);
+                $('#listTable').dataTable().api().draw();
 
                 // 更改"状态"字段 和 按钮状态
-                var arr = tds[5].innerText;
+                var arr = tds[8].innerText;
                 console.log(arr);
                 if(arr==='已提交'||arr==='审核通过'){
                     $('.list-edit-btn').attr('disabled',true);
@@ -461,12 +470,7 @@
                         // width:90,
                         'defaultContent' : "",
                         'sClass': 'text-center'
-                    }, {
-                        'field': "warehouse_id",
-                        'title': '仓库',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
+                    },  {
                         'field': "notes",
                         'title': '备注',
                         'defaultContent' : "",
@@ -568,12 +572,13 @@
                         $.get("user/findOne", {}, function (data) {
                             // 获取当前登陆的用户id
                             front_end_data += "applicant_user_id="+data.user_id;
-                            console.log("front_end_data="+front_end_data);
+                            //console.log("front_end_data="+front_end_data);
                             // 把前端数据传给后端
                             $.post("getorborrow/createOrUpdateItems", front_end_data, function (data) {
                                 console.log("在接受后端数据之后");
                                 if (data.flag) {
                                     alert("提交成功");
+                                    location.reload();
                                     tds[8].innerText = '已提交';
                                     // 禁用按钮：应该放入点击确认
                                     $(this).attr('disabled',true);
@@ -646,7 +651,7 @@
                 var row=listtable.row($(this).parents("tr"));
                 var tds=$(this).parents("tr").children();
                 $.each(tds, function(i,val){
-                    console.log("|"+tds[i].innerText+"|");
+                    //console.log("|"+tds[i].innerText+"|");
                     var jqob=$(val);
                     //把input变为字符串
                     if(!jqob.has('button').length){
@@ -667,9 +672,9 @@
                 if (tds[7].innerText !== "") front_end_data += "lower_limit="+tds[7].innerText+"&";
                 if (tds[8].innerText !== "") front_end_data += "upper_limit="+tds[8].innerText+"&";
                 if (tds[9].innerText !== "") front_end_data += "notes="+tds[9].innerText+"&";
-                front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
+                //front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
 
-                console.log("front_end_data=\n"+front_end_data+"\nnotes="+tds[9].innerText);
+                //console.log("front_end_data=\n"+front_end_data+"\nnotes="+tds[9].innerText);
                 $.get("user/findOne", {}, function (data) {
                     // 获取当前登陆的用户id，写入前端待发送的数据
                     //front_end_data += "requisition_user_id="+data.user_id;
