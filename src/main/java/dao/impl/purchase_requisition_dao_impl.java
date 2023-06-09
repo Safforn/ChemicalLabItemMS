@@ -111,6 +111,11 @@ public class purchase_requisition_dao_impl implements purchase_requisition_dao {
         }
 
     }
+    @Override
+    public List<Purchase_Requisition> getMaxId() {
+        String sql = "SELECT purchase_requisition_id FROM purchase_requisition ORDER BY purchase_requisition_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<Purchase_Requisition>(Purchase_Requisition.class));
+    }
 
     @Override
     public boolean updateByApprove(Purchase_Requisition table) {

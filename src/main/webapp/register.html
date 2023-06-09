@@ -35,15 +35,15 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="radio" id="status" name="status" value="负责人">负责人
+                            <input  type="radio" id="status" name="status" value="负责人">负责人
                         </td>
                         <td>
-                            <input type="radio" name="status" value="审批人"> 审批人
+                            <input  type="radio" name="status" value="审批人"> 审批人
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <input type="radio" name="status" value="仓库管理员"> 仓库管理员
+                            <input  type="radio" name="status" value="仓库管理员"> 仓库管理员
                         </td>
                         <td>
                             <input type="radio" name="status" value="用户" checked> 用户
@@ -204,7 +204,38 @@
                                      "&name="+$("#name").val()+
                                      "&phonenumber="+$("#phonenumber").val()+
                                      "&email="+$("#email").val();
+
                 if (checkAccount() && checkPassword() && checkName() && checkRepassword() && checkEmail() && checkTel()) {
+                    var registIdentity = $("input[type='radio']:checked").val();
+                    var registId = null;
+                    switch(registIdentity){
+                        case "负责人":
+                            registId = 1;
+                            alert(registIdentity);
+                            break;
+                        case "审批人":
+                            registId = 3;
+                            alert(registIdentity);
+                            break;
+                        case "仓库管理员":
+                            registId = 2;
+                            alert(registIdentity);
+                            break;
+                        default:
+                            alert(registIdentity);
+                            break;
+                    }
+                    if(registId != null){
+                        $.post("user/setRegistId",{registId: registId},function (data){
+                            if (data.flag) {
+                                // 身份设置成功
+                                alert("身份设置成功！");
+                            } else {
+                                alert("errormsg="+data.errorMsg);
+                                $("#errorMsg").html(data.errorMsg);
+                            }
+                        })
+                    }
                     $.post("user/regist",front_end_data, function (data) {
                         // 处理服务器响应的结果:从服务器响应的data格式： {flag:true,errorMsg:"注册失败"}
                         alert("data.flag="+data.flag);

@@ -34,4 +34,9 @@ public class other_in_dao_impl implements other_in_dao {
         String sql = "select * from other_in_warehouse";
         return template.query(sql, new BeanPropertyRowMapper<Other_in_Warehouse>(Other_in_Warehouse.class));
     }
+    @Override
+    public List<Other_in_Warehouse> getMaxId() {
+        String sql = "SELECT other_in_warehouse_id FROM other_in_warehouse ORDER BY other_in_warehouse_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<Other_in_Warehouse>(Other_in_Warehouse.class));
+    }
 }

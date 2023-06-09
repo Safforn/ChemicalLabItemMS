@@ -94,24 +94,9 @@ public class waste_requisition_dao_impl implements waste_requisition_dao {
         String sql = "select * from waste_requisition where state = ?";
         return template.query(sql, new BeanPropertyRowMapper<Waste_Requisition>(Waste_Requisition.class), state);
     }
-
     @Override
-    public boolean updateByApprove(Waste_Requisition table) {
-        //purchase_requisition_id=PR-0000002&state=2&approval_user_id=0005&approval_opinions=朕允了
-        String sql = "update purchase_requisition set state = ?, approval_user_id = ?, approval_opinions = ?, approval_date = ? where purchase_requisition_id = ?";
-        try {
-            template.update(sql,
-                    table.getState(),
-                    table.getApproval_user_id(),
-                    table.getApproval_opinions(),
-                    table.getApproval_date(),
-                    table.getWaste_requisition_id()
-            );
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+    public List<Waste_Requisition> getMaxId() {
+        String sql = "SELECT waste_requisition_id FROM waste_requisition ORDER BY waste_requisition_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<Waste_Requisition>(Waste_Requisition.class));
     }
-
 }

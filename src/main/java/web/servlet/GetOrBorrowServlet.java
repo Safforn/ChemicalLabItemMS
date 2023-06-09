@@ -75,7 +75,7 @@ public class GetOrBorrowServlet extends BaseServlet {
         List<Object_Entry> object_entries = new ArrayList<>();
         Object_Entry objectEntry = new Object_Entry();
 
-        if (order_id.equals("")) order_id = UuidUtil.getUuid();
+        if (order_id.equals("")) order_id = UuidUtil.getOE();
 
         if (get_or_borrow_requisition.getGet_or_borrow_order_id() == null) {
             get_or_borrow_requisition.setGet_or_borrow_order_id(order_id);
@@ -320,7 +320,7 @@ public class GetOrBorrowServlet extends BaseServlet {
         System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
         // 如果当前order_id没有关联的物品行，新建一个对应的缓存
         if (order_id == "") {
-            order_id = UuidUtil.getUuid();
+            order_id = UuidUtil.getPRO();
         }
         temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
 
@@ -332,7 +332,7 @@ public class GetOrBorrowServlet extends BaseServlet {
                 }
             }
         } else {  // 新建的Item 补充id属性
-            item_changed.setObject_id(UuidUtil.getUuid());
+            item_changed.setObject_id(UuidUtil.getII());
         }
         temp_items.get(order_id).add(item_changed);  // 缓存 前端修改的item
 

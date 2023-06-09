@@ -591,7 +591,7 @@
                     console.log(!jqob.has('button').length);
                     if(!jqob.has('button').length){
                         var txt=jqob.children("input").val();
-                        console.log(jqob.children("input"));
+                        //console.log(jqob.children("input"));
                         jqob.html(txt);
                         listtable.cell(jqob).data(txt);//修改DataTables对象的数据
                     }
@@ -613,8 +613,8 @@
 
                 $.get("user/findOne", {}, function (data) {
                     // 获取当前登陆的用户id，写入前端待发送的数据
-                    //front_end_data += "requisition_user_id="+data.user_id;
-                    console.log("front_end_data="+front_end_data);
+                    front_end_data += "requisition_user_id="+data.user_id;
+                    //console.log("front_end_data="+front_end_data);
                     // 把前端数据传给后端
                     $.post("waste/getOrderId", {order_id: temp_order_id}, function () {
                         $.post("waste/UpdateItemsList", front_end_data, function (data) {
@@ -627,19 +627,19 @@
                                 // --------更新一次表单窗格-----------
                                 temp_order_id = tds[1].innerText;
                                 $.ajax({
-                                    async: false,  // true 同步，false异步
+                                    async: true,  // true 同步，false异步
                                     data: {order_id: temp_order_id},
                                     type: "post",
                                     url : "waste/initListTable",
                                     success : function(data) {
-                                        alert("--物品清单行修改保存后，更新一次窗口数据--");
+                                        //alert("--物品清单行修改保存后，更新一次窗口数据--");
                                         temp_list_data=data.data;
                                         //alert("(data.data)=\n"+data.data);
                                         temp_list_data = json2Array(temp_list_data, true)
                                     }
                                 });
 
-                                alert("temp_list_data=\n"+temp_list_data);
+                                //alert("temp_list_data=\n"+temp_list_data);
                                 $('#updateModal').modal('show');  // 显示弹窗表格
                                 // 更新表格数据
                                 $('#listTable').dataTable().api().clear();
@@ -679,7 +679,22 @@
             // 申请单点击删除按钮，触发删除行脚本
             $(document).on("click",'.delete',function(){
                 $('#table').dataTable().fnDeleteRow($(this).closest('tr')[0]);
+                var tds=$(this).parents("tr").children();
+                console.log("两个编号"+tds[0].innerText+"|"+tds[1].innerText);
+                $.ajax({
+                    async: true,  // true 同步，false异步
+                    data: {
+                        waste_requisition_id: tds[0].innerText,
+                        order_id: tds[1].innerText},
+                    type: "post",
+                    url : "waste/deleteTable",
+                    success : function(data) {
+                        console.log("--物品清单行修改保存后，更新一次窗口数据--");
+                        console.log("return flag" + data.flag);
+                    }
+                });
             });
+
             // 物品清单点击删除按钮，触发删除行脚本
             $(document).on("click",'.list-delete',function(){
                 $('#listTable').dataTable().fnDeleteRow($(this).closest('tr')[0]);

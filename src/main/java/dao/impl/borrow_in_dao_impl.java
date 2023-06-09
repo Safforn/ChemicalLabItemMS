@@ -2,8 +2,11 @@ package dao.impl;
 
 import dao.borrow_in_dao;
 import domain.Borrow_in_Warehouse;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import util.JDBCUtils;
+
+import java.util.List;
 
 public class borrow_in_dao_impl implements borrow_in_dao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
@@ -23,5 +26,11 @@ public class borrow_in_dao_impl implements borrow_in_dao {
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public List<Borrow_in_Warehouse> getMaxId() {
+        String sql = "SELECT borrow_in_warehouse_id FROM borrow_in_warehouse ORDER BY borrow_in_warehouse_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<Borrow_in_Warehouse>(Borrow_in_Warehouse.class));
     }
 }

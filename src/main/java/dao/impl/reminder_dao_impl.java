@@ -2,8 +2,11 @@ package dao.impl;
 
 import dao.reminder_dao;
 import domain.Reminder;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import util.JDBCUtils;
+
+import java.util.List;
 
 public class reminder_dao_impl implements reminder_dao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
@@ -29,5 +32,10 @@ public class reminder_dao_impl implements reminder_dao {
             e.printStackTrace();
             return false;
         }
+    }
+    @Override
+    public List<String> getMaxId() {
+        String sql = "SELECT id FROM reminder ORDER BY id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<>());
     }
 }

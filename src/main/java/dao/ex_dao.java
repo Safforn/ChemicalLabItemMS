@@ -17,4 +17,5 @@ public interface ex_dao {
      * @return
      */
     List<Ex_Warehouse> search();
+    List<Ex_Warehouse> getMaxId();
 }

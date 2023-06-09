@@ -9,6 +9,7 @@ public interface UserService {
     boolean regist(User user);
     User login(User user);
     Identity findIdentity(User user);
+    boolean setRegistId(Identity idtt);
 //    List<Goods> searchGoods(String uid);
 //    String leaseAndBuy(Order order);
 //    List<Order> searchOrderByType(int type, String uid);

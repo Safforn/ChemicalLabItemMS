@@ -19,7 +19,7 @@ public class ex_service_impl implements ex_service {
     private item_dao itemDao = new item_dao_impl();
     @Override
     public boolean add(Ex_Warehouse ex_warehouse, List<Object_Entry> order) {
-        ex_warehouse.setEx_warehouse_id(UuidUtil.getUuid());
+        ex_warehouse.setEx_warehouse_id(UuidUtil.getEW());
         ex_warehouse.setDate(UuidUtil.getCurrentTime());
         if (!exDao.add(ex_warehouse)) {
             return false;

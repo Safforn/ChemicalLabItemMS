@@ -1,6 +1,5 @@
 package dao;
 
-import domain.Purchase_Requisition;
 import domain.Waste_Requisition;
 import domain.get_or_borrow_Requisition;
 
@@ -50,8 +49,5 @@ public interface waste_requisition_dao {
      * @return
      */
     List<Waste_Requisition> searchTableByState(int state);
-
-
-    boolean updateByApprove(Waste_Requisition table);
-
+    List<Waste_Requisition> getMaxId();
 }

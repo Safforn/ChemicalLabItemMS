@@ -21,7 +21,7 @@ public class item_service_impl implements item_service {
     @Override
     public boolean add(List<Item> items) {
         for (Item item : items) {
-            if (item.getObject_id() == null) item.setObject_id(UuidUtil.getUuid());
+            if (item.getObject_id() == null) item.setObject_id(UuidUtil.getII());
             i_dao.add(item);
         }
         return false;

@@ -122,7 +122,13 @@ public class get_or_borrow_dao_impl implements get_or_borrow_dao {
     @Override
     public List<get_or_borrow_Requisition> searchBorrowUnreturn() {
         String sql = "select * from get_or_borrow_requisition where type = 1 and state = 4";
-        return template.query(sql, new BeanPropertyRowMapper<>(get_or_borrow_Requisition.class));
+        return template.query(sql, new BeanPropertyRowMapper<get_or_borrow_Requisition>(get_or_borrow_Requisition.class));
+    }
+
+    @Override
+    public List<get_or_borrow_Requisition> getMaxId() {
+        String sql = "SELECT get_or_borrow_requisition_id FROM get_or_borrow_requisition ORDER BY get_or_borrow_requisition_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<get_or_borrow_Requisition>(get_or_borrow_Requisition.class));
     }
 
     @Override

@@ -26,14 +26,14 @@ public class purchase_in_service_impl implements purchase_in_service {
         Purchase_in_Warehouse table = (Purchase_in_Warehouse)temp.getTable();//采购入库表
         List<Object_Entry> order = temp.getOrder();  // 入库清单
         List<String> inOrderId = purchaseInDao.getInOrder(table.getPurchase_order_id());  // 从DS里获取的 与采购清单关联的入库清单
-        String InId = UuidUtil.getUuid();
+        String InId = UuidUtil.getPW();
         table.setPurchase_in_warehouse_id(InId);  //为入库表创建id
 
         if (inOrderId.size() == 0) {  // 首次入库
-            String id = UuidUtil.getUuid();   //生成入库清单的id
+            String id = UuidUtil.getPRO();   //生成入库清单的id
             table.setPurchase_in_order_id(id);  // 写入采购入库表
             for (Object_Entry object_entry : order) {
-                object_entry.setObject_entry_id(UuidUtil.getUuid());
+                object_entry.setObject_entry_id(UuidUtil.getOE());
                 itemDao.changeNum(object_entry.getObject_id(), object_entry.getNum());
             }
             check(table);

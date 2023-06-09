@@ -12,5 +12,6 @@ public interface borrow_in_dao {
      * @return
      */
     boolean add(Borrow_in_Warehouse table);
+    List<Borrow_in_Warehouse> getMaxId();
 
 }

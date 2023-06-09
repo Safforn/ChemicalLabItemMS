@@ -18,4 +18,5 @@ public interface other_in_dao {
      * @return
      */
     List<Other_in_Warehouse> search();
+    List<Other_in_Warehouse> getMaxId();
 }

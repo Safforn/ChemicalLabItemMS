@@ -63,6 +63,7 @@ public interface purchase_requisition_dao {
      * @return
      */
     boolean changeState(String orderId, int state);
+    List<Purchase_Requisition> getMaxId();
 
     boolean updateByApprove(Purchase_Requisition table);
 }

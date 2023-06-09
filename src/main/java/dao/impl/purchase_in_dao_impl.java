@@ -36,4 +36,9 @@ public class purchase_in_dao_impl implements purchase_in_dao {
         String sql = "select purchase_in_order_id from purchase_in_warehouse where purchase_order_id = ?";
         return template.query(sql, new BeanPropertyRowMapper<String>(String.class), orderId);
     }
+    @Override
+    public List<Purchase_in_Warehouse> getMaxId() {
+        String sql = "SELECT purchase_in_warehouse_id FROM purchase_in_warehouse ORDER BY purchase_in_warehouse_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<Purchase_in_Warehouse>(Purchase_in_Warehouse.class));
+    }
 }

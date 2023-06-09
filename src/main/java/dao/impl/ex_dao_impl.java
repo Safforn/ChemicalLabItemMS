@@ -34,4 +34,9 @@ public class ex_dao_impl implements ex_dao {
         String sql = "select * from ex_warehouse";
         return template.query(sql, new BeanPropertyRowMapper<Ex_Warehouse>(Ex_Warehouse.class));
     }
+    @Override
+    public List<Ex_Warehouse> getMaxId() {
+        String sql = "SELECT ex_warehouse_id FROM ex_warehouse ORDER BY ex_warehouse_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<Ex_Warehouse>(Ex_Warehouse.class));
+    }
 }
