@@ -23,6 +23,17 @@ public class Other_in_Warehouse implements Serializable {
     }
 
 
+    public void print() {
+        System.out.println("输出Purchase_Requisition对象信息:\n"+
+                "other_in_warehouse_id="+other_in_warehouse_id+
+                "|other_in_order_id="+other_in_order_id+
+                "|warehouse_id="+warehouse_id+
+                "|notes="+notes+
+                "|date="+date+
+                "|type="+type);
+    }
+
+
     /**
      *无参构造方法
      */

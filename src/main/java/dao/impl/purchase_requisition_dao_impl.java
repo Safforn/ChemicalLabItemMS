@@ -96,7 +96,7 @@ public class purchase_requisition_dao_impl implements purchase_requisition_dao {
     @Override
     public List<Purchase_Requisition> searchUnreturn() {
         String sql = "select * from purchase_requisition where state = 3";
-        return template.query(sql, new BeanPropertyRowMapper<>()) ;
+        return template.query(sql, new BeanPropertyRowMapper<>(Purchase_Requisition.class)) ;
     }
 
     @Override

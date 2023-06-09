@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
 
-    <title>基本表单</title>
+    <title>采购申请</title>
     <meta name="keywords" >
     <meta name="description" >
     <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
@@ -347,7 +347,7 @@
                     async: false,  // true 同步，false异步
                     data: {order_id: temp_order_id},
                     type: "post",
-                    url : "purchase/initListTable",
+                    url : "inWarehouse/searchOneByOrderId",
                     success : function(data) {
                         //console.log("--flag-initListTable-");
                         temp_list_data=data.data;

@@ -9,13 +9,11 @@
     <title>其他入库表单</title>
     <meta name="keywords" content="">
     <meta name="description" content="">
-
     <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css?v=2.2.0" rel="stylesheet">
-
 </head>
 
 <body>
@@ -55,11 +53,11 @@
                                     <label class="col-sm-2 control-label">选择仓库</label>
 
                                     <div class="col-sm-10">
-                                        <select class="form-control m-b" name="account">
-                                            <option>仓库 1</option>
-                                            <option>仓库 2</option>
-                                            <option>仓库 3</option>
-                                            <option>仓库 4</option>
+                                        <select id="select-wh" class="form-control m-b" name="account">
+                                            <option>WH-0001</option>
+                                            <option>WH-0002</option>
+                                            <option>WH-0003</option>
+                                            <option>WH-0004</option>
                                         </select>
                                     </div>
                                 </div>
@@ -67,7 +65,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">备注</label>
                                     <div class="col-sm-10">
-                                        <textarea class="form-control input-lg m-b" name="saysths" rows="5" cols="30" wrap="soft" style="resize:none;">备注</textarea>
+                                        <textarea id="text-wh" class="form-control input-lg m-b" name="saysths" rows="5" cols="30" wrap="soft" style="resize:none;">备注</textarea>
                                     </div>
                                 </div>
                                 <div class="hr-line-dashed"></div>
@@ -78,33 +76,34 @@
                                         <div class="form-control-static" id="dateTime"></div>
                                     </div>
                                 </div>
-                                <div class="hr-line-dashed"></div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <h5>其他入库</h5>
-                                                <div class="ibox-tools">
-                                                    <a class="collapse-link">
-                                                        <i class="fa fa-chevron-up"></i>
-                                                    </a>
-                                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>其他入库</h5>
+                                            <div class="ibox-tools">
+                                                <a class="collapse-link">
+                                                    <i class="fa fa-chevron-up"></i>
+                                                </a>
                                             </div>
-                                            <div class="ibox-content">
-                                                <div class="">
-                                                    <a onclick="fnClickAddRow();" href="javascript:void(0);" class="btn btn-primary ">添加物品</a>
-                                                </div>
-
-
-                                                <table id="editable" class="datatable table table-striped table-bordered table-hover">
-
-                                                </table>
-                                                <button class="btn btn-primary"  onclick="other_submit()" style="float:right">确认</button>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <div class="">
+                                                <a onclick="listfnClickAddRow();" href="javascript:void(0);" class="list-top-btn btn btn-primary ">添加物品</a>
+                                                <button type="button" id="list-batch-edit-btn" class="list-top-btn btn btn-primary ">批量编辑</button>
+                                                <button type="button" id="list-batch-save-btn" class="list-top-btn btn btn-primary ">批量保存</button>
+                                                <button type="button" id="reload-btn" class="list-top-btn btn btn-primary">刷新</button>
                                             </div>
+
+                                            <table id=listTable width="100%" class="table table-striped table-bordered table-hover dataTables-example">
+
+                                            </table>
+                                            <button class="submit-btn btn btn-primary"  onclick="other_submit()" style="float:right">确认</button>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -154,29 +153,50 @@
 </script>
 
 <script>
-    const dataSets = [
-        ['aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa2', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa3', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa4', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa5', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa6', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa7', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa8', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa9', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa10', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa11', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa12', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa13', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa14', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa15', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ];
+    var temp_list_data = [];
+    var temp_order_id = uuid().replace(/-/g,'');
+    function uuid(){
+        const tempUrl = URL.createObjectURL(new Blob());
+        const uuid = tempUrl.toString();
+        URL.revokeObjectURL(tempUrl);  // 释放这个url
+        return uuid.substring(uuid.lastIndexOf("/") + 1)
+    }
+    console.log(uuid().replace(/-/g,''))   // 26dec868-b29f-42e5-9eb6-9c59396ae411
+
+    function json2Array(jsonData, list_or_not) {
+        var jsonsString = jsonData.slice(1, jsonData.length - 1);
+        var jsonStrings = jsonsString.split("},");
+        var length = jsonStrings.length;
+        var jsons = [];
+        for (var i = 0; i !== length-1; ++i) {
+            jsonStrings[i] += '}';
+        }
+        var source = [[]];
+        for (var i = 0; i !== length; ++i) {
+            //console.log("$"+jsonStrings[i]);
+            jsons[i] = eval('(' + jsonStrings[i] + ')');
+            var data = [];
+            for(var key in jsons[i]) {
+                if(i === 0) {
+                    source[0].push(key);
+                }
+                //console.log("i="+i+"|key="+key+"|json[i,key]="+jsons[i][key]);
+                if(!list_or_not || key !== "object_id" ) {
+                    data.push(jsons[i][key]);
+                } else {
+                    console.log("跳过在执行一次")
+                }
+            }
+            source.push(data);
+        }
+        return source.slice(1); //删除第1行
+    }
+
     $(document).ready(function (){
 
-        var table = $('#editable').DataTable({
+        var listtable = $('#listTable').DataTable({
             retrieve: true,
-            data:dataSets,
+            data:temp_list_data,
             columns:[
                 {
                     'field': "name",
@@ -216,13 +236,11 @@
                 }, {
                     'field': "upper_limit",
                     'title': '警戒上限',
-                    width:90,
                     'defaultContent' : "",
                     'sClass': 'text-center'
                 }, {
                     'field': "lower_limit",
                     'title': '警戒下限',
-                    width:90,
                     'defaultContent' : "",
                     'sClass': 'text-center'
                 }, {
@@ -238,7 +256,7 @@
                 }, {
                     field: "operate",
                     sTitle: '操作',
-                    sDefaultContent : "<button class='edit-btn btn btn-primary btn-xs' type='button'>修改</button>" +
+                    sDefaultContent : "<button class='list-edit-btn btn btn-primary btn-xs' type='button'>修改</button>" +
                         "<button class='delete btn btn-default btn-xs' style='margin-left: 10px'>删除</button>",
                     sClass: 'text-center',
                     width:100,
@@ -275,42 +293,94 @@
                 }
             }
         });
-        $(document).on("click",".edit-btn",function(){
-            console.log("修改ing");
+        // 物品清单修改
+        $("#listTable tbody").on("click",".list-edit-btn",function(){
             var tds=$(this).parents("tr").children();
             $.each(tds, function(i,val){
                 var jqob=$(val);
                 if(jqob.has('button').length ){return true;}//跳过第1项 序号,按钮
                 var txt=jqob.text();
-                var put=$("<input type='text' class='changeText' style='width: 80px'>");
-                console.log(put[0].type);
+                var put=$("<input type='text' style='width: 80px'>");
                 put.val(txt);
                 jqob.html(put);
             });
             $(this).html("保存");
-            $(this).toggleClass("edit-btn");
-            $(this).toggleClass("save-btn");
+            $(this).toggleClass("list-edit-btn");
+            $(this).toggleClass("list-save-btn");
         });
 
-        $(document).on("click",".save-btn",function(){
-            var row=table.row($(this).parents("tr"));
+        //  物品清单修改保存
+        $("#listTable tbody").on("click",".list-save-btn",function(){
+            console.log("点击保存");
+            var row=listtable.row($(this).parents("tr"));
             var tds=$(this).parents("tr").children();
+            console.log(tds);
             $.each(tds, function(i,val){
+                console.log("|"+tds[i].innerText+"|");
                 var jqob=$(val);
                 //把input变为字符串
                 if(!jqob.has('button').length){
                     var txt=jqob.children("input").val();
-                    var txt2=jqob.find(".changeText").val();
-                    console.log(jqob.children("input"));
                     jqob.html(txt);
-                    table.cell(jqob).data(txt);//修改DataTables对象的数据
+                    listtable.cell(jqob).data(txt);//修改DataTables对象的数据
                 }
             });
-            var data=row.data();
-            //这里写传数据的
-            $(this).html("修改");
-            $(this).toggleClass("edit-btn");
-            $(this).toggleClass("save-btn");
+
+            var front_end_data = "";
+            if (tds[0].innerText !== "") front_end_data += "name="+tds[0].innerText+"&";
+            if (tds[1].innerText !== "") front_end_data += "specification="+tds[1].innerText+"&";
+            if (tds[2].innerText !== "") front_end_data += "quantity="+tds[2].innerText+"&";
+            if (tds[3].innerText !== "") front_end_data += "unit="+tds[3].innerText+"&";
+            if (tds[4].innerText !== "") front_end_data += "classification="+tds[4].innerText+"&";
+            if (tds[5].innerText !== "") front_end_data += "price="+tds[5].innerText+"&";
+            if (tds[6].innerText !== "") front_end_data += "expiration_time="+tds[6].innerText+"&";
+            if (tds[7].innerText !== "") front_end_data += "lower_limit="+tds[7].innerText+"&";
+            if (tds[8].innerText !== "") front_end_data += "upper_limit="+tds[8].innerText+"&";
+            if (tds[9].innerText !== "") front_end_data += "notes="+tds[9].innerText+"&";
+            front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
+            console.log("front_end_data"+front_end_data)
+            $.get("user/findOne", {}, function (data) {
+                // 获取当前登陆的用户id，写入前端待发送的数据
+                //front_end_data += "requisition_user_id="+data.user_id;
+                console.log("front_end_data="+front_end_data);
+
+                // 把前端数据传给后端
+                $.post("inWarehouse/getOrderId", {order_id: temp_order_id}, function () {
+                    $.post("inWarehouse/UpdateItemsList", front_end_data, function (data) {
+                        console.log("在接受后端数据之后"+front_end_data);
+                        if (data.flag) {
+                            alert("提交成功");
+
+                            // --------更新一次表单窗格-----------
+                            // temp_order_id = tds[1].innerText;
+                            $.ajax({
+                                async: true,  // true 同步，false异步
+                                data: {order_id: temp_order_id},
+                                type: "post",
+                                url : "inWarehouse/initListTable",
+                                success : function(data) {
+                                    console.log("--物品清单行修改保存后，更新一次窗口数据--\n"+data.data);
+                                    temp_list_data=data.data;
+                                    temp_list_data = json2Array(temp_list_data, true)
+                                }
+                            });
+                            // 更新表格数据
+                            $('#listTable').dataTable().api().clear();
+                            $('#listTable').dataTable().api().rows.add(temp_list_data);
+                            $('#listTable').dataTable().api().draw();
+                            //----------------------------------------
+
+                        } else {
+                            alert("提交失败");
+                        }
+                    });
+                });
+
+            });  // end of $.get("user/findOne"...
+
+            $(this).html("编辑");
+            $(this).toggleClass("list-edit-btn");
+            $(this).toggleClass("list-save-btn");
         });
 
         // 点击删除按钮，触发删除行脚本
@@ -318,12 +388,55 @@
             $('.datatable').dataTable().fnDeleteRow($(this).closest('tr')[0]);
         });
 
+        //物品清单批量点击编辑按钮
+        $("#list-batch-edit-btn").click(function(){
+            $(".list-edit-btn").click();
+        });
+        $("#list-batch-save-btn").click(function(){
+            $(".list-save-btn").click();
+        });
+
+        $("#reload-btn").click(function () {
+           // location.reload();
+
+            $.ajax({
+                async: true,  // true 同步，false异步
+                data: {order_id: temp_order_id},
+                type: "post",
+                url : "inWarehouse/initListTable",
+                success : function(data) {
+                    console.log("点击刷新按钮\n"+data.data);
+                    temp_list_data=data.data;
+                    temp_list_data = json2Array(temp_list_data, true)
+                }
+            });
+            $('#listTable').dataTable().api().clear();
+            $('#listTable').dataTable().api().rows.add(temp_list_data);
+            $('#listTable').dataTable().api().draw();
+        });
+
     });
 
     //点击入库按钮
     function other_submit(){
+        var warehouse = $('#select-wh').val();
+        var notes = $('#text-wh').val();
         if(confirm('确认入库？')){
             //点击确认
+            var front_end_data = "other_in_warehouse_id="+temp_order_id+'&'+
+                "warehouse_id="+warehouse+'&'+
+                'type='+'3'+'&'+
+                'notes='+notes;
+
+            // 把前端数据传给后端
+            $.post("inWarehouse/otherIn", front_end_data, function (data) {
+                console.log("在接受后端数据之后");
+                if (data.flag) {
+                    alert("提交成功");
+                } else {
+                    alert("提交失败");
+                }
+            })
 
         }else{
             //点击取消
@@ -335,39 +448,11 @@
 </script>
 
 <script>
-    // $(document).ready(function () {
-    //   $('.dataTables-example').dataTable();
-    //
-    //   /* Init DataTables */
-    //   var oTable = $('#editable').dataTable();
-    //
-    //   /* Apply the jEditable handlers to the table */
-    //   oTable.$('td').editable('../example_ajax.php', {
-    //     "callback": function (sValue, y) {
-    //       var aPos = oTable.fnGetPosition(this);
-    //       oTable.fnUpdate(sValue, aPos[0], aPos[1]);
-    //     },
-    //     "submitdata": function (value, settings) {
-    //       return {
-    //         "row_id": this.parentNode.getAttribute('id'),
-    //         "column": oTable.fnGetPosition(this)[2]
-    //       };
-    //     },
-    //
-    //     "width": "90%",
-    //     "height": "100%"
-    //   });
-    //
-    //
-    // });
-
-    function fnClickAddRow() {
-        $('#editable').dataTable().fnAddData([
+    function listfnClickAddRow() {
+        $('#listTable').dataTable().fnAddData([
             "", "", "", "",
             "", "", "", "", "",
-            "", ""]);
-
-    }
+            "", ""]);}
 </script>
 
 

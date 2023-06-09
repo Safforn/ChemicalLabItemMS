@@ -1,6 +1,7 @@
 package service;
 
 import domain.Other_in_Warehouse;
+import domain.template_order;
 
 import java.util.List;
 
@@ -13,8 +14,8 @@ public interface other_in_service {
 
     /**
      * 新建入库单
-     * @param other_in_warehouse
+     * @param temp
      * @return
      */
-    boolean add(Other_in_Warehouse other_in_warehouse);
+    boolean add(template_order temp);
 }

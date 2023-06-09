@@ -32,6 +32,6 @@ public class ex_dao_impl implements ex_dao {
     @Override
     public List<Ex_Warehouse> search() {
         String sql = "select * from ex_warehouse";
-        return template.query(sql, new BeanPropertyRowMapper<>());
+        return template.query(sql, new BeanPropertyRowMapper<Ex_Warehouse>(Ex_Warehouse.class));
     }
 }

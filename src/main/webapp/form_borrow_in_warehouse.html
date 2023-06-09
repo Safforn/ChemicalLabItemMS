@@ -96,10 +96,10 @@
 
                                                     <div class="col-sm-10">
                                                         <select class="form-control m-b" name="account">
-                                                            <option>仓库 1</option>
-                                                            <option>仓库 2</option>
-                                                            <option>仓库 3</option>
-                                                            <option>仓库 4</option>
+                                                            <option>WH-0001</option>
+                                                            <option>WH-0002</option>
+                                                            <option>WH-0003</option>
+                                                            <option>WH-0004</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -204,73 +204,161 @@
     });
 </script>
 <script>
-    const dataSet = [
-        ['id', 'aaa', 'bb', '30', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','1'],
-        ['id1', 'aaa1', 'cc', '20', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','2'],
-        ['id2', 'aaa', 'bb', '30', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','3'],
-        ['id3', 'aaa1', 'cc', '20', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','0'],
-        ['id4', 'aaa', 'bb', '30', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','1'],
-        ['id5', 'aaa1', 'cc', '20', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','2'],
-        ['id6', 'aaa', 'bb', '30', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','3'],
-        ['id7', 'aaa1', 'cc', '20', 'xxxx-xx','aaa', 'bb',  'xxxx-xx', '0'],
-        ['id8', 'aaa', 'bb', '30', 'xxxx-xx', 'aaa', 'bb', 'xxxx-xx','3'],
-        ['id9', 'aaa1', 'cc', '20', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','2'],
-    ];
-    const dataSets = [
-        ['aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa2', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa3', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa4', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa5', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa6', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa7', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa8', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa9', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa10', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa11', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa12', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa13', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa14', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-        ['aaa15', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ];
+    var temp_data;
+    var borrow_order_id;
+
+    console.log("--flag-1-");
+
+    // 初始化，获取首页表格数据
+    $.ajax({
+        async: false,
+        data: {},
+        type : "post",
+        url : "inWarehouse/searchAllGetOrBorrowRequisition",
+        success : function(data) {
+            console.log("--flag-inittable-");
+            temp_data=data.data;
+        }
+    });
+    console.log("|temp_data=\n"+temp_data);
+
+    function json2Array(jsonData, list_or_not) {
+        var jsonsString = jsonData.slice(1, jsonData.length - 1);
+        var jsonStrings = jsonsString.split("},");
+        var length = jsonStrings.length;
+        var jsons = [];
+        for (var i = 0; i !== length-1; ++i) {
+            jsonStrings[i] += '}';
+        }
+        var source = [[]];
+        for (var i = 0; i !== length; ++i) {
+            //console.log("$"+jsonStrings[i]);
+            jsons[i] = eval('(' + jsonStrings[i] + ')');
+            var data = [];
+            for(var key in jsons[i]) {
+                if(i === 0) {
+                    source[0].push(key);
+                }
+                console.log("i="+i+"|key="+key+"|json[i,key]="+jsons[i][key]);
+                if(!list_or_not || key !== "purpose"  ) {
+                    if (key !== "type") {
+                        data.push(jsons[i][key]);
+                    }
+                } else {
+                    console.log("跳过在执行一次")
+                }
+            }
+            source.push(data);
+        }
+        return source.slice(1); //删除第1行
+    }
+    //console.log("temp_data=\n"+temp_data);
+    temp_data = json2Array(temp_data, true);
+
+    // 时间格式纠正
+    function formatDate(ms, format = 'YYYY-MM-DD hh:mm:ss') {
+        const date = new Date(ms);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const seconds = date.getSeconds();
+
+        const map = {
+            'YYYY': year,
+            'MM': addPrefixZero(month),
+            'M': month,
+            'DD': addPrefixZero(day),
+            'D': day,
+            'hh': addPrefixZero(hours),
+            'h': hours,
+            'mm': addPrefixZero(minutes),
+            'm': minutes,
+            'ss': addPrefixZero(seconds),
+            's': seconds,
+        };
+
+        let result = format;
+        for (const key in map) {
+            result = result.replace(key, map[key]);
+        }
+        return result;
+    }
+
+    // 在个位数字前面添加 0，使得数字位数为两位
+    function addPrefixZero(num) {
+        return num < 10 ? '0' + num : num;
+    }
+
+    var start_dateTime;
+    var end_dateTime;
+    var requisition_dateTime;
+    // console.log('date:'+formatDate(1684570394000));
+    for (var i = 0; i !== temp_data.length; ++i) {
+        console.log("#"+i+"#"+temp_data[i][3]);
+        start_dateTime = formatDate(Number(eval(temp_data[i][3])));
+        end_dateTime = formatDate(Number(eval(temp_data[i][4])));
+        requisition_dateTime = formatDate(Number(eval(temp_data[i][5])));
+        // console.log("转数字"+Number(temp_data[i][3]));
+        temp_data[i][3] = start_dateTime;
+        temp_data[i][4] = end_dateTime;
+        temp_data[i][5] = requisition_dateTime;
+    }
+    // console.log("@@@"+requisition_dateTime);
+
+    console.log("|temp_data_CHANGED=\n"+temp_data);
+
+
+    const dataSets = [ ];
     $(document).ready(function() {
-        $(function(){
+        $(function () {
             var table = $('#table').DataTable({
                 retrieve: true,
-                data:dataSet,
-                columns:[
+                data: temp_data,
+                columns: [
                     {
                         'field': "purchase_requisition_id",
                         'title': '借用申请表编号',
-                        'defaultContent' : ""
+                        'defaultContent': "",
+                        sClass: 'text-center'
                     }, {
                         'field': "purchase_order_id",
                         'title': '借用物品清单编号',
-                        'defaultContent' : ""
+                        'defaultContent': "",
+                        sClass: 'text-center'
                     }, {
                         'field': "requisition_user_id",
                         'title': '申请人',
-                        'defaultContent' : ""
-                    },  {
+                        'defaultContent': "",
+                        sClass: 'text-center'
+                    }, {
                         'field': "requisition_date",
                         'title': '借用开始日期',
-                        'defaultContent' : ""
-                    },{
+                        'defaultContent': "",
+                        sClass: 'text-center'
+                    }, {
                         'field': "requisition_date",
                         'title': '借用结束日期',
-                        'defaultContent' : ""
+                        'defaultContent': "",
+                        sClass: 'text-center'
                     }, {
+                        'field': "requisition_date",
+                        'title': '申请提交日期',
+                        'defaultContent' : "",
+                        sClass: 'text-center'
+                    },{
                         'field': "state",
                         'title': '申请当前状态',
-                        'defaultContent' : "0"
-                    },  {
+                        'defaultContent': "",
+                        sClass: 'text-center'
+                    }, {
                         field: "operate",
                         sTitle: '操作',
-                        sDefaultContent :
+                        sDefaultContent:
                             "<button class='list-btn btn btn-primary btn-xs' type='button' style='margin-left: 10px'>入库</button>",
                         sClass: 'text-center',
-                        "data" : null,
+                        "data": null,
                         // "render" : function(data, type,row) {
                         //     var id = '"' + row.id + '"';
                         //     var html = "<a href='javascript:void(0);'  class='btn btn-primary btn-xs'  onclick='EditViewById()'></i>物品清单</a>"
@@ -304,119 +392,162 @@
                 }
             });
 
-            var listtable = $('#listTable').DataTable({
-                retrieve: true,
-                data:dataSets,
-                columns:[
-                    {
-                        'field': "name",
-                        'title': '物品id',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    },{
-                        'field': "name",
-                        'title': '物品名称',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "specification",
-                        'title': '规格',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "quantity",
-                        'title': '数量',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "unit",
-                        'title': '包装单位',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "classification",
-                        'title': '分类',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "price",
-                        'title': '单价',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "expiration_time",
-                        'title': '过期时间',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "upper_limit",
-                        'title': '警戒上限',
-                        // width:90,
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "lower_limit",
-                        'title': '警戒下限',
-                        // width:90,
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "warehouse_id",
-                        'title': '仓库',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
-                        'field': "notes",
-                        'title': '备注',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }],
-                "language": {
-                    "sProcessing": "处理中...",
-                    "sLengthMenu": "显示 _MENU_ 项结果",
-                    "sZeroRecords": "没有匹配结果",
-                    "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
-                    "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
-                    "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-                    "sInfoPostFix": "",
-                    "sSearch": "搜索:",
-                    "sUrl": "",
-                    "sEmptyTable": "表中数据为空",
-                    "sLoadingRecords": "载入中...",
-                    "sInfoThousands": ",",
-                    "oPaginate": {
-                        "sFirst": "首页",
-                        "sPrevious": "上页",
-                        "sNext": "下页",
-                        "sLast": "末页"
-                    },
-                    "oAria": {
-                        "sSortAscending": ": 以升序排列此列",
-                        "sSortDescending": ": 以降序排列此列"
+            var temp_list_data;
+            var temp_order_id;  // 本条订单的order——id
+
+            // 点击 物品清单
+            $("table tbody").on("click", ".list-btn", function () {
+
+                var tds = $(this).parents("tr").children();
+                temp_order_id = tds[1].innerText;
+                borrow_order_id = tds[1].innerText;
+                //console.log("temp_order_id"+temp_order_id);
+                $.ajax({
+                    async: true,  // true 同步，false异步
+                    data: {order_id: temp_order_id},
+                    type: "post",
+                    url: "inWarehouse/searchOneByOrderId",
+                    success: function (data) {
+                        console.log("--flag-initListTable-|"+data.data);
+                        temp_list_data = data.data;
+                        temp_list_data = json2Array(temp_list_data, true);
                     }
-                }
+                });
+
+                $('#updateModal').modal('show');  // 显示弹窗表格
+                // 更新表格数据
+                $('#listTable').dataTable().api().clear();
+                $('#listTable').dataTable().api().rows.add(temp_list_data);
+                $('#listTable').dataTable().api().draw();
+
             });
 
-            //点击物品清单
-            $("table tbody").on("click",".list-btn",function (){
 
-                $('#updateModal').modal('show');
-            })
+        })
 
+        var listtable = $('#listTable').DataTable({
+            retrieve: true,
+            data: dataSets,
+            columns: [
+                {
+                    'field': "name",
+                    'title': '物品id',
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "name",
+                    'title': '物品名称',
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "specification",
+                    'title': '规格',
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "quantity",
+                    'title': '数量',
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "unit",
+                    'title': '包装单位',
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "classification",
+                    'title': '分类',
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "price",
+                    'title': '单价',
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "expiration_time",
+                    'title': '过期时间',
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "upper_limit",
+                    'title': '警戒上限',
+                    // width:90,
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "lower_limit",
+                    'title': '警戒下限',
+                    // width:90,
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "warehouse_id",
+                    'title': '仓库',
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }, {
+                    'field': "notes",
+                    'title': '备注',
+                    'defaultContent': "",
+                    'sClass': 'text-center'
+                }],
+            "language": {
+                "sProcessing": "处理中...",
+                "sLengthMenu": "显示 _MENU_ 项结果",
+                "sZeroRecords": "没有匹配结果",
+                "sInfo": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+                "sInfoEmpty": "显示第 0 至 0 项结果，共 0 项",
+                "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索:",
+                "sUrl": "",
+                "sEmptyTable": "表中数据为空",
+                "sLoadingRecords": "载入中...",
+                "sInfoThousands": ",",
+                "oPaginate": {
+                    "sFirst": "首页",
+                    "sPrevious": "上页",
+                    "sNext": "下页",
+                    "sLast": "末页"
+                },
+                "oAria": {
+                    "sSortAscending": ": 以升序排列此列",
+                    "sSortDescending": ": 以降序排列此列"
+                }
+            }
         });
 
-    } );
-
+    });
     //点击入库按钮
-function borrow_submit(){
-    if(confirm('确认入库？')){
-        //点击确认
+    function borrow_submit(){
+        var warehouse = $('#select-wh').val();
+        var notes = $('#text-wh').val();
+        // var requisition_dateTime = "";
+        // requisition_dateTime = (new Date(eval(tds[4].innerText))).toLocaleString();
 
-    }else{
-        //点击取消
+        if(confirm('确认入库？')){
+            //点击确认
+            var front_end_data = "warehouse_id="+warehouse+'&'+
+                'borrow_in_order_id='+borrow_order_id+'&'+
+                // 'date='+requisition_dateTime+'&'+
+                'type='+'1'+'&'+
+                'notes='+notes;
 
+            // 把前端数据传给后端
+            $.post("inWarehouse/borrowIn", front_end_data, function (data) {
+                console.log("在接受后端数据之后");
+                if (data.flag) {
+                    alert("提交成功");
+                } else {
+                    alert("提交失败");
+                }
+            })
+
+        }else{
+            //点击取消
+        }
     }
-}
 
 </script>
 

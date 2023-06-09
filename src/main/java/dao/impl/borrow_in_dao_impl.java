@@ -10,7 +10,7 @@ public class borrow_in_dao_impl implements borrow_in_dao {
     @Override
     public boolean add(Borrow_in_Warehouse table) {
         String sql = "insert into borrow_in_warehouse(borrow_in_warehouse_id, warehouse_id, get_or_borrow_order_id, date," +
-                     "notes) values(?,?,?,?,?,?)";
+                     "notes) values(?,?,?,?,?)";
         try {
             template.update(sql,
                     table.getBorrow_in_warehouse_id(),

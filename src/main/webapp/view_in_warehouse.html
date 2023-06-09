@@ -157,28 +157,57 @@
 </script>
 
 <script>
-  const dataSet = [
-    ['id', 'aaa', 'bb', '30', 'xxxx-xx', '300','data'],
-    ['id1', 'aaa1', 'cc', '20', 'xxxx-xx', '200','note'],
-  ];
-  const dataSets = [
-    ['id', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ['id1', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ['id2', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ['id3', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '2hao', 'beizhu'],
-    ['id4', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '2hao', 'beizhu'],
-    ['id5', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ['id6', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ['id7', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ['id8', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '2hao', 'beizhu'],
-    ['id9', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ['id10', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '2hao', 'beizhu'],
-    ['id11', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ['id12', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ['id13', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '3hao', 'beizhu'],
-    ['id14', 'aaa', '规格', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu'],
-    ['id15', 'aaa1', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '3hao', 'beizhu'],
-  ];
+
+  var temp_data;
+
+  console.log("--flag-1-");
+
+  // 初始化，获取首页表格数据
+  $.ajax({
+    async: false,
+    data: {},
+    type : "post",
+    url : "inWarehouse/searchAllPurchaseRequisition",
+    success : function(data) {
+      console.log("--flag-inittable-");
+      temp_data=data.data;
+    }
+  });
+  console.log("|temp_data=\n"+temp_data)
+
+  function json2Array(jsonData, list_or_not) {
+    var jsonsString = jsonData.slice(1, jsonData.length - 1);
+    var jsonStrings = jsonsString.split("},");
+    var length = jsonStrings.length;
+    var jsons = [];
+    for (var i = 0; i !== length-1; ++i) {
+      jsonStrings[i] += '}';
+    }
+    var source = [[]];
+    for (var i = 0; i !== length; ++i) {
+      //console.log("$"+jsonStrings[i]);
+      jsons[i] = eval('(' + jsonStrings[i] + ')');
+      var data = [];
+      for(var key in jsons[i]) {
+        if(i === 0) {
+          source[0].push(key);
+        }
+        //console.log("i="+i+"|key="+key+"|json[i,key]="+jsons[i][key]);
+        if(!list_or_not || key !== "object_id" ) {
+          data.push(jsons[i][key]);
+        } else {
+          console.log("跳过在执行一次")
+        }
+      }
+      source.push(data);
+    }
+    return source.slice(1); //删除第1行
+  }
+  //console.log("temp_data=\n"+temp_data);
+  temp_data = json2Array(temp_data, false)
+
+
+  const dataSets = [];
   $(document).ready(function (){
     $('#exTable').DataTable({
       retrieve: true,

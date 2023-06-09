@@ -39,7 +39,7 @@ public class item_dao_impl implements item_dao {
 
     @Override
     public boolean changeNum(String id, int num) {
-        String sql = "update item set num = num + ? where object_id = ?";
+        String sql = "update item set quantity = quantity + ? where object_id = ?";
         try {
             template.update(sql, num, id);
             return true;

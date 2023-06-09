@@ -55,6 +55,22 @@ public class get_or_borrow_Requisition implements Serializable {
         this.approval_date = approval_date;
     }
 
+    //TODO: 调试用代码，显示User对象全部信息
+    public void print() {
+        System.out.println("输出Purchase_Requisition对象信息:\n"+
+                "get_or_borrow_requisition_id="+get_or_borrow_requisition_id+
+                "|get_or_borrow_order_id="+get_or_borrow_order_id+
+                "|applicant_user_id="+applicant_user_id+
+                "|purpose="+purpose+
+                "|borrow_date="+borrow_date+
+                "|return_date="+return_date+
+                "|type="+type+"|state="+state+
+                "|requisition_date="+requisition_date+
+                "|approval_user_id="+approval_user_id+
+                "|approval_opinions="+approval_opinions+
+                "|approval_date="+approval_date);
+    }
+
     public String getGet_or_borrow_requisition_id() {
         return get_or_borrow_requisition_id;
     }

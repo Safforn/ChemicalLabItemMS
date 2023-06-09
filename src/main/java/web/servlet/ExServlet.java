@@ -55,12 +55,50 @@ public class ExServlet extends BaseServlet {
 
         List<Object_Entry> objectEntries = new ArrayList<>();
         Object_Entry object_entry = new Object_Entry();
-        for (Item item : temp_items.get(ex_warehouse.getEx_order_id())) {
-            object_entry.setQuantity((int)item.getQuantity());
-            object_entry.setObject_id(item.getObject_id());
-            object_entry.setOrder_id(item.getObject_id());
+        if(ex_warehouse.getEx_order_id()==null){
+            ex_warehouse.setEx_order_id(order_id);
+        }
+//        for (Item item : temp_items.get(ex_warehouse.getEx_order_id())) {
+//            object_entry.setQuantity((int)item.getQuantity());
+//            object_entry.setObject_id(item.getObject_id());
+//            object_entry.setOrder_id(item.getObject_id());
+//        }
+        if (temp_items.get(order_id) != null) {
+            for (Item item : temp_items.get(order_id)) {
+                object_entry.setObject_id(item.getObject_id());
+                object_entry.setNum((int) (item.getQuantity()));
+                object_entry.setOrder_id(ex_warehouse.getEx_order_id());
+                objectEntries.add(object_entry);
+                item.setQuantity(0);
+            }
         }
 
+        if (order_id.equals("")) {
+            order_id = UuidUtil.getUuid();
+        }
+        // 缓冲中没有order_id对应的物品信息，则新建该缓存区
+        temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
+
+        if (temp_items.get(order_id) != null)
+            itemService.add(temp_items.get(order_id));
+
+        List<Object_Entry> result = new ArrayList<>();
+        for (Object_Entry objectEntry : objectEntries) {
+            result.add(objectEntry);
+        }
+        List<Object_Entry> ls = orderService.search(order_id);
+        for (Object_Entry objectEntry : ls) {
+            boolean b = true;
+            for (Object_Entry j : objectEntries) {
+                if (j.getObject_id().equals(objectEntry.getObject_id())) {
+                    b = false;
+                    break;
+                }
+            }
+            if (b) {
+                result.add(objectEntry);
+            }
+        }
 
         boolean flag = exService.add(ex_warehouse, objectEntries);
         ResultInfo info = new ResultInfo();
@@ -235,8 +273,8 @@ public class ExServlet extends BaseServlet {
         json = buf.toString();  //拼串完成
         System.out.println(json);
 
-        String filename = "ExData.txt";
-        JsonUtil.writeJson(filename, json);  //写入Data.json文件
+//        String filename = "ExData.txt";
+//        JsonUtil.writeJson(filename, json);  //写入Data.json文件
         return json;
     }
 
@@ -322,8 +360,115 @@ public class ExServlet extends BaseServlet {
         buf.append(json).insert(0, "[");
         json = buf.toString();  //拼串完成
         System.out.println("物品信息json="+json);
-        String filename = "PurchaseListData.txt";
-        JsonUtil.writeJson(filename, json);  //写入Data.json文件
+//        String filename = "PurchaseListData.txt";
+//        JsonUtil.writeJson(filename, json);  //写入Data.json文件
+        return json;
+    }
+
+    public void searchOneByOrderId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        Map<String, String[]> map = request.getParameterMap();
+        String orderId = request.getParameter("order_id");;
+        System.out.println("####orderID="+orderId);
+        //2.封装对象
+//        try {
+//            BeanUtils.populate(orderId, map);
+//        } catch (IllegalAccessException | InvocationTargetException e) {
+//            e.printStackTrace();
+//        }nu
+        List<Item> itemList = new ArrayList<>();
+        List<Object_Entry> object_entries = orderService.search(orderId);
+        if (object_entries != null) {
+            for (Object_Entry oe : object_entries) {
+                itemList.add(itemService.search(oe.getObject_id()));
+            }
+        }
+        String json = "";
+        for (Item it : itemList) {
+            try {
+                json += writeValueAsString(it);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        json = json.replace("}", "},");
+        json = json.replaceFirst(".$","");  //去掉最后的逗号
+        json += "]";
+        StringBuffer buf = new StringBuffer();
+        buf.append(json).insert(0, "[");
+        json = buf.toString();  //拼串完成
+        System.out.println(json);
+
+        System.out.println("itemList.size()"+itemList.size());
+
+
+//        // 拼串
+//        String json = "";
+//        for (Object_Entry OE : object_entries) {
+//            try {
+//                json += writeValueAsString(OE);
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        json = json.replace("}", "},");
+//        json = json.replaceFirst(".$","");  //去掉最后的逗号
+//        json += "]";
+//        StringBuffer buf = new StringBuffer();
+//        buf.append(json).insert(0, "[");
+//        json = buf.toString();  //拼串完成
+//        System.out.println("JSON=\n"+json);
+
+
+        ResultInfo resultInfo = new ResultInfo();
+        resultInfo.setData(json);
+        // 将 info 对象序列化为 json
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(resultInfo);
+        // 将 json 数据写回客户端
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(jsonString);
+    }
+
+    public void initBorrowTable(HttpServletRequest request, HttpServletResponse response) throws
+            ServletException, IOException {
+        System.out.println("ApproveServlet：进入 初始化表格 后端");
+
+        String purchaseDataList = updateBorrowData();
+
+        ResultInfo info = new ResultInfo();
+        // 4. 响应结果
+        info.setFlag(true);
+        info.setData(purchaseDataList);
+        // 将 info 对象序列化为 json
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);
+        // 将 json 数据写回客户端
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(json);
+    }
+
+    public String updateBorrowData() throws IOException {
+        System.out.println("ApproveServlet：updateBorrowData");
+        List<get_or_borrow_Requisition> pr_list = getOrBorrowService.searchTableByState(1);
+        for (get_or_borrow_Requisition pr : pr_list) {
+            System.out.println(pr.getGet_or_borrow_order_id());
+        }
+        // 拼串
+        String json = "";
+        for (get_or_borrow_Requisition pr : pr_list) {
+            try {
+                json += writeValueAsString(pr);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        json = json.replace("}", "},");
+        json = json.replaceFirst(".$","");  //去掉最后的逗号
+        json += "]";
+        StringBuffer buf = new StringBuffer();
+        buf.append(json).insert(0, "[");
+        json = buf.toString();  //拼串完成
+        System.out.println(json);
         return json;
     }
 
