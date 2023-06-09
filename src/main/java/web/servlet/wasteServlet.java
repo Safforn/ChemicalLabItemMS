@@ -217,9 +217,6 @@ public class wasteServlet extends BaseServlet{
         buf.append(json).insert(0, "[");
         json = buf.toString();  //拼串完成
         System.out.println(json);
-
-        String filename = "WasteData.txt";
-        JsonUtil.writeJson(filename, json);  //写入Data.json文件
         return json;
     }
 
@@ -305,8 +302,7 @@ public class wasteServlet extends BaseServlet{
         buf.append(json).insert(0, "[");
         json = buf.toString();  //拼串完成
         System.out.println("物品信息json="+json);
-        String filename = "PurchaseListData.txt";
-        JsonUtil.writeJson(filename, json);  //写入Data.json文件
+
         return json;
     }
 

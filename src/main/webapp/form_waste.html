@@ -230,7 +230,7 @@
     temp_data = json2Array(temp_data, false)  // 主表格数据
 
     const dataSets = [];  // 弹窗表格的 物品清单数据
-    //console.log("temp_data1=\n"+temp_data);
+    console.log("temp_data1=\n"+temp_data);
     $(document).ready(function() {
         $(function(){
             var table = $('#table').DataTable({
@@ -491,18 +491,6 @@
                         if (tds[9].innerText !== "")
                             approval_date = (new Date(eval(tds[9].innerText))).toLocaleString();
 
-                        // 状态改回数值
-                        var shenqing_state = '';
-                        arr = tds[6].innerText;
-                        if(arr==='未提交'){
-                            shenqing_state = '0';
-                        }else if(arr==='已提交'){
-                            shenqing_state = '1';
-                        }else if(arr==='审核通过'){
-                            shenqing_state = '2';
-                        }else if(arr==='审核未通过'){
-                            shenqing_state = '3';
-                        }
 
                         var front_end_data = "";
                         if (tds[0].innerText !== "") front_end_data += "waste_requisition_id="+tds[0].innerText+"&";
@@ -639,7 +627,7 @@
                                 // --------更新一次表单窗格-----------
                                 temp_order_id = tds[1].innerText;
                                 $.ajax({
-                                    async: flase,  // true 同步，false异步
+                                    async: false,  // true 同步，false异步
                                     data: {order_id: temp_order_id},
                                     type: "post",
                                     url : "waste/initListTable",

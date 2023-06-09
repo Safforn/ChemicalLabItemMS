@@ -9,10 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="领用借用基本完成">
+    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="采购完成">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/wasteServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/wasteServlet.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -353,7 +352,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686271730364</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="采购完成">
+      <created>1686276792325</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1686276792325</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -386,7 +392,8 @@
     <MESSAGE value="更新出库，废弃" />
     <MESSAGE value="采购ok0.5+借用ok" />
     <MESSAGE value="领用借用基本完成" />
-    <option name="LAST_COMMIT_MESSAGE" value="领用借用基本完成" />
+    <MESSAGE value="采购完成" />
+    <option name="LAST_COMMIT_MESSAGE" value="采购完成" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -18,7 +18,6 @@ public class Waste_Requisition implements Serializable {
     private Date requisition_date;//申请提交时间
     private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
     private String approval_user_id;//审批人(FK)
-    private String waste_user_id;//废弃物管理员(FK)
     private String approval_opinions;//审批意见
     private Date approval_date;//审批时间
 
@@ -42,12 +41,11 @@ public class Waste_Requisition implements Serializable {
      * @param approval_opinions
      * @param approval_date
      */
-    public Waste_Requisition(String waste_requisition_id, String waste_order_id, String requisition_user_id, String approval_user_id, String waste_user_id, String waste_reason, String position, int state, Date requisition_date, String approval_opinions, Date approval_date) {
+    public Waste_Requisition(String waste_requisition_id, String waste_order_id, String requisition_user_id, String approval_user_id,  String waste_reason, String position, int state, Date requisition_date, String approval_opinions, Date approval_date) {
         this.waste_requisition_id = waste_requisition_id;
         this.waste_order_id = waste_order_id;
         this.requisition_user_id = requisition_user_id;
         this.approval_user_id = approval_user_id;
-        this.waste_user_id = waste_user_id;
         this.waste_reason = waste_reason;
         this.position = position;
         this.state = state;
@@ -86,14 +84,6 @@ public class Waste_Requisition implements Serializable {
 
     public void setApproval_user_id(String approval_user_id) {
         this.approval_user_id = approval_user_id;
-    }
-
-    public String getWaste_user_id() {
-        return waste_user_id;
-    }
-
-    public void setWaste_user_id(String waste_user_id) {
-        this.waste_user_id = waste_user_id;
     }
 
     public String getWaste_reason() {
