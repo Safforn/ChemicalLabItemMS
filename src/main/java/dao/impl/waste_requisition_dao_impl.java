@@ -94,4 +94,9 @@ public class waste_requisition_dao_impl implements waste_requisition_dao {
         String sql = "select * from waste_requisition where state = ?";
         return template.query(sql, new BeanPropertyRowMapper<Waste_Requisition>(Waste_Requisition.class), state);
     }
+    @Override
+    public List<Waste_Requisition> getMaxId() {
+        String sql = "SELECT waste_requisition_id FROM waste_requisition ORDER BY waste_requisition_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<Waste_Requisition>(Waste_Requisition.class));
+    }
 }

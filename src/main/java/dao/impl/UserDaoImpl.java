@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import util.JDBCUtils;
 
+import java.util.List;
+
 public class UserDaoImpl implements UserDao {
     private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
 
@@ -75,5 +77,10 @@ public class UserDaoImpl implements UserDao {
 //        String sql = "update user set name=?, telephone=? where uid=?";
 //        template.update(sql, user.getName(), user.getTelephone(), user.getUid());
 //    }
+    @Override
+    public List<User> getMaxId() {
+        String sql = "SELECT user_id FROM user ORDER BY user_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<User>(User.class));
+    }
 
 }

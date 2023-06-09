@@ -23,7 +23,7 @@ public class borrow_in_service_impl implements borrow_in_service {
     private item_dao itemDao = new item_dao_impl();
     @Override
     public boolean add(Borrow_in_Warehouse table) {
-        table.setBorrow_in_warehouse_id(UuidUtil.getUuid());
+        table.setBorrow_in_warehouse_id(UuidUtil.getBW());
         get_or_borrow_Requisition getOrBorrowRequisition = getOrBorrowDao.searchTableByOrderId(table.getBorrow_in_order_id());
         getOrBorrowRequisition.setState(4);
         if (!getOrBorrowDao.updateTable(getOrBorrowRequisition)) {

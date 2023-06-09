@@ -49,4 +49,5 @@ public interface waste_requisition_dao {
      * @return
      */
     List<Waste_Requisition> searchTableByState(int state);
+    List<Waste_Requisition> getMaxId();
 }

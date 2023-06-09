@@ -315,7 +315,7 @@ public class GetOrBorrowServlet extends BaseServlet {
         }
         // 如果当前order_id没有关联的物品行，新建一个对应的缓存
         if (order_id == "") {
-            order_id = UuidUtil.getUuid();
+            order_id = UuidUtil.getPRO();
         }
         temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
 
@@ -327,7 +327,7 @@ public class GetOrBorrowServlet extends BaseServlet {
                 }
             }
         } else {  // 新建的Item 补充id属性
-            item_changed.setObject_id(UuidUtil.getUuid());
+            item_changed.setObject_id(UuidUtil.getII());
         }
         temp_items.get(order_id).add(item_changed);  // 缓存 前端修改的item
 

@@ -91,4 +91,15 @@ public class object_entry_dao_impl implements object_entry_dao {
         String sql = "select * from object_entry where order_id = ?";
         return template.query(sql, new BeanPropertyRowMapper<Object_Entry>(Object_Entry.class), orderId);
     }
+    @Override
+    public List<Object_Entry> getMaxId() {
+        String sql = "SELECT object_entry_id FROM object_entry ORDER BY object_entry_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<Object_Entry>(Object_Entry.class));
+    }
+
+    @Override
+    public List<Object_Entry> getMaxOrderId() {
+        String sql = "SELECT order_id FROM object_entry ORDER BY order_id DESC LIMIT 1";
+        return template.query(sql, new BeanPropertyRowMapper<Object_Entry>(Object_Entry.class));
+    }
 }

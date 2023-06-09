@@ -50,4 +50,6 @@ public interface object_entry_dao {
      * @return
      */
     List<Object_Entry> search(String orderId);
+    List<Object_Entry> getMaxId();
+    List<Object_Entry> getMaxOrderId();
 }

@@ -62,4 +62,5 @@ public interface get_or_borrow_dao {
      * @return List<get_or_borrow_Requisition>
      */
     List<get_or_borrow_Requisition> searchBorrowUnreturn();
+    List<get_or_borrow_Requisition> getMaxId();
 }

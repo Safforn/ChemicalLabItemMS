@@ -44,7 +44,7 @@ public class wasteServlet extends BaseServlet{
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        if (order_id == "") order_id = UuidUtil.getUuid();
+        if (order_id == "") order_id = UuidUtil.getPRO();
 //        wasteRequisition.print();
         List<Object_Entry> objectEntries = new ArrayList<>();
         Object_Entry object_entry = new Object_Entry();
@@ -117,7 +117,7 @@ public class wasteServlet extends BaseServlet{
         item.print();
         // 如果当前order_id没有关联的物品行，新建一个对应的缓存
         if (order_id == "") {
-            order_id = UuidUtil.getUuid();
+            order_id = UuidUtil.getPRO();
         }
         // 如果当前order_id没有关联的物品行，新建一个对应的缓存
         temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
@@ -130,7 +130,7 @@ public class wasteServlet extends BaseServlet{
                 }
             }
         } else {  // 新建的Item 补充id属性
-            item.setObject_id(UuidUtil.getUuid());
+            item.setObject_id(UuidUtil.getII());
         }
         System.out.println("在 temp_items.get(order_id).add(item) 之前 137行");
         item.print();
@@ -163,10 +163,13 @@ public class wasteServlet extends BaseServlet{
     public void deleteTable(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
         // 从前端获取 待删除申请表行的 tableId
-        String tableId = request.getParameter("purchase_requisition_id");
+        String tableId = request.getParameter("waste_requisition_id");
         String orderID = request.getParameter("order_id");
+
+        System.out.println("waste_requisition_id" + tableId);
+        System.out.println("order_id" + orderID);
         // 调用service删除
-        orderService.deleteEntryByOrder(orderID);
+//        orderService.deleteEntryByOrder(orderID);
         wasteRequisitionService.deleteTable(tableId);
         // TODO: 更新前端表格页面，这个好像不需要做，前端会自动删除（加个"确认删除"的弹窗）
         //  只需要把tableId传给后端即可

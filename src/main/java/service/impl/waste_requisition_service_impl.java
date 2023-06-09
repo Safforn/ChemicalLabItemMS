@@ -33,13 +33,13 @@ public class waste_requisition_service_impl implements waste_requisition_service
     }
 
     private boolean createTable(Waste_Requisition table, List<Object_Entry> order) {
-        table.setWaste_requisition_id(UuidUtil.getUuid());
+        table.setWaste_requisition_id(UuidUtil.getWR());
 //        table.setRequisition_date(DateTime.parse(time));
-        String orderId = UuidUtil.getUuid();
+        String orderId = UuidUtil.getPRO();
         table.setWaste_order_id(orderId);
         for (Object_Entry object_entry : order) {
-            object_entry.setObject_entry_id(UuidUtil.getUuid());
-            System.out.println("Waste Service Creat Object_entry_id : " + object_entry.getObject_id());
+            object_entry.setObject_entry_id(UuidUtil.getOE());
+//            System.out.println("Waste Service Creat Object_entry_id : " + object_entry);
         }
         return objectEntryDao.addEntry(order, orderId) && wasteRequisitionDao.createTable(table);
     }
@@ -52,7 +52,7 @@ public class waste_requisition_service_impl implements waste_requisition_service
             return false;
         }
         for (Object_Entry object_entry : order) {
-            object_entry.setObject_entry_id(UuidUtil.getUuid());
+            object_entry.setObject_entry_id(UuidUtil.getOE());
         }
         return objectEntryDao.addEntry(order, table.getWaste_order_id());
     }

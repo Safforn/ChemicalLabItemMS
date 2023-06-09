@@ -176,7 +176,7 @@ public class inWarehouseServlet extends BaseServlet {
                 }
             }
         } else {  // 新建的Item 补充id属性
-            item.setObject_id(UuidUtil.getUuid());
+            item.setObject_id(UuidUtil.getII());
         }
         temp_items.get(order_id).add(item);  // 缓存 前端修改的item
 

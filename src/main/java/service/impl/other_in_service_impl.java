@@ -18,7 +18,7 @@ public class other_in_service_impl implements other_in_service {
 
     @Override
     public boolean add(Other_in_Warehouse other_in_warehouse) {
-        other_in_warehouse.setOther_in_warehouse_id(UuidUtil.getUuid());
+        other_in_warehouse.setOther_in_warehouse_id(UuidUtil.getOW());
         other_in_warehouse.setDate(UuidUtil.getCurrentTime());
         return otherInDao.add(other_in_warehouse);
     }

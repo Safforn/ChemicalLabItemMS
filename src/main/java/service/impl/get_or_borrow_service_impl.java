@@ -41,11 +41,11 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
          * 系统填写：申请单id，物品单id，提交时间
          */
         table.setRequisition_date(getCurrentTime());
-        table.setGet_or_borrow_requisition_id(UuidUtil.getUuid());
+        table.setGet_or_borrow_requisition_id(UuidUtil.getGBR());
 //        String orderId = UuidUtil.getUuid();
 //        table.setGet_or_borrow_order_id(orderId);
         for (Object_Entry object_entry : order) {
-            object_entry.setObject_entry_id(UuidUtil.getUuid());
+            object_entry.setObject_entry_id(UuidUtil.getOE());
         }
         return objectEntryDao.addEntry(order, table.getGet_or_borrow_order_id()) && getOrBorrowDao.createTable(table);
     }
@@ -58,13 +58,13 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
             return false;
         }
         for (Object_Entry object_entry : order) {
-            object_entry.setObject_entry_id(UuidUtil.getUuid());
+            object_entry.setObject_entry_id(UuidUtil.getOE());
         }
         if (objectEntryDao.addEntry(order, table.getGet_or_borrow_order_id())) {
 
             if (table.getType() == 1) {
                 //填写催还单
-                return reminderDao.add(new Reminder(UuidUtil.getUuid(), table.getGet_or_borrow_requisition_id()));
+//                return reminderDao.add(new Reminder(UuidUtil.getPRO(), table.getGet_or_borrow_requisition_id()));
             }
         }
         return false;

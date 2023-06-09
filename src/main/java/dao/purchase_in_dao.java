@@ -17,4 +17,5 @@ public interface purchase_in_dao {
      * @return
      */
     List<String> getInOrder(String orderId);
+    List<Purchase_in_Warehouse> getMaxId();
 }

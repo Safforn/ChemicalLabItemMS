@@ -1,17 +1,4 @@
 [{
-	"waste_requisition_id":"e92f7155fa5d4357922d97c601555129",
-	"waste_order_id":"dc01d327c62846fca3ee80d6e3d0225c",
-	"requisition_user_id":"0007",
-	"waste_reason":"test",
-	"position":"test",
-	"requisition_date":null,
-	"state":1,
-	"approval_user_id":null,
-	"waste_user_id":null,
-	"approval_opinions":null,
-	"approval_date":null
-},
-{
 	"waste_requisition_id":"WR-0000001",
 	"waste_order_id":"WRO-0000001",
 	"requisition_user_id":"0007",
@@ -30,6 +17,19 @@
 	"requisition_user_id":"0007",
 	"waste_reason":"你少管",
 	"position":"宿舍",
+	"requisition_date":null,
+	"state":1,
+	"approval_user_id":null,
+	"waste_user_id":null,
+	"approval_opinions":null,
+	"approval_date":null
+},
+{
+	"waste_requisition_id":"WR-3",
+	"waste_order_id":"PRO-2",
+	"requisition_user_id":"0007",
+	"waste_reason":"不知道",
+	"position":"不需要",
 	"requisition_date":null,
 	"state":1,
 	"approval_user_id":null,

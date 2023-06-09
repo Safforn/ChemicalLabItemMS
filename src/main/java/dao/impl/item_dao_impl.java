@@ -65,4 +65,9 @@ public class item_dao_impl implements item_dao {
         String sql = "select * from item where object_id = ? ";
         return template.queryForObject(sql, new BeanPropertyRowMapper<Item>(Item.class), object_id);
     }
+    @Override
+    public List<Item> getMaxId() {
+        String sql = "SELECT object_id FROM item ORDER BY object_id DESC";
+        return template.query(sql, new BeanPropertyRowMapper<Item>(Item.class));
+    }
 }

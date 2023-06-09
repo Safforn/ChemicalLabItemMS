@@ -32,4 +32,5 @@ public interface item_dao {
      * @return
      */
     Item findByObjectId(String object_id);
+    List<Item> getMaxId();
 }

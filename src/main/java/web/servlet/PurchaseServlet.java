@@ -96,7 +96,7 @@ public class PurchaseServlet extends BaseServlet {
         System.out.println("++++++++++++++++++++++++++++++++++++++++++++");
 
         if (order_id.equals("")) {
-            order_id = UuidUtil.getUuid();
+            order_id = UuidUtil.getPRO();
         }
         // 缓冲中没有order_id对应的物品信息，则新建该缓存区
         temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
@@ -147,7 +147,7 @@ public class PurchaseServlet extends BaseServlet {
             e.printStackTrace();
         }
         if (order_id == "") {
-            order_id = UuidUtil.getUuid();
+            order_id = UuidUtil.getPRO();
         }
         // 如果当前order_id没有关联的物品行，新建一个对应的缓存
         temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
@@ -160,7 +160,7 @@ public class PurchaseServlet extends BaseServlet {
                 }
             }
         } else {  // 新建的Item 补充id属性
-            item_changed.setObject_id(UuidUtil.getUuid());
+            item_changed.setObject_id(UuidUtil.getII());
         }
         temp_items.get(order_id).add(item_changed);  // 缓存 前端修改的item
 

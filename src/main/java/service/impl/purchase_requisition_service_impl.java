@@ -44,7 +44,7 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
     private boolean createTable(Purchase_Requisition table, List<Object_Entry> order) {
         System.out.println("进入CreateTable");
         table.setRequisition_date(getCurrentTime());
-        table.setPurchase_requisition_id(UuidUtil.getUuid());
+        table.setPurchase_requisition_id(UuidUtil.getPR());
 //        String orderId = UuidUtil.getUuid();
 //        table.setPurchase_order_id(orderId);
 
@@ -52,7 +52,7 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
         table.print();
 
         for (Object_Entry object_entry : order) {
-            object_entry.setObject_entry_id(UuidUtil.getUuid());
+            object_entry.setObject_entry_id(UuidUtil.getOE());
         }
         return objectEntryDao.addEntry(order, table.getPurchase_order_id()) && purchaseRequisitionDao.createTable(table);
     }
@@ -71,7 +71,7 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
                 return false;
             }
             for (Object_Entry object_entry : order) {
-                object_entry.setObject_entry_id(UuidUtil.getUuid());
+                object_entry.setObject_entry_id(UuidUtil.getOE());
             }
             return objectEntryDao.addEntry(order, table.getPurchase_order_id());
         }
