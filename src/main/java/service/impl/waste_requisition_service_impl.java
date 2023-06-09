@@ -85,4 +85,9 @@ public class waste_requisition_service_impl implements waste_requisition_service
     public List<Waste_Requisition> searchTableByState(int state) {
         return wasteRequisitionDao.searchTableByState(state);
     }
+
+    @Override
+    public void updateByApprove(Waste_Requisition table) {
+        wasteRequisitionDao.updateByApprove(table);
+    }
 }

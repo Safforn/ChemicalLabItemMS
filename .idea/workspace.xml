@@ -9,9 +9,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="采购完成">
+    <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="采购+领用借用+废弃完成">
+      <change beforePath="$PROJECT_DIR$/.idea/webContexts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webContexts.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/wasteServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/wasteServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/purchase_requisition_dao_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/impl/waste_requisition_dao_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/impl/waste_requisition_dao_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dao/waste_requisition_dao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/waste_requisition_dao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Waste_Requisition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Waste_Requisition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/waste_requisition_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/waste_requisition_service_impl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/service/waste_requisition_service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/waste_requisition_service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/ApproveServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/ApproveServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/approve_purchase.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/approve_purchase.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/approve_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/approve_use_or_borrow.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/approve_waste.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/approve_waste.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/register.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -359,7 +371,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686276792325</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="采购+领用借用+废弃完成">
+      <created>1686277764821</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1686277764821</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -393,7 +412,8 @@
     <MESSAGE value="采购ok0.5+借用ok" />
     <MESSAGE value="领用借用基本完成" />
     <MESSAGE value="采购完成" />
-    <option name="LAST_COMMIT_MESSAGE" value="采购完成" />
+    <MESSAGE value="采购+领用借用+废弃完成" />
+    <option name="LAST_COMMIT_MESSAGE" value="采购+领用借用+废弃完成" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

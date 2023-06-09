@@ -1,9 +1,6 @@
 package service;
 
-import domain.Object_Entry;
-import domain.Waste_Requisition;
-import domain.get_or_borrow_Requisition;
-import domain.template_order;
+import domain.*;
 
 import java.util.List;
 
@@ -51,4 +48,7 @@ public interface waste_requisition_service {
      * @return
      */
     List<Waste_Requisition> searchTableByState(int state);
+
+
+    void updateByApprove(Waste_Requisition table);
 }

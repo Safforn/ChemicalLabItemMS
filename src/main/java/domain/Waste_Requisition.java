@@ -33,7 +33,6 @@ public class Waste_Requisition implements Serializable {
      * @param waste_order_id
      * @param requisition_user_id
      * @param approval_user_id
-     * @param waste_user_id
      * @param waste_reason
      * @param position
      * @param state
