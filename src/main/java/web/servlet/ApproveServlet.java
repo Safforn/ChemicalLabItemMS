@@ -186,8 +186,19 @@ public class ApproveServlet extends BaseServlet {
             e.printStackTrace();
         }
         purchase_requisition.print();
-//        service.updateByApprove(purchase_requisition);
+        service.updateByApprove(purchase_requisition);
+
+        ResultInfo info = new ResultInfo();
+        // 4. 响应结果
+        info.setFlag(true);
+        // 将 info 对象序列化为 json
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(info);
+        // 将 json 数据写回客户端
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(json);
     }
+
 
 
     public void initBorrowTable(HttpServletRequest request, HttpServletResponse response) throws
@@ -334,7 +345,7 @@ public class ApproveServlet extends BaseServlet {
             e.printStackTrace();
         }
 //        borrow_requisition.print();
-//        gob_service.updateByApprove(borrow_requisition);
+        gob_service.updateByApprove(borrow_requisition);
         ResultInfo info = new ResultInfo();
         // 4. 响应结果
         info.setFlag(true);
@@ -492,7 +503,7 @@ public class ApproveServlet extends BaseServlet {
             e.printStackTrace();
         }
 //        borrow_requisition.print();
-//        waste_service.updateByApprove(waste_requisition);
+        waste_service.updateByApprove(waste_requisition);
         ResultInfo info = new ResultInfo();
         // 4. 响应结果
         info.setFlag(true);

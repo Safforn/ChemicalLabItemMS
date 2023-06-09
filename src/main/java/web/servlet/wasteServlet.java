@@ -44,17 +44,48 @@ public class wasteServlet extends BaseServlet{
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+        if (order_id == "") order_id = UuidUtil.getUuid();
+//        wasteRequisition.print();
         List<Object_Entry> objectEntries = new ArrayList<>();
         Object_Entry object_entry = new Object_Entry();
-        for (Item item : temp_items.get(wasteRequisition.getWaste_order_id())) {
+        if (wasteRequisition.getWaste_order_id() == null) {
+            wasteRequisition.setWaste_order_id(order_id);
+        }
+        if (temp_items.get(order_id) != null) {
+            for (Item item : temp_items.get(order_id)) {
 //            item.setOrder_id(wasteRequisition.getWaste_order_id());
-            object_entry.setOrder_id(wasteRequisition.getWaste_order_id());
-            object_entry.setNum((int)item.getQuantity());
-            object_entry.setObject_id(item.getObject_id());
-            objectEntries.add(object_entry);
+//                if (item.getObject_id() == null) {
+//                    item.setObject_id(UuidUtil.getUuid());
+//                }
+                object_entry.setOrder_id(order_id);
+                object_entry.setNum((int) item.getQuantity());
+                object_entry.setObject_id(item.getObject_id());
+                objectEntries.add(object_entry);
+
+            }
+        }
+        if (temp_items.get(order_id) != null)
+            itemService.add(temp_items.get(order_id));
+
+        List<Object_Entry> result = new ArrayList<>();
+        for (Object_Entry objectEntry : objectEntries) {
+            result.add(objectEntry);
+        }
+        List<Object_Entry> ls = orderService.search(order_id);
+        for (Object_Entry objectEntry : ls) {
+            boolean b = true;
+            for (Object_Entry j : objectEntries) {
+                if (j.getObject_id().equals(objectEntry.getObject_id())) {
+                    b = false;
+                    break;
+                }
+            }
+            if (b) {
+                result.add(objectEntry);
+            }
         }
 
-        template_order templateOrder = new template_order(wasteRequisition, objectEntries);
+        template_order templateOrder = new template_order(wasteRequisition, result);
         wasteRequisitionService.createOrUpdate(templateOrder);
         ResultInfo info = new ResultInfo();
         // 4. 响应结果
@@ -82,6 +113,12 @@ public class wasteServlet extends BaseServlet{
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+        System.out.println("--------UpdateItemsList-----------");
+        item.print();
+        // 如果当前order_id没有关联的物品行，新建一个对应的缓存
+        if (order_id == "") {
+            order_id = UuidUtil.getUuid();
+        }
         // 如果当前order_id没有关联的物品行，新建一个对应的缓存
         temp_items.computeIfAbsent(order_id, k -> new ArrayList<Item>());
 
@@ -95,6 +132,8 @@ public class wasteServlet extends BaseServlet{
         } else {  // 新建的Item 补充id属性
             item.setObject_id(UuidUtil.getUuid());
         }
+        System.out.println("在 temp_items.get(order_id).add(item) 之前 137行");
+        item.print();
         temp_items.get(order_id).add(item);  // 缓存 前端修改的item
 
 
@@ -124,8 +163,10 @@ public class wasteServlet extends BaseServlet{
     public void deleteTable(HttpServletRequest request, HttpServletResponse response) throws
             ServletException, IOException {
         // 从前端获取 待删除申请表行的 tableId
-        String tableId = request.getParameter("tableId");
+        String tableId = request.getParameter("purchase_requisition_id");
+        String orderID = request.getParameter("order_id");
         // 调用service删除
+        orderService.deleteEntryByOrder(orderID);
         wasteRequisitionService.deleteTable(tableId);
         // TODO: 更新前端表格页面，这个好像不需要做，前端会自动删除（加个"确认删除"的弹窗）
         //  只需要把tableId传给后端即可
@@ -176,9 +217,6 @@ public class wasteServlet extends BaseServlet{
         buf.append(json).insert(0, "[");
         json = buf.toString();  //拼串完成
         System.out.println(json);
-
-        String filename = "WasteData.txt";
-        JsonUtil.writeJson(filename, json);  //写入Data.json文件
         return json;
     }
 
@@ -241,7 +279,7 @@ public class wasteServlet extends BaseServlet{
                 }
             }
         }
-        System.out.println("-------*************************----------"+items.size());
+        System.out.println("-------*************************----------"+result.size());
         for(Item i : result) {
             i.print();
         }
@@ -264,8 +302,7 @@ public class wasteServlet extends BaseServlet{
         buf.append(json).insert(0, "[");
         json = buf.toString();  //拼串完成
         System.out.println("物品信息json="+json);
-        String filename = "PurchaseListData.txt";
-        JsonUtil.writeJson(filename, json);  //写入Data.json文件
+
         return json;
     }
 

@@ -1,0 +1,1819 @@
+Index: src/main/java/web/servlet/PurchaseServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web.servlet;\r\n\r\nimport com.fasterxml.jackson.databind.ObjectMapper;\r\nimport domain.*;\r\nimport org.apache.commons.beanutils.BeanUtils;\r\nimport service.impl.purchase_requisition_service_impl;\r\nimport service.purchase_requisition_service;\r\nimport web.servlet.BaseServlet;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.lang.reflect.InvocationTargetException;\r\nimport java.util.ArrayList;\r\nimport java.util.Arrays;\r\nimport java.util.List;\r\nimport java.util.Map;\r\n\r\n\r\n@WebServlet(\"/purchase/*\")\r\npublic class PurchaseServlet extends BaseServlet {\r\n\r\n    private purchase_requisition_service service = new purchase_requisition_service_impl();\r\n\r\n    public void createOrUpdateItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {\r\n        System.out.println(\"PurchaseServlet：进入 采购申请 后端\");\r\n        //1.获取数据（领用申请表基本信息 + 领用申请物品清单）\r\n        Map<String, String[]> map = request.getParameterMap(); //获取前端数据，考虑分两次传输 申请表信息和物品清单\r\n        for (Map.Entry<String, String[]> entry : map.entrySet()) {\r\n            System.out.println(\"key = \" + entry.getKey() + \", value = \" + Arrays.toString(entry.getValue()));\r\n        }\r\n        //2.封装对象\r\n        Purchase_Requisition purchase_requisition = new Purchase_Requisition();\r\n        try {\r\n            BeanUtils.populate(purchase_requisition, map);\r\n        } catch (IllegalAccessException | InvocationTargetException e) {\r\n            e.printStackTrace();\r\n        }\r\n\r\n        purchase_requisition.print();  // 调试，显示前端传回的数据\r\n\r\n        // TODO: 前端表格里的物品清单数据还没传进来\r\n        List<Object_Entry> object_entries = new ArrayList<>();\r\n        template_order to = new template_order(purchase_requisition, object_entries);\r\n        service.createOrUpdate(to);\r\n        ResultInfo info = new ResultInfo();\r\n        // 4. 响应结果\r\n        info.setFlag(true);\r\n        // 将 info 对象序列化为 json\r\n        ObjectMapper mapper = new ObjectMapper();\r\n        String json = mapper.writeValueAsString(info);\r\n        // 将 json 数据写回客户端\r\n        response.setContentType(\"application/json;charset=utf-8\");\r\n        response.getWriter().write(json);\r\n    }\r\n    /**\r\n     * 登录功能\r\n     * @param request\r\n     * @param response\r\n     * @throws ServletException\r\n     * @throws IOException\r\n     */\r\n    public void deleteTable(HttpServletRequest request, HttpServletResponse response) throws\r\n            ServletException, IOException {\r\n        // 从前端获取 待删除申请表行的 tableId\r\n        String tableId = request.getParameter(\"tableId\");\r\n        // 调用service删除\r\n        service.deleteTable(tableId);\r\n        // TODO: 更新前端表格页面，这个好像不需要做，前端会自动删除（加个\"确认删除\"的弹窗）\r\n        //  只需要把tableId传给后端即可\r\n\r\n    }\r\n    /**\r\n     * 获取当前登录用户user_id\r\n     */\r\n    public void findOne(HttpServletRequest request, HttpServletResponse response) throws\r\n            ServletException, IOException {\r\n        //从 session 中获取登录用户\r\n        Object user = request.getSession().getAttribute(\"user\");\r\n        //System.out.println(\"purchase findone=\"+((User)user).getUser_id());\r\n        //将 user 写回客户端\r\n        ObjectMapper mapper = new ObjectMapper();\r\n        response.setContentType(\"application/json;charset=utf-8\");\r\n        mapper.writeValue(response.getOutputStream(),user);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/web/servlet/PurchaseServlet.java b/src/main/java/web/servlet/PurchaseServlet.java
+--- a/src/main/java/web/servlet/PurchaseServlet.java	(revision 31c0b7b559e6e7b053a2a71f3130a129a6495235)
++++ b/src/main/java/web/servlet/PurchaseServlet.java	(date 1686204746925)
+@@ -1,10 +1,16 @@
+ package web.servlet;
+ 
++import com.fasterxml.jackson.core.JsonProcessingException;
+ import com.fasterxml.jackson.databind.ObjectMapper;
+ import domain.*;
+ import org.apache.commons.beanutils.BeanUtils;
++import service.impl.item_service_impl;
++import service.impl.order_service_impl;
+ import service.impl.purchase_requisition_service_impl;
++import service.item_service;
++import service.order_service;
+ import service.purchase_requisition_service;
++import util.JsonUtil;
+ import web.servlet.BaseServlet;
+ 
+ import javax.servlet.ServletException;
+@@ -23,6 +29,8 @@
+ public class PurchaseServlet extends BaseServlet {
+ 
+     private purchase_requisition_service service = new purchase_requisition_service_impl();
++    private order_service o_service = new order_service_impl();
++    private item_service i_service = new item_service_impl();
+ 
+     public void createOrUpdateItems(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+         System.out.println("PurchaseServlet：进入 采购申请 后端");
+@@ -55,13 +63,8 @@
+         response.setContentType("application/json;charset=utf-8");
+         response.getWriter().write(json);
+     }
+-    /**
+-     * 登录功能
+-     * @param request
+-     * @param response
+-     * @throws ServletException
+-     * @throws IOException
+-     */
++
++
+     public void deleteTable(HttpServletRequest request, HttpServletResponse response) throws
+             ServletException, IOException {
+         // 从前端获取 待删除申请表行的 tableId
+@@ -72,17 +75,116 @@
+         //  只需要把tableId传给后端即可
+ 
+     }
+-    /**
+-     * 获取当前登录用户user_id
+-     */
+-    public void findOne(HttpServletRequest request, HttpServletResponse response) throws
++
++    public void initTable(HttpServletRequest request, HttpServletResponse response) throws
+             ServletException, IOException {
+-        //从 session 中获取登录用户
+-        Object user = request.getSession().getAttribute("user");
+-        //System.out.println("purchase findone="+((User)user).getUser_id());
+-        //将 user 写回客户端
++        System.out.println("PurchaseServlet：进入 初始化表格 后端");
++        String user_id = request.getParameter("user_id");
++        System.out.println("PurchaseServlet user_id="+user_id);
++        String purchaseDataList = "";
++        if (user_id != null)
++            purchaseDataList = updatePurchaseData(user_id);
++
++        ResultInfo info = new ResultInfo();
++        // 4. 响应结果
++        info.setFlag(true);
++        info.setData(purchaseDataList);
++        // 将 info 对象序列化为 json
+         ObjectMapper mapper = new ObjectMapper();
++        String json = mapper.writeValueAsString(info);
++        // 将 json 数据写回客户端
+         response.setContentType("application/json;charset=utf-8");
+-        mapper.writeValue(response.getOutputStream(),user);
++        response.getWriter().write(json);
+     }
++
++
++    public String updatePurchaseData(String user_id) throws IOException {
++        System.out.println("进入updatePurchaseDataList");
++        List<Purchase_Requisition> pr_list = service.searchTableByUser(user_id);
++        for (Purchase_Requisition pr : pr_list) {
++            System.out.println(pr.getPurchase_requisition_id());
++        }
++        // 拼串
++        String json = "";
++        for (Purchase_Requisition pr : pr_list) {
++            try {
++                json += writeValueAsString(pr);
++            } catch (JsonProcessingException e) {
++                e.printStackTrace();
++            }
++        }
++        json = json.replace("}", "},");
++        json = json.replaceFirst(".$","");  //去掉最后的逗号
++        json += "]";
++        StringBuffer buf = new StringBuffer();
++        buf.append(json).insert(0, "[");
++        json = buf.toString();  //拼串完成
++        System.out.println(json);
++
++        String filename = "PurchaseData.txt";
++        JsonUtil.writeJson(filename, json);  //写入Data.json文件
++        return json;
++    }
++
++
++    // 初始化 物品清单列表
++    public void initListTable(HttpServletRequest request, HttpServletResponse response) throws
++            ServletException, IOException {
++        System.out.println("PurchaseServlet：进入 初始化物品清单弹窗表格 后端");
++        String order_id = request.getParameter("order_id");
++        System.out.println("PurchaseServlet order_id="+order_id);
++        String purchaseDataList = "";
++        if (order_id != null)
++            purchaseDataList = updatePurchaseListData(order_id);
++
++
++        ResultInfo info = new ResultInfo();
++        // 4. 响应结果
++        info.setFlag(true);
++        info.setData(purchaseDataList);
++        // 将 info 对象序列化为 json
++        ObjectMapper mapper = new ObjectMapper();
++        String json = mapper.writeValueAsString(info);
++        // 将 json 数据写回客户端
++        response.setContentType("application/json;charset=utf-8");
++        response.getWriter().write(json);
++    }
++
++    public String updatePurchaseListData(String order_id) throws IOException {
++        System.out.println("更新 物品清单列表"+order_id);
++
++        // 获取物品清单的 全部物品行
++        List<Object_Entry> oe_list = o_service.search(order_id);
++
++        // 根据 order_id 查找 物品信息
++        List<Item> items = new ArrayList<>();
++        for (Object_Entry oe : oe_list) {
++            System.out.println("物品id="+oe.getObject_id());
++            Item item = i_service.search(oe.getObject_id());  // 获取物品信息
++            item.setQuantity(oe.getQuantity());  // 修改数量（采购物品的数量在object_entry中）
++            item.print();  // 显示对象信息
++            items.add(item);  //添加进 物品信息表
++        }
++
++        // 拼串
++        String json = "";
++        for (Item i : items) {
++            try {
++                json += writeValueAsString(i);
++            } catch (JsonProcessingException e) {
++                e.printStackTrace();
++            }
++        }
++        json = json.replace("}", "},");
++        json = json.replaceFirst(".$","");  //去掉最后的逗号
++        json += "]";
++        StringBuffer buf = new StringBuffer();
++        buf.append(json).insert(0, "[");
++        json = buf.toString();  //拼串完成
++        System.out.println("物品信息json="+json);
++        String filename = "PurchaseListData.txt";
++        JsonUtil.writeJson(filename, json);  //写入Data.json文件
++        return json;
++    }
++
+ }
+Index: src/main/webapp/form_purchase.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"renderer\" content=\"webkit\">\r\n\r\n    <title>基本表单</title>\r\n    <meta name=\"keywords\" >\r\n    <meta name=\"description\" >\r\n    <link href=\"css/bootstrap.min.css?v=3.4.0\" rel=\"stylesheet\">\r\n    <link href=\"font-awesome/css/font-awesome.css?v=4.3.0\" rel=\"stylesheet\">\r\n    <link href=\"css/plugins/iCheck/custom.css\" rel=\"stylesheet\">\r\n    <link href=\"css/animate.css\" rel=\"stylesheet\">\r\n    <link href=\"css/style.css?v=2.2.0\" rel=\"stylesheet\">\r\n</head>\r\n<body>\r\n<!--<button type=\"button\" id=\"batch-edit-btn\">批量编辑</button>-->\r\n<!--<button type=\"button\" id=\"batch-save-btn\">批量保存</button>-->\r\n<!--<table id=\"table\" class=\"display\" width=\"100%\"></table>-->\r\n<div id=\"wrapper\">\r\n    <!-- 侧边栏 -->\r\n    <div id=\"left_sidebar\"></div>\r\n\r\n    <div id=\"page-wrapper\" class=\"gray-bg dashbard-1\">\r\n        <!--头部-->\r\n        <div id=\"header\"></div>\r\n        <div class=\"row wrapper border-bottom white-bg page-heading\">\r\n            <div class=\"col-lg-10\">\r\n                <h2>采购申请</h2>\r\n            </div>\r\n            <div class=\"col-lg-2\"></div>\r\n        </div>\r\n        <div class=\"wrapper wrapper-content animated fadeInRight\">\r\n            <!--                所有表单元素  -->\r\n            <div class=\"row\">\r\n                <div class=\"col-lg-12\">\r\n                    <div class=\"ibox float-e-margins\">\r\n                        <div class=\"ibox-title\">\r\n                            <h5>采购申请表</h5>\r\n                            <div class=\"ibox-tools\">\r\n                                <a class=\"collapse-link\">\r\n                                    <i class=\"fa fa-chevron-up\"></i>\r\n                                </a>\r\n                            </div>\r\n                        </div>\r\n                        <div class=\"ibox-content\">\r\n                            <form method=\"get\" class=\"form-horizontal\">\r\n\r\n                                <div class=\"row\">\r\n                                    <div class=\"col-lg-12\">\r\n                                        <div class=\"ibox float-e-margins\">\r\n\r\n                                            <div class=\"ibox-content\">\r\n                                                <div class=\"\">\r\n                                                    <a onclick=\"fnClickAddRow();\" href=\"javascript:void(0);\" class=\"btn btn-primary \">新建采购申请</a>\r\n                                                    <button type=\"button\" id=\"batch-edit-btn\" class=\"btn btn-primary \">批量编辑</button>\r\n                                                    <button type=\"button\" id=\"batch-save-btn\" class=\"btn btn-primary \">批量保存</button>\r\n                                                </div>\r\n\r\n\r\n                                                <table id=\"table\" class=\"datatable table table-striped table-bordered table-hover\">\r\n\r\n                                                </table>\r\n\r\n                                            </div>\r\n                                        </div>\r\n                                    </div>\r\n                                </div>\r\n                            </form>\r\n                        </div>\r\n\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <!-- 数据表单弹窗 -->\r\n        <form method=\"post\" class=\"form-horizontal\" role=\"form\" id=\"updateGoodsForm\">\r\n            <div class=\"modal fade\" id=\"updateModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"updateModalLabel\" aria-hidden=\"true\">\r\n                <div class=\"modal-dialog\" style=\"width: 1400px\">\r\n                    <div class=\"modal-content\">\r\n                        <div class=\"modal-header\">\r\n                            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">\r\n                                ×\r\n                            </button>\r\n                            <h4 class=\"modal-title\" id=\"updateModalLabel\">\r\n                                物品清单\r\n                            </h4>\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                            <div class=\"row\">\r\n                                <div class=\"col-lg-12\">\r\n                                    <div class=\"ibox float-e-margins\">\r\n                                        <div class=\"ibox-content\">\r\n\r\n                                            <div class=\"\">\r\n                                                <button onclick=\"listfnClickAddRow();\" href=\"javascript:void(0);\" class=\"list-top-btn btn btn-primary \">添加物品</button>\r\n                                                <button type=\"button\" id=\"list-batch-edit-btn\" class=\"list-top-btn btn btn-primary \">批量编辑</button>\r\n                                                <button type=\"button\" id=\"list-batch-save-btn\" class=\"list-top-btn btn btn-primary \">批量保存</button>\r\n                                            </div>\r\n\r\n                                            <table id=listTable width=\"100%\" class=\"table table-striped table-bordered table-hover dataTables-example\">\r\n\r\n                                            </table>\r\n\r\n                                        </div>\r\n                                    </div>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>  <!--   end modal-body  -->\r\n                </div><!-- /.modal-content -->\r\n            </div><!-- /.modal -->\r\n        </form>\r\n    </div>\r\n</div>\r\n\r\n\r\n\r\n\r\n<!-- Mainly scripts -->\r\n<script src=\"js/jquery-2.1.1.min.js\"></script>\r\n<script src=\"js/bootstrap.min.js?v=3.4.0\"></script>\r\n<script src=\"js/plugins/metisMenu/jquery.metisMenu.js\"></script>\r\n<script src=\"js/plugins/slimscroll/jquery.slimscroll.min.js\"></script>\r\n\r\n<!-- Custom and plugin javascript -->\r\n<script src=\"js/hplus.js?v=2.2.0\"></script>\r\n<script src=\"js/plugins/pace/pace.min.js\"></script>\r\n\r\n<!-- iCheck -->\r\n<script src=\"js/plugins/iCheck/icheck.min.js\"></script>\r\n\r\n<!--&lt;!&ndash;引入JavaScript&ndash;&gt;-->\r\n<script type=\"text/javascript\" language=\"javascript\" src=\"https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js\"></script>\r\n\r\n\r\n<!-- Data Tables -->\r\n<script src=\"js/plugins/dataTables/jquery.dataTables.js\"></script>\r\n<script src=\"js/plugins/dataTables/dataTables.bootstrap.js\"></script>\r\n\r\n<!--&lt;!&ndash;引入css&ndash;&gt;-->\r\n<!--<link rel=\"stylesheet\" type=\"text/css\" href=\"https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css\">-->\r\n\r\n<!--&lt;!&ndash;&lt;!&ndash;引入JavaScript&ndash;&gt;&ndash;&gt;-->\r\n<!--<script type=\"text/javascript\" language=\"javascript\" src=\"//code.jquery.com/jquery-1.12.4.js\"></script>-->\r\n<!--<script type=\"text/javascript\" language=\"javascript\" src=\"https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js\"></script>-->\r\n\r\n\r\n\r\n<!--初始化代码-->\r\n<!-- 导入header -->\r\n<script>\r\n    $(function () {\r\n        $.get(\"header.html\",function (data) {\r\n            $(\"#header\").html(data);\r\n        });\r\n    });\r\n</script>\r\n<script>\r\n    $(function () {\r\n        $.get(\"left_sidebar.html\",function (data) {\r\n            $(\"#left_sidebar\").html(data);\r\n        });\r\n    });\r\n</script>\r\n<script>\r\n    const dataSet = [\r\n        ['', '', '', '采购用途0', '', '0'],\r\n        ['', '', '', '采购用途1', '', '0'],\r\n    ];\r\n    const dataSets = [\r\n        ['aaa1', '规格1', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu1'],\r\n        ['aaa2', '规格', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu2'],\r\n        ['aaa3', '规格1', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu3'],\r\n        ['aaa4', '规格', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu4'],\r\n        ['aaa5', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu5']\r\n    ];\r\n    $(document).ready(function() {\r\n        $(function(){\r\n            var table = $('#table').DataTable({\r\n                retrieve: true,\r\n                data:dataSet,\r\n                columns:[\r\n                    {\r\n                        'field': \"purchase_requisition_id\",\r\n                        'title': '采购申请表编号',\r\n                        'defaultContent' : \"\"\r\n                    }, {\r\n                        'field': \"purchase_order_id\",\r\n                        'title': '采购物品清单编号',\r\n                        'defaultContent' : \"\"\r\n                    }, {\r\n                        'field': \"requisition_user_id\",\r\n                        'title': '申请人',\r\n                        'defaultContent' : \"\"\r\n                    }, {\r\n                        'field': \"purpose\",\r\n                        'title': '采购用途',\r\n                        'defaultContent' : \"\"\r\n                    }, {\r\n                        'field': \"requisition_date\",\r\n                        'title': '申请提交日期',\r\n                        'defaultContent' : \"\"\r\n                    }, {\r\n                        'field': \"state\",\r\n                        'title': '申请当前状态',\r\n                        'defaultContent' : \"0\"\r\n                    }, {\r\n                        'field': \"approval_user_id\",\r\n                        'title': '审批人',\r\n                        'defaultContent' : \"\"\r\n                    }, {\r\n                        'field': \"approval_opinions\",\r\n                        'title': '审批意见',\r\n                        'defaultContent' : \"\"\r\n                    }, {\r\n                        'field': \"approval_date\",\r\n                        'title': '审批日期',\r\n                        'defaultContent' : \"\"\r\n                    }, {\r\n                        field: \"operate\",\r\n                        sTitle: '操作',\r\n                        sDefaultContent : \"<button class='submit-btn btn btn-primary btn-xs' type='button' >提交</button>\"+\r\n                            \"<button class='edit-btn btn btn-primary btn-xs' type='button' style='margin-left: 10px'>编辑</button>\"  +\r\n                        \"<button class='list-btn btn btn-primary btn-xs' type='button' style='margin-left: 10px'>物品清单</button>\"+\r\n                            \"<button class='delete btn btn-default btn-xs' style='margin-left: 10px'>删除</button>\",\r\n                        sClass: 'text-center',\r\n                        \"data\" : null,\r\n                        // \"render\" : function(data, type,row) {\r\n                        //     var id = '\"' + row.id + '\"';\r\n                        //     var html = \"<a href='javascript:void(0);'  class='btn btn-primary btn-xs'  onclick='EditViewById()'></i>物品清单</a>\"\r\n                        //     return html;\r\n                        //     // formatter: actionFormatter\r\n                        // }\r\n                    }],\r\n                \"language\": {\r\n                    \"sProcessing\": \"处理中...\",\r\n                    \"sLengthMenu\": \"显示 _MENU_ 项结果\",\r\n                    \"sZeroRecords\": \"没有匹配结果\",\r\n                    \"sInfo\": \"显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项\",\r\n                    \"sInfoEmpty\": \"显示第 0 至 0 项结果，共 0 项\",\r\n                    \"sInfoFiltered\": \"(由 _MAX_ 项结果过滤)\",\r\n                    \"sInfoPostFix\": \"\",\r\n                    \"sSearch\": \"搜索:\",\r\n                    \"sUrl\": \"\",\r\n                    \"sEmptyTable\": \"表中数据为空\",\r\n                    \"sLoadingRecords\": \"载入中...\",\r\n                    \"sInfoThousands\": \",\",\r\n                    \"oPaginate\": {\r\n                        \"sFirst\": \"首页\",\r\n                        \"sPrevious\": \"上页\",\r\n                        \"sNext\": \"下页\",\r\n                        \"sLast\": \"末页\"\r\n                    },\r\n                    \"oAria\": {\r\n                        \"sSortAscending\": \": 以升序排列此列\",\r\n                        \"sSortDescending\": \": 以降序排列此列\"\r\n                    }\r\n                }\r\n            });\r\n\r\n            var listtable = $('#listTable').DataTable({\r\n                retrieve: true,\r\n                data:dataSets,\r\n                columns:[\r\n                    {\r\n                        'field': \"name\",\r\n                        'title': '物品名称',\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        'field': \"specification\",\r\n                        'title': '规格',\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        'field': \"quantity\",\r\n                        'title': '数量',\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        'field': \"unit\",\r\n                        'title': '包装单位',\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        'field': \"classification\",\r\n                        'title': '分类',\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        'field': \"price\",\r\n                        'title': '单价',\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        'field': \"expiration_time\",\r\n                        'title': '过期时间',\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        'field': \"upper_limit\",\r\n                        'title': '警戒上限',\r\n                        // width:90,\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        'field': \"lower_limit\",\r\n                        'title': '警戒下限',\r\n                        // width:90,\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        'field': \"warehouse_id\",\r\n                        'title': '仓库',\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        'field': \"notes\",\r\n                        'title': '备注',\r\n                        'defaultContent' : \"\",\r\n                        'sClass': 'text-center'\r\n                    }, {\r\n                        field: \"operate\",\r\n                        sTitle: '操作',\r\n                        sDefaultContent : \"<button class='list-edit-btn btn btn-primary btn-xs' type='button'>编辑</button>\" +\r\n                            \"<button class='list-delete btn btn-default btn-xs' style='margin-left: 10px'>删除</button>\",\r\n                        sClass: 'text-center',\r\n                        // width:100,\r\n                        \"data\" : null,\r\n                        // \"render\" : function(data, type,row) {\r\n                        //   var html = \"<a href='javascript:void(0);'  class='edit-btn btn btn-primary btn-xs' type='button'>修改</a>\"\r\n                        //   html += \"<a href='javascript:void(0);'  class='delete btn btn-default btn-xs'>删除</a>\"\r\n                        //   return html;\r\n                        //   // formatter: actionFormatter\r\n                        // }\r\n                    }],\r\n                \"language\": {\r\n                    \"sProcessing\": \"处理中...\",\r\n                    \"sLengthMenu\": \"显示 _MENU_ 项结果\",\r\n                    \"sZeroRecords\": \"没有匹配结果\",\r\n                    \"sInfo\": \"显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项\",\r\n                    \"sInfoEmpty\": \"显示第 0 至 0 项结果，共 0 项\",\r\n                    \"sInfoFiltered\": \"(由 _MAX_ 项结果过滤)\",\r\n                    \"sInfoPostFix\": \"\",\r\n                    \"sSearch\": \"搜索:\",\r\n                    \"sUrl\": \"\",\r\n                    \"sEmptyTable\": \"表中数据为空\",\r\n                    \"sLoadingRecords\": \"载入中...\",\r\n                    \"sInfoThousands\": \",\",\r\n                    \"oPaginate\": {\r\n                        \"sFirst\": \"首页\",\r\n                        \"sPrevious\": \"上页\",\r\n                        \"sNext\": \"下页\",\r\n                        \"sLast\": \"末页\"\r\n                    },\r\n                    \"oAria\": {\r\n                        \"sSortAscending\": \": 以升序排列此列\",\r\n                        \"sSortDescending\": \": 以降序排列此列\"\r\n                    }\r\n                }\r\n            });\r\n\r\n            // 点击 物品清单\r\n            $(\"table tbody\").on(\"click\",\".list-btn\",function (){\r\n                // $('#listTable').dataTable().api().draw();\r\n                // $('#listTable').dataTable().reload();\r\n                var tds=$(this).parents(\"tr\").children();\r\n                var arr = tds[5].innerText;\r\n                console.log(arr);\r\n                if(arr==='已提交'||arr==='审核通过'){\r\n                    $('.list-edit-btn').attr('disabled',true);\r\n                    $('.list-delete').attr('disabled',true);\r\n                    $('.list-top-btn').attr('disabled',true);\r\n                }\r\n                if(arr==='未提交'||arr==='审核未通过'){\r\n                    $('.list-edit-btn').attr('disabled',false);\r\n                    $('.list-delete').attr('disabled',false);\r\n                    $('.list-top-btn').attr('disabled',false);\r\n                }\r\n\r\n                $('#updateModal').modal('show');\r\n            })\r\n\r\n            // 点击 提交 按钮\r\n            $(\"table tbody\").on(\"click\",\".submit-btn\",function (){\r\n                var tds=$(this).parents(\"tr\").children();\r\n                var arr = tds[5].innerText;\r\n                console.log(arr);\r\n                if(arr==='未提交'||arr==='审核未通过'){\r\n                    // 提交的代码\r\n                    if(confirm('确认提交申请？')){  //确认提交\r\n                        // 拼后端BeanUtils所需的map串\r\n                        var front_end_data = \"\";\r\n                        if (tds[0].innerText !== \"\") front_end_data += \"purchase_requisition_id=\"+tds[0].innerText+\"&\";\r\n                        if (tds[1].innerText !== \"\") front_end_data += \"purchase_order_id=\"+tds[1].innerText+\"&\";\r\n                        if (tds[3].innerText !== \"\") front_end_data += \"purpose=\"+tds[3].innerText+\"&\";\r\n                        if (tds[4].innerText !== \"\") front_end_data += \"requisition_date=\"+tds[4].innerText+\"&\";\r\n                        if (tds[5].innerText !== \"\") front_end_data += \"&state=\"+tds[5].innerText+\"&\";\r\n                        if (tds[6].innerText !== \"\") front_end_data += \"&approval_user_id=\"+tds[6].innerText+\"&\";\r\n                        if (tds[7].innerText !== \"\") front_end_data += \"&approval_opinions=\"+tds[7].innerText+\"&\";\r\n                        if (tds[8].innerText !== \"\") front_end_data += \"&approval_date=\"+tds[8].innerText+\"&\";\r\n                        // front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符\r\n\r\n                        $.get(\"user/findOne\", {}, function (data) {\r\n                            // 获取当前登陆的用户id\r\n                            front_end_data += \"requisition_user_id=\"+data.user_id;\r\n                            console.log(\"front_end_data=\"+front_end_data);\r\n                            // 把前端数据传给后端\r\n                            $.post(\"purchase/createOrUpdateItems\", front_end_data, function (data) {\r\n                                console.log(\"在接受后端数据之后\");\r\n                                if (data.flag) {\r\n                                    alert(\"提交成功\");\r\n                                    tds[5].innerText = '已提交';\r\n                                    // 禁用按钮：应该放入点击确认\r\n                                    $(this).attr('disabled',true);\r\n                                    tds.find('.edit-btn').attr('disabled',true);\r\n                                } else {\r\n                                    alert(\"提交失败\");\r\n                                }\r\n                            })\r\n                        });  // end of $.get(\"user/findOne\"...\r\n                    } // end of confirm(确认提交申请？)\r\n                    else {} //点击取消，无事发生\r\n                }\r\n            })\r\n\r\n            // 申请表修改\r\n            $(\"#table tbody\").on(\"click\",\".edit-btn\",function(){\r\n                var tds=$(this).parents(\"tr\").children();\r\n                $.each(tds, function(i,val){\r\n                    var jqob=$(val);\r\n                    if(i<=2||i>3 ){return true;}//跳过第1项 序号,按钮\r\n                    var txt=jqob.text();\r\n                    var put=$(\"<input type='text' style='width: 80px'>\");\r\n                    put.val(txt);\r\n                    jqob.html(put);\r\n                });\r\n                $(this).html(\"保存\");\r\n                $(this).toggleClass(\"edit-btn\");\r\n                $(this).toggleClass(\"save-btn\");\r\n            });\r\n\r\n            //申请表修改保存\r\n            $(\"#table tbody\").on(\"click\",\".save-btn\",function(){\r\n                var row=table.row($(this).parents(\"tr\"));\r\n                var tds=$(this).parents(\"tr\").children();\r\n                $.each(tds, function(i,val){\r\n                    var jqob=$(val);\r\n                    //把input变为字符串\r\n                    //console.log(!jqob.has('button').length);\r\n                    if(!jqob.has('button').length){\r\n                        var txt=jqob.children(\"input\").val();\r\n                        //console.log(jqob.children(\"input\"));\r\n                        jqob.html(txt);\r\n                        table.cell(jqob).data(txt);//修改DataTables对象的数据\r\n                    }\r\n                });\r\n                $(this).html(\"编辑\");\r\n                $(this).toggleClass(\"edit-btn\");\r\n                $(this).toggleClass(\"save-btn\");\r\n            });\r\n\r\n            // 物品清单修改\r\n            $(\"#listTable tbody\").on(\"click\",\".list-edit-btn\",function(){\r\n                var tds=$(this).parents(\"tr\").children();\r\n                $.each(tds, function(i,val){\r\n                    var jqob=$(val);\r\n                    if(jqob.has('button').length ){return true;}//跳过第1项 序号,按钮\r\n                    var txt=jqob.text();\r\n                    var put=$(\"<input type='text' style='width: 80px'>\");\r\n                    put.val(txt);\r\n                    jqob.html(put);\r\n                });\r\n                $(this).html(\"保存\");\r\n                $(this).toggleClass(\"list-edit-btn\");\r\n                $(this).toggleClass(\"list-save-btn\");\r\n            });\r\n\r\n            //  物品清单修改保存\r\n            $(\"#listTable tbody\").on(\"click\",\".list-save-btn\",function(){\r\n                var row=listtable.row($(this).parents(\"tr\"));\r\n                var tds=$(this).parents(\"tr\").children();\r\n                $.each(tds, function(i,val){\r\n                    var jqob=$(val);\r\n                    //把input变为字符串\r\n                    console.log(!jqob.has('button').length);\r\n                    if(!jqob.has('button').length){\r\n                        var txt=jqob.children(\"input\").val();\r\n                        console.log(jqob.children(\"input\"));\r\n                        jqob.html(txt);\r\n                        listtable.cell(jqob).data(txt);//修改DataTables对象的数据\r\n                    }\r\n                });\r\n                $(this).html(\"编辑\");\r\n                $(this).toggleClass(\"list-edit-btn\");\r\n                $(this).toggleClass(\"list-save-btn\");\r\n            });\r\n\r\n            //批量点击编辑按钮\r\n            $(\"#batch-edit-btn\").click(function(){\r\n                $(\".edit-btn\").click();\r\n            });\r\n            $(\"#batch-save-btn\").click(function(){\r\n                $(\".save-btn\").click();\r\n            });\r\n\r\n            //物品清单批量点击编辑按钮\r\n            $(\"#list-batch-edit-btn\").click(function(){\r\n                $(\".list-edit-btn\").click();\r\n            });\r\n            $(\"#list-batch-save-btn\").click(function(){\r\n                $(\".list-save-btn\").click();\r\n            });\r\n\r\n            // 申请单点击删除按钮，触发删除行脚本\r\n            $(document).on(\"click\",'.delete',function(){\r\n                $('#table').dataTable().fnDeleteRow($(this).closest('tr')[0]);\r\n            });\r\n            // 物品清单点击删除按钮，触发删除行脚本\r\n            $(document).on(\"click\",'.list-delete',function(){\r\n                $('#listTable').dataTable().fnDeleteRow($(this).closest('tr')[0]);\r\n            });\r\n\r\n\r\n            // 根据 申请当前状态，设置按钮是否可用\r\n            $(\"#table tbody tr\").each(function () {\r\n                var a = $(this).children();//获取每一行\r\n                var arr = a[5].innerText;//取得第六列的值\r\n                if(arr==='0'){\r\n                    a[5].innerText = '未提交';\r\n                }else if(arr==='1'){\r\n                    a[5].innerText = '已提交';\r\n                    a.find('.submit-btn').attr('disabled',true);\r\n                    a.find('.edit-btn').attr('disabled',true);\r\n                }else if(arr==='2'){\r\n                    a[5].innerText = '审核通过';\r\n                    a.find('.submit-btn').attr('disabled',true);\r\n                    a.find('.edit-btn').attr('disabled',true);\r\n                }else if(arr==='3'){\r\n                    a[5].innerText = '审核未通过';\r\n                }\r\n            })\r\n        });\r\n\r\n    } );\r\n\r\n\r\n\r\n</script>\r\n\r\n<script>\r\n    function fnClickAddRow() {\r\n        $('#table').dataTable().fnAddData([\r\n            \"\", \"\", \"\", \"\",\r\n            \"\", \"未提交\", \"\", \"\", \"\",\r\n            \"\", \"\"]);}\r\n    function listfnClickAddRow() {\r\n        $('#listTable').dataTable().fnAddData([\r\n            \"\", \"\", \"\", \"\",\r\n            \"\", \"\", \"\", \"\", \"\",\r\n            \"\", \"\"]);}\r\n</script>\r\n\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/form_purchase.html b/src/main/webapp/form_purchase.html
+--- a/src/main/webapp/form_purchase.html	(revision 31c0b7b559e6e7b053a2a71f3130a129a6495235)
++++ b/src/main/webapp/form_purchase.html	(date 1686205915527)
+@@ -166,22 +166,71 @@
+     });
+ </script>
+ <script>
+-    const dataSet = [
+-        ['', '', '', '采购用途0', '', '0'],
+-        ['', '', '', '采购用途1', '', '0'],
+-    ];
+-    const dataSets = [
+-        ['aaa1', '规格1', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu1'],
+-        ['aaa2', '规格', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu2'],
+-        ['aaa3', '规格1', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu3'],
+-        ['aaa4', '规格', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu4'],
+-        ['aaa5', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu5']
+-    ];
++    var temp_user_id;
++    var temp_data;
++
++    console.log("--flag-1-");
++
++    $.ajax({
++        async: false,
++        type : "post",
++        url : "user/findOne",
++        success : function(user) {
++            console.log("--flag-findOne-");
++            temp_user_id = user.user_id;
++            console.log("user.user_id"+user.user_id);
++        }
++    });
++    // 初始化，获取首页表格数据
++    $.ajax({
++        async: false,
++        data: {user_id: temp_user_id},
++        type : "post",
++        url : "purchase/initTable",
++        success : function(data) {
++            console.log("--flag-inittable-");
++            temp_data=data.data;
++        }
++    });
++
++    function json2Array(jsonData, list_or_not) {
++        var jsonsString = jsonData.slice(1, jsonData.length - 1);
++        var jsonStrings = jsonsString.split("},");
++        var length = jsonStrings.length;
++        var jsons = [];
++        for (var i = 0; i !== length-1; ++i) {
++            jsonStrings[i] += '}';
++        }
++        var source = [[]];
++        for (var i = 0; i !== length; ++i) {
++            //console.log("$"+jsonStrings[i]);
++            jsons[i] = eval('(' + jsonStrings[i] + ')');
++            var data = [];
++            for(var key in jsons[i]) {
++                if(i === 0) {
++                    source[0].push(key);
++                }
++                console.log("i="+i+"|key="+key+"|json[i,key]="+jsons[i][key]);
++                if(!list_or_not || key !== "object_id" ) {
++                    data.push(jsons[i][key]);
++                } else {
++                    console.log("跳过在执行一次")
++                }
++            }
++            source.push(data);
++        }
++        return source.slice(1); //删除第1行
++    }
++    //console.log("temp_data=\n"+temp_data);
++    temp_data = json2Array(temp_data, false)
++
++    const dataSets = [];  //初始化物品清单数据源
++    //console.log("temp_data1=\n"+temp_data);
+     $(document).ready(function() {
+         $(function(){
+             var table = $('#table').DataTable({
+                 retrieve: true,
+-                data:dataSet,
++                data:temp_data,
+                 columns:[
+                     {
+                         'field': "purchase_requisition_id",
+@@ -261,9 +310,60 @@
+                 }
+             });
+ 
++            var temp_list_data;
++
++            // 点击 物品清单
++            $("table tbody").on("click",".list-btn",function (){
++                // TODO: 待办 - 进入物品清单弹窗，刷新表单
++                //$('#listTable').dataTable().api().draw();
++
++                var tds=$(this).parents("tr").children();
++                var temp_order_id = tds[1].innerText;
++                //console.log("temp_order_id"+temp_order_id);
++                $.ajax({
++                    async: false,
++                    data: {order_id: temp_order_id},
++                    type: "post",
++                    url : "purchase/initListTable",
++                    success : function(data) {
++                        //console.log("--flag-initListTable-");
++                        temp_list_data=data.data;
++                    }
++                });
++                temp_list_data = json2Array(temp_list_data, true)
++
++                // console.log("物品清单数据样例=\n"+dataSets);
++                // console.log("物品清单数据=\n"+temp_list_data);
++                // var len, i;
++                // for(i=0, len=temp_list_data.length; i<len; i++) {
++                //     dataSets.push(temp_list_data[i]);
++                // }
++                // console.log(dataSets);
++                // 更新表格数据
++                $('#listTable').dataTable().api().clear();
++                $('#listTable').dataTable().api().rows.add(temp_list_data);
++                $('#listTable').dataTable().api().draw();
++
++                var arr = tds[5].innerText;
++                console.log(arr);
++                if(arr==='已提交'||arr==='审核通过'){
++                    $('.list-edit-btn').attr('disabled',true);
++                    $('.list-delete').attr('disabled',true);
++                    $('.list-top-btn').attr('disabled',true);
++                }
++                if(arr==='未提交'||arr==='审核未通过'){
++                    $('.list-edit-btn').attr('disabled',false);
++                    $('.list-delete').attr('disabled',false);
++                    $('.list-top-btn').attr('disabled',false);
++                }
++
++                $('#updateModal').modal('show');
++            })
++
+             var listtable = $('#listTable').DataTable({
+                 retrieve: true,
+                 data:dataSets,
++                //ajax: "json/PurchaseListData.txt",
+                 columns:[
+                     {
+                         'field': "name",
+@@ -312,11 +412,6 @@
+                         // width:90,
+                         'defaultContent' : "",
+                         'sClass': 'text-center'
+-                    }, {
+-                        'field': "warehouse_id",
+-                        'title': '仓库',
+-                        'defaultContent' : "",
+-                        'sClass': 'text-center'
+                     }, {
+                         'field': "notes",
+                         'title': '备注',
+@@ -363,26 +458,7 @@
+                 }
+             });
+ 
+-            // 点击 物品清单
+-            $("table tbody").on("click",".list-btn",function (){
+-                // $('#listTable').dataTable().api().draw();
+-                // $('#listTable').dataTable().reload();
+-                var tds=$(this).parents("tr").children();
+-                var arr = tds[5].innerText;
+-                console.log(arr);
+-                if(arr==='已提交'||arr==='审核通过'){
+-                    $('.list-edit-btn').attr('disabled',true);
+-                    $('.list-delete').attr('disabled',true);
+-                    $('.list-top-btn').attr('disabled',true);
+-                }
+-                if(arr==='未提交'||arr==='审核未通过'){
+-                    $('.list-edit-btn').attr('disabled',false);
+-                    $('.list-delete').attr('disabled',false);
+-                    $('.list-top-btn').attr('disabled',false);
+-                }
+ 
+-                $('#updateModal').modal('show');
+-            })
+ 
+             // 点击 提交 按钮
+             $("table tbody").on("click",".submit-btn",function (){
+@@ -443,7 +519,7 @@
+                 $(this).toggleClass("save-btn");
+             });
+ 
+-            //申请表修改保存
++            // 申请表修改保存
+             $("#table tbody").on("click",".save-btn",function(){
+                 var row=table.row($(this).parents("tr"));
+                 var tds=$(this).parents("tr").children();
+@@ -484,16 +560,48 @@
+                 var row=listtable.row($(this).parents("tr"));
+                 var tds=$(this).parents("tr").children();
+                 $.each(tds, function(i,val){
++                    console.log("|"+tds[i].innerText+"|");
+                     var jqob=$(val);
+                     //把input变为字符串
+-                    console.log(!jqob.has('button').length);
+                     if(!jqob.has('button').length){
+                         var txt=jqob.children("input").val();
+-                        console.log(jqob.children("input"));
+                         jqob.html(txt);
+                         listtable.cell(jqob).data(txt);//修改DataTables对象的数据
+                     }
+                 });
++
++                var front_end_data = "";
++                if (tds[0].innerText !== "") front_end_data += "name="+tds[0].innerText+"&";
++                if (tds[1].innerText !== "") front_end_data += "specification="+tds[1].innerText+"&";
++                if (tds[2].innerText !== "") front_end_data += "quantity="+tds[2].innerText+"&";
++                if (tds[3].innerText !== "") front_end_data += "unit="+tds[3].innerText+"&";
++                if (tds[4].innerText !== "") front_end_data += "classification="+tds[4].innerText+"&";
++                if (tds[5].innerText !== "") front_end_data += "price="+tds[5].innerText+"&";
++                if (tds[6].innerText !== "") front_end_data += "expiration_time="+tds[6].innerText+"&";
++                if (tds[7].innerText !== "") front_end_data += "lower_limit="+tds[7].innerText+"&";
++                if (tds[8].innerText !== "") front_end_data += "upper_limit="+tds[8].innerText+"&";
++                if (tds[9].innerText !== "") front_end_data += "notes="+tds[9].innerText+"&";
++                front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
++
++                $.get("user/findOne", {}, function (data) {
++                    // 获取当前登陆的用户id
++                    front_end_data += "requisition_user_id="+data.user_id;
++                    console.log("front_end_data="+front_end_data);
++                    // 把前端数据传给后端
++                    $.post("purchase/createOrUpdateItems", front_end_data, function (data) {
++                        console.log("在接受后端数据之后");
++                        if (data.flag) {
++                            alert("提交成功");
++                            tds[5].innerText = '已提交';
++                            // 禁用按钮：应该放入点击确认
++                            $(this).attr('disabled',true);
++                            tds.find('.edit-btn').attr('disabled',true);
++                        } else {
++                            alert("提交失败");
++                        }
++                    })
++                });  // end of $.get("user/findOne"...
++
+                 $(this).html("编辑");
+                 $(this).toggleClass("list-edit-btn");
+                 $(this).toggleClass("list-save-btn");
+@@ -525,7 +633,7 @@
+             });
+ 
+ 
+-            // 根据 申请当前状态，设置按钮是否可用
++            // 根据 申请当前状态的数值，设置前端表格的文字，以及对应行按钮是否可用
+             $("#table tbody tr").each(function () {
+                 var a = $(this).children();//获取每一行
+                 var arr = a[5].innerText;//取得第六列的值
+Index: src/main/java/service/impl/purchase_requisition_service_impl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package service.impl;\r\n\r\nimport dao.impl.object_entry_dao_impl;\r\nimport dao.impl.purchase_requisition_dao_impl;\r\nimport dao.object_entry_dao;\r\nimport dao.purchase_requisition_dao;\r\nimport domain.Object_Entry;\r\nimport domain.Purchase_Requisition;\r\nimport domain.get_or_borrow_Requisition;\r\nimport domain.template_order;\r\nimport org.joda.time.DateTime;\r\nimport org.springframework.jdbc.core.BeanPropertyRowMapper;\r\nimport service.purchase_requisition_service;\r\nimport util.UuidUtil;\r\n\r\nimport java.text.SimpleDateFormat;\r\nimport java.util.Date;\r\nimport java.util.List;\r\n\r\nimport static util.UuidUtil.getCurrentTime;\r\n\r\npublic class purchase_requisition_service_impl implements purchase_requisition_service {\r\n    private purchase_requisition_dao purchaseRequisitionDao = new purchase_requisition_dao_impl();\r\n    private object_entry_dao objectEntryDao = new object_entry_dao_impl();\r\n\r\n    @Override\r\n    public boolean createOrUpdate(template_order tando) {\r\n        Purchase_Requisition table = (Purchase_Requisition) tando.getTable();\r\n        List<Object_Entry> order = tando.getOrder();\r\n        if (table.getPurchase_requisition_id() == null) {\r\n            return createTable(table, order);\r\n        }\r\n        else {\r\n            return changeTable(table, order);\r\n        }\r\n    }\r\n\r\n    /**\r\n     * 创建采购申请单\r\n     * @param table\r\n     * @param order\r\n     * @return\r\n     */\r\n    private boolean createTable(Purchase_Requisition table, List<Object_Entry> order) {\r\n        System.out.println(\"进入CreateTable\");\r\n        table.setRequisition_date(getCurrentTime());\r\n        table.setPurchase_requisition_id(UuidUtil.getUuid());\r\n        String orderId = UuidUtil.getUuid();\r\n        table.setPurchase_order_id(orderId);\r\n\r\n        System.out.println(\"-------CreateTable--------\");\r\n        table.print();\r\n\r\n        for (Object_Entry object_entry : order) {\r\n            object_entry.setObject_entry_id(UuidUtil.getUuid());\r\n        }\r\n        return objectEntryDao.addEntry(order, orderId) && purchaseRequisitionDao.createTable(table);\r\n    }\r\n\r\n    /**\r\n     * 修改采购申请单\r\n     * @param table\r\n     * @param order\r\n     * @return\r\n     */\r\n    private boolean changeTable(Purchase_Requisition table, List<Object_Entry> order) {\r\n        if (purchaseRequisitionDao.updateTable(table)) {\r\n            if (!objectEntryDao.deleteEntryByOrder(table.getPurchase_order_id())) {\r\n                return false;\r\n            }\r\n            for (Object_Entry object_entry : order) {\r\n                object_entry.setObject_entry_id(UuidUtil.getUuid());\r\n            }\r\n            return objectEntryDao.addEntry(order, table.getPurchase_order_id());\r\n        }\r\n        return false;\r\n    }\r\n\r\n    @Override\r\n    public boolean approvalTable(Purchase_Requisition table) {\r\n        table.setRequisition_date(getCurrentTime());\r\n        return purchaseRequisitionDao.updateTable(table);\r\n    }\r\n\r\n    @Override\r\n    public boolean deleteTable(String tableId) {\r\n        Purchase_Requisition purchase_requisition = purchaseRequisitionDao.searchTableById(tableId);\r\n        return objectEntryDao.deleteEntryByOrder(purchase_requisition.getPurchase_order_id()) && purchaseRequisitionDao.deleteTable(tableId);\r\n    }\r\n\r\n    @Override\r\n    public template_order searchTableById(String tableId) {\r\n        Purchase_Requisition table = purchaseRequisitionDao.searchTableById(tableId);\r\n        List<Object_Entry> order = objectEntryDao.search(table.getPurchase_order_id());\r\n        return new template_order(table, order);\r\n    }\r\n\r\n    @Override\r\n    public List<Purchase_Requisition> searchTableByUser(String userId) {\r\n        return null;\r\n    }\r\n\r\n    @Override\r\n    public List<Purchase_Requisition> searchTableByState(int state) {\r\n        return null;\r\n    }\r\n\r\n\r\n    @Override\r\n    public List<Purchase_Requisition> searchUnreturn() {\r\n        return purchaseRequisitionDao.searchUnreturn();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/service/impl/purchase_requisition_service_impl.java b/src/main/java/service/impl/purchase_requisition_service_impl.java
+--- a/src/main/java/service/impl/purchase_requisition_service_impl.java	(revision 31c0b7b559e6e7b053a2a71f3130a129a6495235)
++++ b/src/main/java/service/impl/purchase_requisition_service_impl.java	(date 1686188842459)
+@@ -97,7 +97,8 @@
+ 
+     @Override
+     public List<Purchase_Requisition> searchTableByUser(String userId) {
+-        return null;
++
++        return purchaseRequisitionDao.searchTableByUser(userId);
+     }
+ 
+     @Override
+Index: src/main/java/domain/Object_Entry.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport java.io.Serializable;\r\n\r\n/**\r\n *物品行实体类\r\n */\r\npublic class  Object_Entry implements Serializable {\r\n    private String object_entry_id;//物品行id(PK)\r\n    private String order_id;//物品清单id（借用入库物品清单、出库物品清单、领用借用物品清单、其他入库物品清单、采购入库物品清单、采购申请物品清单、废弃物申请物品清单）(FK)\r\n    private String object_id;//物品id(FK)\r\n    private int num;//物品数量\r\n\r\n    public int getNum() {\r\n        return num;\r\n    }\r\n\r\n    public void setNum(int num) {\r\n        this.num = num;\r\n    }\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Object_Entry() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param object_entry_id\r\n     * @param order_id\r\n     * @param object_id\r\n     * @param num\r\n     */\r\n    public Object_Entry(String object_entry_id, String order_id, String object_id, int num) {\r\n        this.object_entry_id = object_entry_id;\r\n        this.order_id = order_id;\r\n        this.object_id = object_id;\r\n        this.num = num;\r\n    }\r\n\r\n\r\n    public String getObject_entry_id() {\r\n        return object_entry_id;\r\n    }\r\n\r\n    public void setObject_entry_id(String object_entry_id) {\r\n        this.object_entry_id = object_entry_id;\r\n    }\r\n\r\n    public String getOrder_id() {\r\n        return order_id;\r\n    }\r\n\r\n    public void setOrder_id(String order_id) {\r\n        this.order_id = order_id;\r\n    }\r\n\r\n    public String getObject_id() {\r\n        return object_id;\r\n    }\r\n\r\n    public void setObject_id(String object_id) {\r\n        this.object_id = object_id;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/domain/Object_Entry.java b/src/main/java/domain/Object_Entry.java
+--- a/src/main/java/domain/Object_Entry.java	(revision 31c0b7b559e6e7b053a2a71f3130a129a6495235)
++++ b/src/main/java/domain/Object_Entry.java	(date 1686198288958)
+@@ -9,14 +9,14 @@
+     private String object_entry_id;//物品行id(PK)
+     private String order_id;//物品清单id（借用入库物品清单、出库物品清单、领用借用物品清单、其他入库物品清单、采购入库物品清单、采购申请物品清单、废弃物申请物品清单）(FK)
+     private String object_id;//物品id(FK)
+-    private int num;//物品数量
++    private int quantity;//物品数量
+ 
+     public int getNum() {
+-        return num;
++        return quantity;
+     }
+ 
+-    public void setNum(int num) {
+-        this.num = num;
++    public void setNum(int quantity) {
++        this.quantity = quantity;
+     }
+ 
+     /**
+@@ -30,13 +30,13 @@
+      * @param object_entry_id
+      * @param order_id
+      * @param object_id
+-     * @param num
++     * @param quantity
+      */
+-    public Object_Entry(String object_entry_id, String order_id, String object_id, int num) {
++    public Object_Entry(String object_entry_id, String order_id, String object_id, int quantity) {
+         this.object_entry_id = object_entry_id;
+         this.order_id = order_id;
+         this.object_id = object_id;
+-        this.num = num;
++        this.quantity = quantity;
+     }
+ 
+ 
+@@ -63,4 +63,12 @@
+     public void setObject_id(String object_id) {
+         this.object_id = object_id;
+     }
++
++    public int getQuantity() {
++        return quantity;
++    }
++
++    public void setQuantity(int quantity) {
++        this.quantity = quantity;
++    }
+ }
+Index: src/main/java/domain/Item.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport java.io.Serializable;\r\nimport java.util.Date;\r\n/**\r\n *物品实体类\r\n */\r\npublic class Item implements Serializable {\r\n\r\n    private String object_id;//物品id(PK)\r\n    private String name;//物品名称\r\n    private String specification;//规格型号\r\n    private float quantity;//数量\r\n    private String unit;//包装单位\r\n    private String classification;//分类\r\n    private float price ;//单价\r\n    private Date expiration_time;//过期时间\r\n    private float lower_limit;//警戒下限\r\n    private float upper_limit;//警戒上限\r\n    private String notes;//备注\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Item() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param object_id\r\n     * @param name\r\n     * @param lower_limit\r\n     * @param upper_limit\r\n     * @param specification\r\n     * @param classification\r\n     * @param price\r\n     * @param quantity\r\n     * @param unit\r\n     * @param expiration_time\r\n     * @param notes\r\n     */\r\n    public Item(String object_id, String name, float lower_limit, float upper_limit, String specification, String classification, float price, float quantity, String unit, Date expiration_time, String notes) {\r\n        this.object_id = object_id;\r\n        this.name = name;\r\n        this.lower_limit = lower_limit;\r\n        this.upper_limit = upper_limit;\r\n        this.specification = specification;\r\n        this.classification = classification;\r\n        this.price = price;\r\n        this.quantity = quantity;\r\n        this.unit = unit;\r\n        this.expiration_time = expiration_time;\r\n        this.notes = notes;\r\n    }\r\n\r\n    public String getObject_id() {\r\n        return object_id;\r\n    }\r\n\r\n    public void setObject_id(String object_id) {\r\n        this.object_id = object_id;\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public float getLower_limit() {\r\n        return lower_limit;\r\n    }\r\n\r\n    public void setLower_limit(float lower_limit) {\r\n        this.lower_limit = lower_limit;\r\n    }\r\n\r\n    public float getUpper_limit() {\r\n        return upper_limit;\r\n    }\r\n\r\n    public void setUpper_limit(float upper_limit) {\r\n        this.upper_limit = upper_limit;\r\n    }\r\n\r\n    public String getSpecification() {\r\n        return specification;\r\n    }\r\n\r\n    public void setSpecification(String specification) {\r\n        this.specification = specification;\r\n    }\r\n\r\n    public String getClassification() {\r\n        return classification;\r\n    }\r\n\r\n    public void setClassification(String classification) {\r\n        this.classification = classification;\r\n    }\r\n\r\n    public float getPrice() {\r\n        return price;\r\n    }\r\n\r\n    public void setPrice(float price) {\r\n        this.price = price;\r\n    }\r\n\r\n    public float getQuantity() {\r\n        return quantity;\r\n    }\r\n\r\n    public void setQuantity(float quantity) {\r\n        this.quantity = quantity;\r\n    }\r\n\r\n    public String getUnit() {\r\n        return unit;\r\n    }\r\n\r\n    public void setUnit(String unit) {\r\n        this.unit = unit;\r\n    }\r\n\r\n    public Date getExpiration_time() {\r\n        return expiration_time;\r\n    }\r\n\r\n    public void setExpiration_time(Date expiration_time) {\r\n        this.expiration_time = expiration_time;\r\n    }\r\n\r\n    public String getNotes() {\r\n        return notes;\r\n    }\r\n\r\n    public void setNotes(String notes) {\r\n        this.notes = notes;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/domain/Item.java b/src/main/java/domain/Item.java
+--- a/src/main/java/domain/Item.java	(revision 31c0b7b559e6e7b053a2a71f3130a129a6495235)
++++ b/src/main/java/domain/Item.java	(date 1686199195034)
+@@ -15,8 +15,8 @@
+     private String classification;//分类
+     private float price ;//单价
+     private Date expiration_time;//过期时间
+-    private float lower_limit;//警戒下限
+-    private float upper_limit;//警戒上限
++    private Float lower_limit;//警戒下限
++    private Float upper_limit;//警戒上限
+     private String notes;//备注
+ 
+     /**
+@@ -39,7 +39,7 @@
+      * @param expiration_time
+      * @param notes
+      */
+-    public Item(String object_id, String name, float lower_limit, float upper_limit, String specification, String classification, float price, float quantity, String unit, Date expiration_time, String notes) {
++    public Item(String object_id, String name, Float lower_limit, Float upper_limit, String specification, String classification, float price, float quantity, String unit, Date expiration_time, String notes) {
+         this.object_id = object_id;
+         this.name = name;
+         this.lower_limit = lower_limit;
+@@ -53,6 +53,15 @@
+         this.notes = notes;
+     }
+ 
++    //TODO: 调试用代码，显示User对象全部信息
++    public void print() {
++        System.out.println("输出Item对象信息:\n"+
++                "object_id="+object_id+
++                "|name="+name+
++                "|specification="+specification+
++                "|quantity="+quantity);
++    }
++
+     public String getObject_id() {
+         return object_id;
+     }
+@@ -69,19 +78,19 @@
+         this.name = name;
+     }
+ 
+-    public float getLower_limit() {
++    public Float getLower_limit() {
+         return lower_limit;
+     }
+ 
+-    public void setLower_limit(float lower_limit) {
++    public void setLower_limit(Float lower_limit) {
+         this.lower_limit = lower_limit;
+     }
+ 
+-    public float getUpper_limit() {
++    public Float getUpper_limit() {
+         return upper_limit;
+     }
+ 
+-    public void setUpper_limit(float upper_limit) {
++    public void setUpper_limit(Float upper_limit) {
+         this.upper_limit = upper_limit;
+     }
+ 
+Index: src/main/java/service/item_service.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/service/item_service.java b/src/main/java/service/item_service.java
+new file mode 100644
+--- /dev/null	(date 1686197472028)
++++ b/src/main/java/service/item_service.java	(date 1686197472028)
+@@ -0,0 +1,15 @@
++package service;
++
++import domain.Item;
++import domain.Object_Entry;
++
++import java.util.List;
++
++public interface item_service {
++    /**
++     * 获取订单
++     * @param object_id
++     * @return
++     */
++    Item search(String object_id);
++}
+Index: src/main/java/service/impl/item_service_impl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/service/impl/item_service_impl.java b/src/main/java/service/impl/item_service_impl.java
+new file mode 100644
+--- /dev/null	(date 1686197472041)
++++ b/src/main/java/service/impl/item_service_impl.java	(date 1686197472041)
+@@ -0,0 +1,19 @@
++package service.impl;
++
++import dao.impl.item_dao_impl;
++import dao.impl.object_entry_dao_impl;
++import dao.item_dao;
++import dao.object_entry_dao;
++import domain.Item;
++import service.item_service;
++
++
++import java.util.List;
++
++public class item_service_impl implements item_service {
++    private item_dao i_dao = new item_dao_impl();
++    @Override
++    public Item search(String object_id) {
++        return i_dao.findByObjectId(object_id);
++    }
++}
+Index: src/main/java/dao/item_dao.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/dao/item_dao.java b/src/main/java/dao/item_dao.java
+new file mode 100644
+--- /dev/null	(date 1686197472033)
++++ b/src/main/java/dao/item_dao.java	(date 1686197472033)
+@@ -0,0 +1,7 @@
++package dao;
++
++import domain.Item;
++
++public interface item_dao {
++    public Item findByObjectId(String object_id);
++}
+Index: src/main/java/dao/impl/item_dao_impl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/dao/impl/item_dao_impl.java b/src/main/java/dao/impl/item_dao_impl.java
+new file mode 100644
+--- /dev/null	(date 1686197472036)
++++ b/src/main/java/dao/impl/item_dao_impl.java	(date 1686197472036)
+@@ -0,0 +1,28 @@
++package dao.impl;
++
++import dao.item_dao;
++import domain.Item;
++import domain.Purchase_Requisition;
++import org.springframework.jdbc.core.BeanPropertyRowMapper;
++import org.springframework.jdbc.core.JdbcTemplate;
++import util.JDBCUtils;
++
++import java.util.List;
++
++public class item_dao_impl implements item_dao {
++    private JdbcTemplate template = new JdbcTemplate(JDBCUtils.getDataSource());
++
++
++    /**
++     * 根据 物品id查询物品信息
++     * @param object_id
++     * @return
++     */
++    @Override
++    public Item findByObjectId(String object_id) {
++        Item item = null;
++        String sql = "select * from item where object_id = ? ";
++        item = template.queryForObject(sql, new BeanPropertyRowMapper<Item>(Item.class), object_id);
++        return item;
++    }
++}
+Index: src/main/webapp/json/PurchaseListData.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/json/PurchaseListData.txt b/src/main/webapp/json/PurchaseListData.txt
+new file mode 100644
+--- /dev/null	(date 1686205584238)
++++ b/src/main/webapp/json/PurchaseListData.txt	(date 1686205584238)
+@@ -0,0 +1,40 @@
++[{
++	"object_id":"VLP120-230",
++	"name":"深真空油泵",
++	"specification":"230V 50Hz",
++	"quantity":1.0,
++	"unit":"台",
++	"classification":null,
++	"price":25000.0,
++	"expiration_time":null,
++	"lower_limit":null,
++	"upper_limit":null,
++	"notes":"与浓缩和冷冻干燥系统配合使用"
++},
++{
++	"object_id":"CAS-127-40-2-X109574-50mg",
++	"name":"叶黃素",
++	"specification":"50mg",
++	"quantity":2.0,
++	"unit":"瓶",
++	"classification":null,
++	"price":720.9,
++	"expiration_time":null,
++	"lower_limit":2.0,
++	"upper_limit":20.0,
++	"notes":"对空气和光敏感，-20°C储存,
++	充氩"
++},
++{
++	"object_id":"HC-20220006",
++	"name":"抽杆夹",
++	"specification":"25cm",
++	"quantity":3.0,
++	"unit":"个",
++	"classification":null,
++	"price":0.34,
++	"expiration_time":null,
++	"lower_limit":null,
++	"upper_limit":null,
++	"notes":null
++}]
+\ No newline at end of file
+Index: .idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_3_3.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_3_3.xml b/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_3_3.xml
+new file mode 100644
+--- /dev/null	(date 1686185741022)
++++ b/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_3_3.xml	(date 1686185741022)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.3.3">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.3.3/jackson-annotations-2.3.3.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.3.3/jackson-annotations-2.3.3-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.3.3/jackson-annotations-2.3.3-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__com_alibaba_druid_1_1_21.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__com_alibaba_druid_1_1_21.xml b/.idea/libraries/Maven__com_alibaba_druid_1_1_21.xml
+new file mode 100644
+--- /dev/null	(date 1686185741010)
++++ b/.idea/libraries/Maven__com_alibaba_druid_1_1_21.xml	(date 1686185741010)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: com.alibaba:druid:1.1.21">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/druid/1.1.21/druid-1.1.21.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/druid/1.1.21/druid-1.1.21-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/druid/1.1.21/druid-1.1.21-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__redis_clients_jedis_2_7_0.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__redis_clients_jedis_2_7_0.xml b/.idea/libraries/Maven__redis_clients_jedis_2_7_0.xml
+new file mode 100644
+--- /dev/null	(date 1686185741211)
++++ b/.idea/libraries/Maven__redis_clients_jedis_2_7_0.xml	(date 1686185741211)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: redis.clients:jedis:2.7.0">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/redis/clients/jedis/2.7.0/jedis-2.7.0.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/redis/clients/jedis/2.7.0/jedis-2.7.0-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/redis/clients/jedis/2.7.0/jedis-2.7.0-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: src/main/webapp/json/PurchaseData.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/json/PurchaseData.txt b/src/main/webapp/json/PurchaseData.txt
+new file mode 100644
+--- /dev/null	(date 1686205248251)
++++ b/src/main/webapp/json/PurchaseData.txt	(date 1686205248251)
+@@ -0,0 +1,55 @@
++[{
++	"purchase_requisition_id":"195ecd93bb1849b4b885195b5b9b6518",
++	"purchase_order_id":"047025b7b1dd4261a28748d48be18cff",
++	"requisition_user_id":"0001",
++	"purpose":"买点猫粮",
++	"requisition_date":1686184662000,
++	"state":0,
++	"approval_user_id":null,
++	"approval_opinions":null,
++	"approval_date":null
++},
++{
++	"purchase_requisition_id":"PR-0000001",
++	"purchase_order_id":"PRO-0000001",
++	"requisition_user_id":"0001",
++	"purpose":"搞台设备",
++	"requisition_date":1546950896000,
++	"state":0,
++	"approval_user_id":"0005",
++	"approval_opinions":"设备好搞，朕允了",
++	"approval_date":1546983836000
++},
++{
++	"purchase_requisition_id":"PR-0000002",
++	"purchase_order_id":"PRO-0000002",
++	"requisition_user_id":"0001",
++	"purpose":"搞点化学试剂",
++	"requisition_date":null,
++	"state":1,
++	"approval_user_id":null,
++	"approval_opinions":null,
++	"approval_date":null
++},
++{
++	"purchase_requisition_id":"PR-0000003",
++	"purchase_order_id":"PRO-0000003",
++	"requisition_user_id":"0001",
++	"purpose":"全都搞点",
++	"requisition_date":1684404672000,
++	"state":2,
++	"approval_user_id":null,
++	"approval_opinions":null,
++	"approval_date":null
++},
++{
++	"purchase_requisition_id":"PR-0000004",
++	"purchase_order_id":"PRO-0000004",
++	"requisition_user_id":"0001",
++	"purpose":"搞点耗材",
++	"requisition_date":1684480334000,
++	"state":3,
++	"approval_user_id":"0006",
++	"approval_opinions":"耗材好搞，同意申请",
++	"approval_date":1684570394000
++}]
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_springframework_spring_jdbc_4_1_2_RELEASE.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_springframework_spring_jdbc_4_1_2_RELEASE.xml b/.idea/libraries/Maven__org_springframework_spring_jdbc_4_1_2_RELEASE.xml
+new file mode 100644
+--- /dev/null	(date 1686185741187)
++++ b/.idea/libraries/Maven__org_springframework_spring_jdbc_4_1_2_RELEASE.xml	(date 1686185741187)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.springframework:spring-jdbc:4.1.2.RELEASE">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.2.RELEASE/spring-jdbc-4.1.2.RELEASE.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.2.RELEASE/spring-jdbc-4.1.2.RELEASE-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-jdbc/4.1.2.RELEASE/spring-jdbc-4.1.2.RELEASE-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_springframework_spring_tx_4_1_2_RELEASE.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_springframework_spring_tx_4_1_2_RELEASE.xml b/.idea/libraries/Maven__org_springframework_spring_tx_4_1_2_RELEASE.xml
+new file mode 100644
+--- /dev/null	(date 1686185741194)
++++ b/.idea/libraries/Maven__org_springframework_spring_tx_4_1_2_RELEASE.xml	(date 1686185741194)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.springframework:spring-tx:4.1.2.RELEASE">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.2.RELEASE/spring-tx-4.1.2.RELEASE.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.2.RELEASE/spring-tx-4.1.2.RELEASE-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-tx/4.1.2.RELEASE/spring-tx-4.1.2.RELEASE-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_testng_testng_7_8_0.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_testng_testng_7_8_0.xml b/.idea/libraries/Maven__org_testng_testng_7_8_0.xml
+new file mode 100644
+--- /dev/null	(date 1686185741200)
++++ b/.idea/libraries/Maven__org_testng_testng_7_8_0.xml	(date 1686185741200)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.testng:testng:7.8.0">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/7.8.0/testng-7.8.0.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/7.8.0/testng-7.8.0-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/testng/testng/7.8.0/testng-7.8.0-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: src/main/java/util/JsonUtil.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package util;\r\n\r\n\r\nimport java.io.*;\r\n\r\n\r\npublic class JsonUtil {\r\n\r\n//    static String filePath = \"E:\\\\GitHub\\\\WebLab\\\\src\\\\main\\\\webapp\\\\json\\\\\";\r\n    //tsr\r\n    static String filePath = \"E:\\\\program\\\\课设\\\\ChemicalLabItemMS\\\\src\\\\main\\\\webapp\\\\json\\\\\";\r\n    private JsonUtil() {}\r\n\r\n    private static String getSpaceOrTab(int tabNum) {\r\n        StringBuffer sbTab = new StringBuffer();\r\n        for (int i = 0; i < tabNum; i++) {\r\n            sbTab.append('\\t');\r\n        }\r\n        return sbTab.toString();\r\n    }\r\n\r\n    public static String stringToJSON(String strJson) {\r\n        int tabNum = 0;\r\n        StringBuffer jsonFormat = new StringBuffer();\r\n        int length = strJson.length();\r\n        for (int i = 0; i < length; i++) {\r\n            char c = strJson.charAt(i);\r\n            if (c == '{') {\r\n                tabNum++;\r\n                jsonFormat.append(c).append(\"\\n\");\r\n                jsonFormat.append(getSpaceOrTab(tabNum));\r\n            } else if (c == '}') {\r\n                tabNum--;\r\n                jsonFormat.append(\"\\n\");\r\n                jsonFormat.append(getSpaceOrTab(tabNum));\r\n                jsonFormat.append(c);\r\n            } else if (c == ',') {\r\n                jsonFormat.append(c).append(\"\\n\");\r\n                jsonFormat.append(getSpaceOrTab(tabNum));\r\n            } else {\r\n                jsonFormat.append(c);\r\n            }\r\n        }\r\n        return jsonFormat.toString();\r\n    }\r\n\r\n    public static String search(String filename) throws IOException {\r\n        String data = \"\";\r\n        FileInputStream fis = new FileInputStream(filePath+filename);\r\n        InputStreamReader isr = new InputStreamReader(fis,\"utf-8\");\r\n        try (BufferedReader br = new BufferedReader(isr)){\r\n            String line;\r\n            while ((line = br.readLine()) != null) {\r\n                data += line;\r\n            }\r\n        }\r\n        isr.close();\r\n        fis.close();\r\n        data = stringToJSON(data);\r\n        return data;\r\n    }\r\n\r\n    public static void writeJson(String filename, String jsonString) throws IOException {\r\n        File file = new File(filePath+filename);\r\n        if(!file.exists()) file.createNewFile();\r\n        FileOutputStream fileOutputStream=new FileOutputStream(file);  //实例化FileOutputStream\r\n        OutputStreamWriter osw = new OutputStreamWriter(fileOutputStream,\"utf-8\");  //字符流转字节流\r\n        BufferedWriter bufferedWriter= new BufferedWriter(osw);  //创建字符缓冲输出流对象\r\n        String JsonString = stringToJSON(jsonString);//将jsonarrray字符串格式化\r\n        bufferedWriter.write(JsonString);//将格式化的jsonarray字符串写入文件\r\n        bufferedWriter.flush();//清空缓冲区，强制输出数据\r\n        bufferedWriter.close();//关闭输出流\r\n        osw.close();\r\n        fileOutputStream.close();\r\n    }\r\n\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/util/JsonUtil.java b/src/main/java/util/JsonUtil.java
+--- a/src/main/java/util/JsonUtil.java	(revision 31c0b7b559e6e7b053a2a71f3130a129a6495235)
++++ b/src/main/java/util/JsonUtil.java	(date 1686188164191)
+@@ -8,7 +8,10 @@
+ 
+ //    static String filePath = "E:\\GitHub\\WebLab\\src\\main\\webapp\\json\\";
+     //tsr
+-    static String filePath = "E:\\program\\课设\\ChemicalLabItemMS\\src\\main\\webapp\\json\\";
++    //static String filePath = "E:\\program\\课设\\ChemicalLabItemMS\\src\\main\\webapp\\json\\";
++
++    static String filePath = "D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\webapp\\json\\";
++
+     private JsonUtil() {}
+ 
+     private static String getSpaceOrTab(int tabNum) {
+Index: .idea/libraries/Maven__org_webjars_jquery_3_6_1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_webjars_jquery_3_6_1.xml b/.idea/libraries/Maven__org_webjars_jquery_3_6_1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741206)
++++ b/.idea/libraries/Maven__org_webjars_jquery_3_6_1.xml	(date 1686185741206)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.webjars:jquery:3.6.1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/webjars/jquery/3.6.1/jquery-3.6.1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/webjars/jquery/3.6.1/jquery-3.6.1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/webjars/jquery/3.6.1/jquery-3.6.1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ArtifactsWorkspaceSettings\">\r\n    <artifacts-to-build>\r\n      <artifact name=\"travel:war\" />\r\n    </artifacts-to-build>\r\n  </component>\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec\" name=\"Default Changelist\" comment=\"修正了DateTime时区的问题，前端可以获取当前用户登录信息\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/webapp/view_ex_warehouse_old.html\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/webapp/view_in_warehouse_old.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/webContexts.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/webContexts.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/ChemicalLabItemMS.iml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/ChemicalLabItemMS.iml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/web/servlet/UserServlet.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/web/servlet/UserServlet.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/druid.properties\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/druid.properties\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_purchase.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/form_purchase.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_purchase_new.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_waste.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/form_waste.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/left_sidebar.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/left_sidebar.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/test_center_form.html\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/view_in_warehouse.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/view_in_warehouse.html\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"master\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitSEFilterConfiguration\">\r\n    <file-type-list>\r\n      <filtered-out-file-type name=\"LOCAL_BRANCH\" />\r\n      <filtered-out-file-type name=\"REMOTE_BRANCH\" />\r\n      <filtered-out-file-type name=\"TAG\" />\r\n      <filtered-out-file-type name=\"COMMIT_BY_MESSAGE\" />\r\n    </file-type-list>\r\n  </component>\r\n  <component name=\"LogFilters\">\r\n    <option name=\"FILTER_ERRORS\" value=\"false\" />\r\n    <option name=\"FILTER_WARNINGS\" value=\"false\" />\r\n    <option name=\"FILTER_INFO\" value=\"true\" />\r\n    <option name=\"FILTER_DEBUG\" value=\"true\" />\r\n    <option name=\"CUSTOM_FILTER\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2Avt6bIjEb9LPH0DVMOFNxUmr9z\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"ASKED_ADD_EXTERNAL_FILES\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\r\n    <property name=\"aspect.path.notification.shown\" value=\"true\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/src/main/webapp\" />\r\n    <property name=\"node.js.detected.package.eslint\" value=\"true\" />\r\n    <property name=\"node.js.path.for.package.eslint\" value=\"project\" />\r\n    <property name=\"node.js.path.for.package.tslint\" value=\"project\" />\r\n    <property name=\"node.js.selected.package.eslint\" value=\"(autodetect)\" />\r\n    <property name=\"node.js.selected.package.tslint\" value=\"(autodetect)\" />\r\n    <property name=\"nodejs_package_manager_path\" value=\"npm\" />\r\n    <property name=\"project.structure.last.edited\" value=\"Modules\" />\r\n    <property name=\"project.structure.proportion\" value=\"0.17\" />\r\n    <property name=\"project.structure.side.proportion\" value=\"0.26412776\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"MavenSettings\" />\r\n  </component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\webapp\" />\r\n      <recent name=\"D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\webapp\\front-end-res-lib\" />\r\n      <recent name=\"D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\java\\service\\temp_service\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\webapp\\html_temp\" />\r\n    </key>\r\n    <key name=\"MoveClassesOrPackagesDialog.RECENTS_KEY\">\r\n      <recent name=\"\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"web\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Maven.ChemicalLabItemMS\">\r\n    <configuration default=\"true\" type=\"ArquillianJUnit\" factoryName=\"\" nameIsGenerated=\"true\">\r\n      <option name=\"arquillianRunConfiguration\">\r\n        <value>\r\n          <option name=\"containerStateName\" value=\"\" />\r\n        </value>\r\n      </option>\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"ChemicalLabItemMS\" type=\"MavenRunConfiguration\" factoryName=\"Maven\">\r\n      <MavenSettings>\r\n        <option name=\"myGeneralSettings\" />\r\n        <option name=\"myRunnerSettings\" />\r\n        <option name=\"myRunnerParameters\">\r\n          <MavenRunnerParameters>\r\n            <option name=\"profiles\">\r\n              <set />\r\n            </option>\r\n            <option name=\"goals\">\r\n              <list>\r\n                <option value=\"tomcat7:run\" />\r\n              </list>\r\n            </option>\r\n            <option name=\"pomFileName\" />\r\n            <option name=\"profilesMap\">\r\n              <map />\r\n            </option>\r\n            <option name=\"resolveToWorkspace\" value=\"false\" />\r\n            <option name=\"workingDirPath\" value=\"$PROJECT_DIR$\" />\r\n          </MavenRunnerParameters>\r\n        </option>\r\n      </MavenSettings>\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"Tomcat 8.5.24\" type=\"#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory\" factoryName=\"Local\" APPLICATION_SERVER_NAME=\"Tomcat 8.5.24\" ALTERNATIVE_JRE_ENABLED=\"false\" nameIsGenerated=\"true\">\r\n      <option name=\"UPDATING_POLICY\" value=\"restart-server\" />\r\n      <deployment>\r\n        <artifact name=\"travel:war\">\r\n          <settings>\r\n            <option name=\"CONTEXT_PATH\" value=\"/travel_war\" />\r\n          </settings>\r\n        </artifact>\r\n        <artifact name=\"ChemicalLabItemMS:war\">\r\n          <settings>\r\n            <option name=\"CONTEXT_PATH\" value=\"/ChemicalLabItemMS_war\" />\r\n          </settings>\r\n        </artifact>\r\n      </deployment>\r\n      <server-settings>\r\n        <option name=\"BASE_DIRECTORY_NAME\" value=\"0049ada1-20ae-4acc-ba0a-1e64ffc4502d\" />\r\n      </server-settings>\r\n      <predefined_log_file enabled=\"true\" id=\"Tomcat\" />\r\n      <predefined_log_file enabled=\"true\" id=\"Tomcat Catalina\" />\r\n      <predefined_log_file id=\"Tomcat Manager\" />\r\n      <predefined_log_file id=\"Tomcat Host Manager\" />\r\n      <predefined_log_file id=\"Tomcat Localhost Access\" />\r\n      <RunnerSettings RunnerId=\"Debug\">\r\n        <option name=\"DEBUG_PORT\" value=\"1237\" />\r\n      </RunnerSettings>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Cover\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Debug\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Profile\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Run\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n        <option name=\"BuildArtifacts\" enabled=\"true\">\r\n          <artifact name=\"ChemicalLabItemMS:war\" />\r\n        </option>\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"Maven.ChemicalLabItemMS\" />\r\n      <item itemvalue=\"Tomcat Server.Tomcat 8.5.24\" />\r\n    </list>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"SvnConfiguration\">\r\n    <configuration />\r\n  </component>\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1655901715645</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1655901715645</updated>\r\n      <workItem from=\"1655901717854\" duration=\"450000\" />\r\n      <workItem from=\"1685427151825\" duration=\"1535000\" />\r\n      <workItem from=\"1685428706026\" duration=\"124000\" />\r\n      <workItem from=\"1685428833294\" duration=\"826000\" />\r\n      <workItem from=\"1685520782760\" duration=\"706000\" />\r\n      <workItem from=\"1685537381059\" duration=\"1334000\" />\r\n      <workItem from=\"1685540296469\" duration=\"811000\" />\r\n      <workItem from=\"1685599640376\" duration=\"132000\" />\r\n      <workItem from=\"1685599807762\" duration=\"1261000\" />\r\n      <workItem from=\"1685603422754\" duration=\"49000\" />\r\n      <workItem from=\"1685603474267\" duration=\"10000\" />\r\n      <workItem from=\"1685603485940\" duration=\"6000\" />\r\n      <workItem from=\"1685603502462\" duration=\"2399000\" />\r\n      <workItem from=\"1685674025238\" duration=\"1608000\" />\r\n      <workItem from=\"1685771307743\" duration=\"402000\" />\r\n      <workItem from=\"1685771714405\" duration=\"5544000\" />\r\n      <workItem from=\"1685777299983\" duration=\"306000\" />\r\n      <workItem from=\"1685897456684\" duration=\"1052000\" />\r\n      <workItem from=\"1685924081606\" duration=\"921000\" />\r\n      <workItem from=\"1685965736717\" duration=\"8365000\" />\r\n      <workItem from=\"1686020823650\" duration=\"2271000\" />\r\n      <workItem from=\"1686097290341\" duration=\"1965000\" />\r\n      <workItem from=\"1686103535919\" duration=\"1125000\" />\r\n      <workItem from=\"1686122288404\" duration=\"2228000\" />\r\n      <workItem from=\"1686124548099\" duration=\"13105000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"添加GoodsService及其实现，实体类Date-&gt;String\">\r\n      <created>1655902015448</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1655902015448</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"更新了实体类的注释\">\r\n      <created>1685776134712</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685776134712</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"更新了实体类的注释\">\r\n      <created>1685777451475</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685777451475</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00004\" summary=\"更新了领用&amp;借用申请表的校验\">\r\n      <created>1685955280415</created>\r\n      <option name=\"number\" value=\"00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685955280415</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00005\" summary=\"更新采购、领用dao层功能\">\r\n      <created>1686015910191</created>\r\n      <option name=\"number\" value=\"00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1686015910191</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00006\" summary=\"更新采购入库功能\">\r\n      <created>1686040539807</created>\r\n      <option name=\"number\" value=\"00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1686040539807</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"7\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\r\n    <MESSAGE value=\"添加GoodsService及其实现，实体类Date-&gt;String\" />\r\n    <MESSAGE value=\"更新了实体类的注释\" />\r\n    <MESSAGE value=\"更新了领用&amp;借用申请表的校验\" />\r\n    <MESSAGE value=\"更新采购、领用dao层功能\" />\r\n    <MESSAGE value=\"更新废弃物后端\" />\r\n    <MESSAGE value=\"更新 借用入库 功能\" />\r\n    <MESSAGE value=\"完善了前端申请表、入库表的页面，实现采购申请的数据部分插入\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"完善了前端申请表、入库表的页面，实现采购申请的数据部分插入\" />\r\n  </component>\r\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\r\n    <expand />\r\n    <select />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 31c0b7b559e6e7b053a2a71f3130a129a6495235)
++++ b/.idea/workspace.xml	(date 1686205826767)
+@@ -10,25 +10,55 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="修正了DateTime时区的问题，前端可以获取当前用户登录信息">
+-      <change afterPath="$PROJECT_DIR$/src/main/webapp/view_ex_warehouse_old.html" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/webapp/view_in_warehouse_old.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/webContexts.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webContexts.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_druid_1_1_21.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_beust_jcommander_1_82.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_3_3.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_3_3.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_3_3.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_sun_mail_javax_mail_1_5_3.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_javax_mail_api_1_5_6.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_12.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_10_0_M1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_10_0_M1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_10_0_M1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_10_0_M1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_10_0_M1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_10_0_M1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_36.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_beans_4_1_2_RELEASE.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_core_4_1_2_RELEASE.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_jdbc_4_1_2_RELEASE.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_spring_tx_4_1_2_RELEASE.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_testng_testng_7_8_0.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_webjars_jquery_3_6_1.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_2_7_0.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/dao/impl/item_dao_impl.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/dao/item_dao.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/service/impl/item_service_impl.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/service/item_service.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/webapp/json/PurchaseData.txt" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/webapp/json/PurchaseListData.txt" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/ChemicalLabItemMS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ChemicalLabItemMS.iml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Item.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Object_Entry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Object_Entry.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/domain/Purchase_Requisition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/domain/Purchase_Requisition.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/impl/purchase_requisition_service_impl.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/util/JsonUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/JsonUtil.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/PurchaseServlet.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/web/servlet/UserServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/web/servlet/UserServlet.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/druid.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/druid.properties" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_purchase.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_purchase_new.html" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_waste.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_waste.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/left_sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/left_sidebar.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/test_center_form.html" beforeDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/view_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/view_in_warehouse.html" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -46,7 +76,7 @@
+   <component name="Git.Settings">
+     <option name="RECENT_BRANCH_BY_REPOSITORY">
+       <map>
+-        <entry key="$PROJECT_DIR$" value="master" />
++        <entry key="$PROJECT_DIR$" value="LKJ" />
+       </map>
+     </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+@@ -108,6 +138,8 @@
+       <recent name="" />
+     </key>
+     <key name="CopyClassDialog.RECENTS_KEY">
++      <recent name="service" />
++      <recent name="service.impl" />
+       <recent name="web" />
+     </key>
+   </component>
+@@ -281,6 +313,7 @@
+       <workItem from="1686103535919" duration="1125000" />
+       <workItem from="1686122288404" duration="2228000" />
+       <workItem from="1686124548099" duration="13105000" />
++      <workItem from="1686185505418" duration="17457000" />
+     </task>
+     <task id="LOCAL-00001" summary="添加GoodsService及其实现，实体类Date-&gt;String">
+       <created>1655902015448</created>
+Index: .idea/libraries/Maven__org_slf4j_slf4j_api_1_7_36.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_36.xml b/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_36.xml
+new file mode 100644
+--- /dev/null	(date 1686185741168)
++++ b/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_36.xml	(date 1686185741168)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.slf4j:slf4j-api:1.7.36">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_springframework_spring_beans_4_1_2_RELEASE.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_springframework_spring_beans_4_1_2_RELEASE.xml b/.idea/libraries/Maven__org_springframework_spring_beans_4_1_2_RELEASE.xml
+new file mode 100644
+--- /dev/null	(date 1686185741174)
++++ b/.idea/libraries/Maven__org_springframework_spring_beans_4_1_2_RELEASE.xml	(date 1686185741174)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.springframework:spring-beans:4.1.2.RELEASE">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.2.RELEASE/spring-beans-4.1.2.RELEASE.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.2.RELEASE/spring-beans-4.1.2.RELEASE-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-beans/4.1.2.RELEASE/spring-beans-4.1.2.RELEASE-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_springframework_spring_core_4_1_2_RELEASE.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_springframework_spring_core_4_1_2_RELEASE.xml b/.idea/libraries/Maven__org_springframework_spring_core_4_1_2_RELEASE.xml
+new file mode 100644
+--- /dev/null	(date 1686185741180)
++++ b/.idea/libraries/Maven__org_springframework_spring_core_4_1_2_RELEASE.xml	(date 1686185741180)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.springframework:spring-core:4.1.2.RELEASE">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.2.RELEASE/spring-core-4.1.2.RELEASE.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.2.RELEASE/spring-core-4.1.2.RELEASE-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-core/4.1.2.RELEASE/spring-core-4.1.2.RELEASE-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: src/main/java/domain/Purchase_Requisition.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package domain;\r\n\r\nimport org.joda.time.DateTime;\r\n\r\nimport java.io.Serializable;\r\nimport java.util.Date;\r\n\r\n/**\r\n *采购申请实体类\r\n */\r\npublic class Purchase_Requisition implements Serializable {\r\n\r\n    private String purchase_requisition_id;//采购申请表id(PK)\r\n    private String purchase_order_id;//采购申请物品清单id\r\n    private String approval_user_id;//审批人id（FK）\r\n    private String requisition_user_id;//申请人id（FK）\r\n    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）\r\n    private String purpose;//申请用途\r\n    private Date requisition_date;//申请提交时间\r\n    private String approval_opinions;//审批意见\r\n    private Date approval_date;//审批时间\r\n\r\n\r\n    /**\r\n     *无参构造方法\r\n     */\r\n    public Purchase_Requisition() {\r\n    }\r\n\r\n    /**\r\n     * 有参构方法\r\n     * @param purchase_requisition_id\r\n     * @param purchase_order_id\r\n     * @param state\r\n     * @param purpose\r\n     * @param requisition_date\r\n     * @param approval_opinions\r\n     * @param approval_date\r\n     * @param requisition_user_id\r\n     * @param approval_user_id\r\n     */\r\n    public Purchase_Requisition(String purchase_requisition_id, String purchase_order_id, int state, String purpose, Date requisition_date, String approval_opinions, Date approval_date, String requisition_user_id, String approval_user_id) {\r\n        this.purchase_requisition_id = purchase_requisition_id;\r\n        this.purchase_order_id = purchase_order_id;\r\n        this.state = state;\r\n        this.purpose = purpose;\r\n        this.requisition_date = requisition_date;\r\n        this.approval_opinions = approval_opinions;\r\n        this.approval_date = approval_date;\r\n        this.requisition_user_id = requisition_user_id;\r\n        this.approval_user_id = approval_user_id;\r\n    }\r\n\r\n    //TODO: 调试用代码，显示User对象全部信息\r\n    public void print() {\r\n        System.out.println(\"输出Purchase_Requisition对象信息:\\n\"+\r\n                \"purchase_requisition_id=\"+purchase_requisition_id+\r\n                \"|purchase_order_id=\"+purchase_order_id+\r\n                \"|state=\"+state+\r\n                \"|purpose=\"+purpose+\r\n                \"|requisition_date=\"+requisition_date+\r\n                \"|approval_opinions=\"+approval_opinions+\r\n                \"|approval_date=\"+approval_date+\r\n                \"|requisition_user_id=\"+requisition_user_id+\r\n                \"|approval_user_id=\"+approval_user_id);\r\n    }\r\n\r\n    public String getPurchase_requisition_id() {\r\n        return purchase_requisition_id;\r\n    }\r\n\r\n    public void setPurchase_requisition_id(String purchase_requisition_id) {\r\n        this.purchase_requisition_id = purchase_requisition_id;\r\n    }\r\n\r\n    public String getPurchase_order_id() {\r\n        return purchase_order_id;\r\n    }\r\n\r\n    public void setPurchase_order_id(String purchase_order_id) {\r\n        this.purchase_order_id = purchase_order_id;\r\n    }\r\n\r\n    public int getState() {\r\n        return state;\r\n    }\r\n\r\n    public void setState(int state) {\r\n        this.state = state;\r\n    }\r\n\r\n    public String getPurpose() {\r\n        return purpose;\r\n    }\r\n\r\n    public void setPurpose(String purpose) {\r\n        this.purpose = purpose;\r\n    }\r\n\r\n    public Date getRequisition_date() {\r\n        return requisition_date;\r\n    }\r\n\r\n    public void setRequisition_date(Date requisition_date) {\r\n        this.requisition_date = requisition_date;\r\n    }\r\n\r\n    public String getApproval_opinions() {\r\n        return approval_opinions;\r\n    }\r\n\r\n    public void setApproval_opinions(String approval_opinions) {\r\n        this.approval_opinions = approval_opinions;\r\n    }\r\n\r\n    public Date getApproval_date() {\r\n        return approval_date;\r\n    }\r\n\r\n    public void setApproval_date(Date approval_date) {\r\n        this.approval_date = approval_date;\r\n    }\r\n\r\n\r\n    public String getRequisition_user_id() {\r\n        return requisition_user_id;\r\n    }\r\n\r\n    public void setRequisition_user_id(String requisition_user_id) {\r\n        this.requisition_user_id = requisition_user_id;\r\n    }\r\n\r\n    public String getApproval_user_id() {\r\n        return approval_user_id;\r\n    }\r\n\r\n    public void setApproval_user_id(String approval_user_id) {\r\n        this.approval_user_id = approval_user_id;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/domain/Purchase_Requisition.java b/src/main/java/domain/Purchase_Requisition.java
+--- a/src/main/java/domain/Purchase_Requisition.java	(revision 31c0b7b559e6e7b053a2a71f3130a129a6495235)
++++ b/src/main/java/domain/Purchase_Requisition.java	(date 1686193202998)
+@@ -12,11 +12,11 @@
+ 
+     private String purchase_requisition_id;//采购申请表id(PK)
+     private String purchase_order_id;//采购申请物品清单id
+-    private String approval_user_id;//审批人id（FK）
+     private String requisition_user_id;//申请人id（FK）
+-    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
+     private String purpose;//申请用途
+     private Date requisition_date;//申请提交时间
++    private int state;//申请表的状态（未提交、待审批、审批通过、审批未通过）
++    private String approval_user_id;//审批人id（FK）
+     private String approval_opinions;//审批意见
+     private Date approval_date;//审批时间
+ 
+@@ -42,12 +42,13 @@
+     public Purchase_Requisition(String purchase_requisition_id, String purchase_order_id, int state, String purpose, Date requisition_date, String approval_opinions, Date approval_date, String requisition_user_id, String approval_user_id) {
+         this.purchase_requisition_id = purchase_requisition_id;
+         this.purchase_order_id = purchase_order_id;
++        this.requisition_user_id = requisition_user_id;
+         this.state = state;
+         this.purpose = purpose;
+         this.requisition_date = requisition_date;
+         this.approval_opinions = approval_opinions;
+         this.approval_date = approval_date;
+-        this.requisition_user_id = requisition_user_id;
++
+         this.approval_user_id = approval_user_id;
+     }
+ 
+Index: .idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml b/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml
+new file mode 100644
+--- /dev/null	(date 1686185741121)
++++ b/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml	(date 1686185741121)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.hamcrest:hamcrest-core:1.3">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_10_0_M1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_10_0_M1.xml b/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_10_0_M1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741126)
++++ b/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_10_0_M1.xml	(date 1686185741126)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.junit.jupiter:junit-jupiter:5.10.0-M1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter/5.10.0-M1/junit-jupiter-5.10.0-M1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter/5.10.0-M1/junit-jupiter-5.10.0-M1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter/5.10.0-M1/junit-jupiter-5.10.0-M1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_10_0_M1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_10_0_M1.xml b/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_10_0_M1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741131)
++++ b/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_10_0_M1.xml	(date 1686185741131)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.junit.jupiter:junit-jupiter-api:5.10.0-M1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.10.0-M1/junit-jupiter-api-5.10.0-M1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.10.0-M1/junit-jupiter-api-5.10.0-M1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-api/5.10.0-M1/junit-jupiter-api-5.10.0-M1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_10_0_M1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_10_0_M1.xml b/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_10_0_M1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741135)
++++ b/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_10_0_M1.xml	(date 1686185741135)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.junit.jupiter:junit-jupiter-engine:5.10.0-M1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-engine/5.10.0-M1/junit-jupiter-engine-5.10.0-M1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-engine/5.10.0-M1/junit-jupiter-engine-5.10.0-M1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-engine/5.10.0-M1/junit-jupiter-engine-5.10.0-M1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_10_0_M1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_10_0_M1.xml b/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_10_0_M1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741144)
++++ b/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_10_0_M1.xml	(date 1686185741144)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.junit.jupiter:junit-jupiter-params:5.10.0-M1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-params/5.10.0-M1/junit-jupiter-params-5.10.0-M1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-params/5.10.0-M1/junit-jupiter-params-5.10.0-M1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/jupiter/junit-jupiter-params/5.10.0-M1/junit-jupiter-params-5.10.0-M1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_10_0_M1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_10_0_M1.xml b/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_10_0_M1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741151)
++++ b/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_10_0_M1.xml	(date 1686185741151)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.junit.platform:junit-platform-commons:1.10.0-M1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-commons/1.10.0-M1/junit-platform-commons-1.10.0-M1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-commons/1.10.0-M1/junit-platform-commons-1.10.0-M1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-commons/1.10.0-M1/junit-platform-commons-1.10.0-M1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_10_0_M1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_10_0_M1.xml b/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_10_0_M1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741157)
++++ b/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_10_0_M1.xml	(date 1686185741157)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.junit.platform:junit-platform-engine:1.10.0-M1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-engine/1.10.0-M1/junit-platform-engine-1.10.0-M1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-engine/1.10.0-M1/junit-platform-engine-1.10.0-M1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/junit/platform/junit-platform-engine/1.10.0-M1/junit-platform-engine-1.10.0-M1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: src/main/java/web/servlet/UserServlet.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package web.servlet;\r\n\r\nimport com.fasterxml.jackson.databind.ObjectMapper;\r\nimport domain.Identity;\r\nimport domain.ResultInfo;\r\nimport domain.User;\r\nimport org.apache.commons.beanutils.BeanUtils;\r\nimport service.UserService;\r\nimport service.impl.user_service_impl;\r\n\r\nimport javax.servlet.ServletException;\r\nimport javax.servlet.annotation.WebServlet;\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport javax.servlet.http.HttpServletResponse;\r\nimport java.io.IOException;\r\nimport java.lang.reflect.InvocationTargetException;\r\nimport java.util.Map;\r\n\r\n@WebServlet(\"/user/*\") // /user/add /user/find\r\npublic class UserServlet extends BaseServlet {\r\n    //声明 UserService 业务对象\r\n    private UserService service = new user_service_impl();\r\n\r\n    public void regist(HttpServletRequest request, HttpServletResponse response) throws\r\n            ServletException, IOException {\r\n        System.out.println(\"进入注册的后端\");\r\n        //1.获取数据\r\n        Map<String, String[]> map = request.getParameterMap();\r\n        //2.封装对象\r\n        User user = new User();\r\n        try {\r\n            BeanUtils.populate(user,map);\r\n        } catch (IllegalAccessException e) {\r\n            e.printStackTrace();\r\n        } catch (InvocationTargetException e) {\r\n            e.printStackTrace();\r\n        }\r\n        // 3.调用 service 完成注册\r\n        System.out.println(\"UserServlet: \"+user.getAccount()+\"|\"+\r\n                        user.getPassword()+\"|\"+user.getName()+\"|\"+\r\n                        user.getEmail()+\"|\"+user.getPhonenumber());\r\n        boolean flag = service.regist(user);\r\n        ResultInfo info = new ResultInfo();\r\n        //4.响应结果\r\n        if(flag){\r\n            //注册成功\r\n            info.setFlag(true);\r\n        }else{\r\n            //注册失败\r\n            info.setFlag(false);\r\n            info.setErrorMsg(\"注册失败!\");\r\n        }\r\n        //将 info 对象序列化为 json\r\n        ObjectMapper mapper = new ObjectMapper();\r\n        String json = mapper.writeValueAsString(info);\r\n        //将 json 数据写回客户端\r\n        //设置 content-type\r\n        response.setContentType(\"application/json;charset=utf-8\");\r\n        response.getWriter().write(json);\r\n    }\r\n    /**\r\n     * 登录功能\r\n     * @param request\r\n     * @param response\r\n     * @throws ServletException\r\n     * @throws IOException\r\n     */\r\n    public void login(HttpServletRequest request, HttpServletResponse response) throws\r\n            ServletException, IOException {\r\n        //1.获取用户名和密码数据\r\n        Map<String, String[]> map = request.getParameterMap();\r\n\r\n        //2.封装 User 对象\r\n        User user = new User();\r\n        try {\r\n            BeanUtils.populate(user,map);\r\n        } catch (IllegalAccessException e) {\r\n            e.printStackTrace();\r\n        } catch (InvocationTargetException e) {\r\n            e.printStackTrace();\r\n        }\r\n        //3.调用 Service 查询\r\n        System.out.println(\"UserServlet: \"+user.getAccount()+\"|\"+user.getPassword());\r\n        User u = service.login(user);\r\n        ResultInfo info = new ResultInfo();\r\n        //4.判断用户对象是否为 null\r\n        if(u == null) {\r\n            //用户名密码或错误\r\n            info.setFlag(false);\r\n            info.setErrorMsg(\"用户名密码或错误\");\r\n        }\r\n        //6.判断登录成功\r\n        if(u != null){\r\n            request.getSession().setAttribute(\"user\", u);//登录成功标记\r\n            u.print();\r\n            //登录成功\r\n            info.setFlag(true);\r\n            String account = user.getAccount();\r\n            // TODO：调试用，管理员账户在0001-0006之间\r\n            char lastChar = account.charAt(account.length()-1);\r\n            if(lastChar > '0' && lastChar < '7') {\r\n                System.out.println(\"UserServlet: 管理员登录ing..\");\r\n                info.setData(\"admin\");\r\n            } else {\r\n                info.setData(user.getAccount() + \"is logging in.\");\r\n            }\r\n        }\r\n        //响应数据\r\n        ObjectMapper mapper = new ObjectMapper();\r\n        response.setContentType(\"application/json;charset=utf-8\");\r\n        mapper.writeValue(response.getOutputStream(),info);\r\n    }\r\n    /**\r\n     * 查询单个对象\r\n     */\r\n    public void findOne(HttpServletRequest request, HttpServletResponse response) throws\r\n            ServletException, IOException {\r\n        //从 session 中获取登录用户\r\n        Object user = request.getSession().getAttribute(\"user\");\r\n        //System.out.println(\"userservlet: \"+((User) user).getUser_id());\r\n        //将 user 写回客户端\r\n        ObjectMapper mapper = new ObjectMapper();\r\n        response.setContentType(\"application/json;charset=utf-8\");\r\n        mapper.writeValue(response.getOutputStream(), user);\r\n    }\r\n    /**\r\n     * 查询登录用户的身份\r\n     */\r\n    public void findIdentity(HttpServletRequest request, HttpServletResponse response) throws\r\n            ServletException, IOException {\r\n        //从 session 中获取登录用户\r\n        Object user = request.getSession().getAttribute(\"user\");\r\n        Identity identity = service.findIdentity((User) user);\r\n        //将 identity 写回客户端\r\n        ObjectMapper mapper = new ObjectMapper();\r\n        response.setContentType(\"application/json;charset=utf-8\");\r\n        mapper.writeValue(response.getOutputStream(), identity);\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/web/servlet/UserServlet.java b/src/main/java/web/servlet/UserServlet.java
+--- a/src/main/java/web/servlet/UserServlet.java	(revision 31c0b7b559e6e7b053a2a71f3130a129a6495235)
++++ b/src/main/java/web/servlet/UserServlet.java	(date 1686188114065)
+@@ -117,7 +117,7 @@
+             ServletException, IOException {
+         //从 session 中获取登录用户
+         Object user = request.getSession().getAttribute("user");
+-        //System.out.println("userservlet: "+((User) user).getUser_id());
++        System.out.println("userservlet: "+((User) user).getUser_id());
+         //将 user 写回客户端
+         ObjectMapper mapper = new ObjectMapper();
+         response.setContentType("application/json;charset=utf-8");
+Index: .idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml b/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml
+new file mode 100644
+--- /dev/null	(date 1686185741162)
++++ b/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml	(date 1686185741162)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.opentest4j:opentest4j:1.2.0">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/opentest4j/opentest4j/1.2.0/opentest4j-1.2.0-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__javax_activation_activation_1_1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__javax_activation_activation_1_1.xml b/.idea/libraries/Maven__javax_activation_activation_1_1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741075)
++++ b/.idea/libraries/Maven__javax_activation_activation_1_1.xml	(date 1686185741075)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: javax.activation:activation:1.1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/javax/activation/activation/1.1/activation-1.1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__javax_mail_javax_mail_api_1_5_6.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__javax_mail_javax_mail_api_1_5_6.xml b/.idea/libraries/Maven__javax_mail_javax_mail_api_1_5_6.xml
+new file mode 100644
+--- /dev/null	(date 1686185741081)
++++ b/.idea/libraries/Maven__javax_mail_javax_mail_api_1_5_6.xml	(date 1686185741081)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: javax.mail:javax.mail-api:1.5.6">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/javax/mail/javax.mail-api/1.5.6/javax.mail-api-1.5.6.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/javax/mail/javax.mail-api/1.5.6/javax.mail-api-1.5.6-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/javax/mail/javax.mail-api/1.5.6/javax.mail-api-1.5.6-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml b/.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml
+new file mode 100644
+--- /dev/null	(date 1686185741086)
++++ b/.idea/libraries/Maven__javax_servlet_javax_servlet_api_3_1_0.xml	(date 1686185741086)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: javax.servlet:javax.servlet-api:3.1.0">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__joda_time_joda_time_2_9_8.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml b/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml
+new file mode 100644
+--- /dev/null	(date 1686185741092)
++++ b/.idea/libraries/Maven__joda_time_joda_time_2_9_8.xml	(date 1686185741092)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: joda-time:joda-time:2.9.8">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/joda-time/joda-time/2.9.8/joda-time-2.9.8.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/joda-time/joda-time/2.9.8/joda-time-2.9.8-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/joda-time/joda-time/2.9.8/joda-time-2.9.8-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__junit_junit_4_12.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__junit_junit_4_12.xml b/.idea/libraries/Maven__junit_junit_4_12.xml
+new file mode 100644
+--- /dev/null	(date 1686185741098)
++++ b/.idea/libraries/Maven__junit_junit_4_12.xml	(date 1686185741098)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: junit:junit:4.12">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/junit/junit/4.12/junit-4.12-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml b/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml
+new file mode 100644
+--- /dev/null	(date 1686185741104)
++++ b/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_18.xml	(date 1686185741104)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: mysql:mysql-connector-java:8.0.18">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/8.0.18/mysql-connector-java-8.0.18.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/8.0.18/mysql-connector-java-8.0.18-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/8.0.18/mysql-connector-java-8.0.18-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml b/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml
+new file mode 100644
+--- /dev/null	(date 1686185741109)
++++ b/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_3.xml	(date 1686185741109)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.apache.commons:commons-pool2:2.3">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-pool2/2.3/commons-pool2-2.3.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-pool2/2.3/commons-pool2-2.3-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/apache/commons/commons-pool2/2.3/commons-pool2-2.3-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml b/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml
+new file mode 100644
+--- /dev/null	(date 1686185741115)
++++ b/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_2.xml	(date 1686185741115)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: org.apiguardian:apiguardian-api:1.1.2">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__com_beust_jcommander_1_82.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__com_beust_jcommander_1_82.xml b/.idea/libraries/Maven__com_beust_jcommander_1_82.xml
+new file mode 100644
+--- /dev/null	(date 1686185741016)
++++ b/.idea/libraries/Maven__com_beust_jcommander_1_82.xml	(date 1686185741016)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: com.beust:jcommander:1.82">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/beust/jcommander/1.82/jcommander-1.82.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/com/beust/jcommander/1.82/jcommander-1.82-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/beust/jcommander/1.82/jcommander-1.82-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_3_3.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_3_3.xml b/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_3_3.xml
+new file mode 100644
+--- /dev/null	(date 1686185741028)
++++ b/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_3_3.xml	(date 1686185741028)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: com.fasterxml.jackson.core:jackson-core:2.3.3">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.3.3/jackson-core-2.3.3.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.3.3/jackson-core-2.3.3-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.3.3/jackson-core-2.3.3-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_3_3.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_3_3.xml b/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_3_3.xml
+new file mode 100644
+--- /dev/null	(date 1686185741035)
++++ b/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_3_3.xml	(date 1686185741035)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: com.fasterxml.jackson.core:jackson-databind:2.3.3">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.3.3/jackson-databind-2.3.3.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.3.3/jackson-databind-2.3.3-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.3.3/jackson-databind-2.3.3-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml b/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741040)
++++ b/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_6_1.xml	(date 1686185741040)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: com.google.protobuf:protobuf-java:3.6.1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.6.1/protobuf-java-3.6.1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.6.1/protobuf-java-3.6.1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.6.1/protobuf-java-3.6.1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__com_sun_mail_javax_mail_1_5_3.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__com_sun_mail_javax_mail_1_5_3.xml b/.idea/libraries/Maven__com_sun_mail_javax_mail_1_5_3.xml
+new file mode 100644
+--- /dev/null	(date 1686185741047)
++++ b/.idea/libraries/Maven__com_sun_mail_javax_mail_1_5_3.xml	(date 1686185741047)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: com.sun.mail:javax.mail:1.5.3">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/sun/mail/javax.mail/1.5.3/javax.mail-1.5.3.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/com/sun/mail/javax.mail/1.5.3/javax.mail-1.5.3-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/com/sun/mail/javax.mail/1.5.3/javax.mail-1.5.3-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml b/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml
+new file mode 100644
+--- /dev/null	(date 1686185741055)
++++ b/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_9_2.xml	(date 1686185741055)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: commons-beanutils:commons-beanutils:1.9.2">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.9.2/commons-beanutils-1.9.2.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.9.2/commons-beanutils-1.9.2-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/commons-beanutils/commons-beanutils/1.9.2/commons-beanutils-1.9.2-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml b/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741062)
++++ b/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml	(date 1686185741062)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: commons-collections:commons-collections:3.2.1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml b/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml
+new file mode 100644
+--- /dev/null	(date 1686185741068)
++++ b/.idea/libraries/Maven__commons_logging_commons_logging_1_1_1.xml	(date 1686185741068)
+@@ -0,0 +1,13 @@
++<component name="libraryTable">
++  <library name="Maven: commons-logging:commons-logging:1.1.1">
++    <CLASSES>
++      <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar!/" />
++    </CLASSES>
++    <JAVADOC>
++      <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-javadoc.jar!/" />
++    </JAVADOC>
++    <SOURCES>
++      <root url="jar://$MAVEN_REPOSITORY$/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1-sources.jar!/" />
++    </SOURCES>
++  </library>
++</component>
+\ No newline at end of file

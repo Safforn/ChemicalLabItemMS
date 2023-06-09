@@ -1,0 +1,434 @@
+Index: src/main/webapp/register.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html>\r\n\r\n<head>\r\n\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"renderer\" content=\"webkit\">\r\n\r\n    <title>注册</title>\r\n    <meta name=\"keywords\">\r\n    <meta name=\"description\">\r\n\r\n    <link href=\"css/bootstrap.min.css?v=3.4.0\" rel=\"stylesheet\">\r\n    <link href=\"font-awesome/css/font-awesome.css?v=4.3.0\" rel=\"stylesheet\">\r\n    <link href=\"css/plugins/iCheck/custom.css\" rel=\"stylesheet\">\r\n    <link href=\"css/animate.css\" rel=\"stylesheet\">\r\n    <link href=\"css/style.css?v=2.2.0\" rel=\"stylesheet\">\r\n\r\n</head>\r\n\r\n<body class=\"gray-bg\">\r\n\r\n    <div class=\"middle-box text-center loginscreen   animated fadeInDown\">\r\n        <div>\r\n            <div>\r\n\r\n                <h1 class=\"logo-name\">666</h1>\r\n\r\n            </div>\r\n            <h3>欢迎注册</h3>\r\n            <p>创建一个化工实验室账户</p>\r\n            <form class=\"m-t\" role=\"form\" action=\"login.html\">\r\n                <div class=\"form-group\">\r\n                    <input type=\"text\" class=\"form-control\" placeholder=\"请输入用户名\" required=\"\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"password\" class=\"form-control\" placeholder=\"请输入密码\" required=\"\">\r\n                </div>\r\n                <div class=\"form-group\">\r\n                    <input type=\"password\" class=\"form-control\" placeholder=\"请再次输入密码\" required=\"\">\r\n                </div>\r\n                <div class=\"form-group text-left\">\r\n                    <div class=\"checkbox i-checks\">\r\n                        <label class=\"no-padding\">\r\n                            <input type=\"checkbox\"><i></i> 我同意注册协议</label>\r\n                    </div>\r\n                </div>\r\n                <button type=\"submit\" class=\"btn btn-primary block full-width m-b\">注 册</button>\r\n\r\n                <p class=\"text-muted text-center\"><small>已经有账户了？</small><a href=\"login.html\">点此登录</a>\r\n                </p>\r\n\r\n            </form>\r\n        </div>\r\n    </div>\r\n\r\n    <!-- Mainly scripts -->\r\n    <script src=\"js/jquery-2.1.1.min.js\"></script>\r\n    <script src=\"js/bootstrap.min.js?v=3.4.0\"></script>\r\n    <!-- iCheck -->\r\n    <script src=\"js/plugins/iCheck/icheck.min.js\"></script>\r\n    <script>\r\n        $(document).ready(function () {\r\n            $('.i-checks').iCheck({\r\n                checkboxClass: 'icheckbox_square-green',\r\n                radioClass: 'iradio_square-green',\r\n            });\r\n        });\r\n    </script>\r\n\r\n</body>\r\n\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/register.html b/src/main/webapp/register.html
+--- a/src/main/webapp/register.html	(revision 9833e4f5202370e6fcc8a6466df7608808e29457)
++++ b/src/main/webapp/register.html	(date 1685951914081)
+@@ -23,21 +23,50 @@
+     <div class="middle-box text-center loginscreen   animated fadeInDown">
+         <div>
+             <div>
+-
+                 <h1 class="logo-name">666</h1>
+-
+             </div>
+             <h3>欢迎注册</h3>
+-            <p>创建一个化工实验室账户</p>
++            <h2>创建一个化工实验室账户</h2>
+             <form class="m-t" role="form" action="login.html">
++                <div>
++                    <tr>
++                        <label for="status">身份:</label>
++                    </tr>
++                    <tr>
++                        <td>
++                            <input type="radio" id="status" name="status" value="负责人">负责人
++                        </td>
++                        <td>
++                            <input type="radio" name="status" value="审批人"> 审批人
++                        </td>
++                    </tr>
++                    <tr>
++                        <td>
++                            <input type="radio" name="status" value="仓库管理员"> 仓库管理员
++                        </td>
++                        <td>
++                            <input type="radio" name="status" value="用户" checked> 用户
++                        </td>
++                    </tr>
++
++                </div>
+                 <div class="form-group">
+-                    <input type="text" class="form-control" placeholder="请输入用户名" required="">
++                    <input type="text" id="account" class="form-control" placeholder="请输入账号" required="">
+                 </div>
+                 <div class="form-group">
+-                    <input type="password" class="form-control" placeholder="请输入密码" required="">
++                    <input type="password" id="password" class="form-control" placeholder="请输入密码" required="">
+                 </div>
+                 <div class="form-group">
+-                    <input type="password" class="form-control" placeholder="请再次输入密码" required="">
++                    <input type="password" id="repassword" class="form-control" placeholder="请再次输入密码" required="">
++                </div>
++                <div class="form-group">
++                    <input type="text" id="name" class="form-control" placeholder="请输入真实姓名" required="">
++                </div>
++                <div class="form-group">
++                    <input type="text" id="email" class="form-control" placeholder="请输入电子邮箱" required="">
++                </div>
++                <div class="form-group">
++                    <input type="text" id="phonenumber" class="form-control" placeholder="请输入手机号" required="">
+                 </div>
+                 <div class="form-group text-left">
+                     <div class="checkbox i-checks">
+@@ -57,16 +86,145 @@
+     <!-- Mainly scripts -->
+     <script src="js/jquery-2.1.1.min.js"></script>
+     <script src="js/bootstrap.min.js?v=3.4.0"></script>
+-    <!-- iCheck -->
+-    <script src="js/plugins/iCheck/icheck.min.js"></script>
+     <script>
+-        $(document).ready(function () {
+-            $('.i-checks').iCheck({
+-                checkboxClass: 'icheckbox_square-green',
+-                radioClass: 'iradio_square-green',
+-            });
+-        });
++        //1. 验证账号是否符合规则
++        //1.1 获取账号的输入框
++        let accountElement = document.getElementById("account");
++        //1.2 绑定onblur事件 失去焦点
++        accountElement.onblur = checkAccount;
++        function checkAccount() {
++            //1.2 获取账号值
++            let account = accountElement.value.trim();
++            //1.3 定义正则
++            var account_reg = /^\w{6,12}$/;
++            //1.4 判断，给出提示信息
++            var flag = account_reg.test(account);
++            if (flag) {
++                //账号合法
++                accountElement.style.border = "";
++            } else {
++                //账号非法,加一个红色边框
++                accountElement.style.border = "1px solid red";
++            }
++            return flag;
++        }
++
++        //2. 验证密码是否符合规则
++        let passwordElement = document.getElementById("password");
++        passwordElement.onblur = checkPassword;
++        function checkPassword() {
++            var password = passwordElement.value.trim();  //获取值
++            var reg_password = /^\w{8,20}$/  //单词类型\w，8-20用{}
++            var flag = reg_password.test(password);
++            if(flag) {
++                //校验通过
++                passwordElement.style.border = "";
++            } else {
++                //校验失败
++                passwordElement.style.border = "1px solid red";
++            }
++            return flag;
++        }
++
++        //3. 验证再次输入的密码是否符合规则
++        let repasswordElement = document.getElementById("repassword");
++        repasswordElement.onblur = checkRepassword;
++        function checkRepassword() {
++            var password = passwordElement.value.trim();
++            var repassword = repasswordElement.value.trim();
++            if(password == repassword&&password!=null) {
++                //校验通过
++                repasswordElement.style.border = "";
++            } else {
++                //校验失败
++                repasswordElement.style.border = "1px solid red";
++            }
++            return flag;
++        }
++
++        //4. 验证姓名是否符合规则
++        let nameElement = document.getElementById("name");
++        nameElement.onblur = checkName;
++        function checkName() {
++            var name = nameElement.value.trim();  //获取值
++            var reg_name = /^\w{1,10}$/  //单词类型\w，1-10用{}
++            var flag = reg_name.test(name);
++            if(flag) {
++                //校验通过
++                nameElement.style.border = "";
++            } else {
++                //校验失败
++                nameElement.style.border = "1px solid red";
++            }
++            return flag;
++        }
++
++        //5. 校验邮箱
++        let emailElement = document.getElementById("email");
++        emailElement.onblur = checkEmail;
++        function checkEmail() {
++            var email = emailElement.value.trim();   //获取值
++            var reg_email = /^\w+@\w+\.\w+$/  //单词类型\w，8-20用{}
++            var flag = reg_email.test(email);
++            if (flag) {
++                //校验通过
++                emailElement.style.border = "";
++            } else {
++                //校验失败
++                emailElement.style.border = "1px solid red";
++            }
++            return flag;
++        }
++
++        //6. 验证手机号是否符合规则
++        let phonenumberElement = document.getElementById("phonenumber");
++        phonenumberElement.onblur = checkTel;
++        function checkTel() {
++            var phonenumber = phonenumberElement.value.trim();   //获取值
++            var reg_phonenumber = /^1[0-9]{10}$/
++            var flag = reg_phonenumber.test(phonenumber);
++            if(flag) {
++                //校验通过
++                phonenumberElement.style.border = "";
++            } else {
++                //校验失败
++                phonenumberElement.style.border = "1px solid red";
++            }
++            return flag;
++        }
++
++        // // 当表单提交时,调用所有的校验方法
++        // $("#registerForm").submit(function () { //function（）没有返回值，或者返回为true，说明校验成功，提交；否则不提交
++        //     // 1. 发送数据到服务器,通过ajax异步发送
++        //     if (checkUsername() && checkPassword() && checkEmail() && checkTel()) {
++        //         // 校验通过，发送ajax请求，异步提交表单的数据
++        //         $.post("user/regist", $("#registerForm").serialize(), function (data) {
++        //             // 处理服务器响应的结果:从服务器响应的data格式： {flag:true,errorMsg:"注册失败"}
++        //             if (data.flag) {
++        //                 //注册成功，跳转成功页面
++        //                 location.href = "register_ok.html";
++        //             } else {
++        //                 //注册失败,给errorMsg添加提示信息
++        //                 $("#errorMsg").html(data.errorMsg);
++        //             }
++        //         });
++        //     }
++        //     // 2. 不能使用表单跳转页面，表单通过action提交页面是一种同步方式：return false就可以不让跳转。
++        //     // return checkUserName() && checkPassword() && checkUserName();
++        //     return false;
++        // });
++
+     </script>
++    <!-- iCheck -->
++<!--    <script src="js/plugins/iCheck/icheck.min.js"></script>-->
++<!--    <script>-->
++<!--        $(document).ready(function () {-->
++<!--            $('.i-checks').iCheck({-->
++<!--                checkboxClass: 'icheckbox_square-green',-->
++<!--                radioClass: 'iradio_square-green',-->
++<!--            });-->
++<!--        });-->
++<!--    </script>-->
+ 
+ </body>
+ 
+Index: src/main/webapp/form_use_or_borrow.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"zh-CN\">\r\n\r\n<head>\r\n\r\n    <meta charset=\"utf-8\">\r\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"renderer\" content=\"webkit\">\r\n\r\n    <title>领用/借用申请表</title>\r\n    <meta name=\"keywords\" >\r\n    <meta name=\"description\">\r\n\r\n    <link href=\"css/bootstrap.min.css?v=3.4.0\" rel=\"stylesheet\">\r\n    <link href=\"font-awesome/css/font-awesome.css?v=4.3.0\" rel=\"stylesheet\">\r\n    <link href=\"css/plugins/iCheck/custom.css\" rel=\"stylesheet\">\r\n\r\n    <link href=\"css/plugins/dataTables/dataTables.bootstrap.css\" rel=\"stylesheet\">\r\n\r\n    <link href=\"css/animate.css\" rel=\"stylesheet\">\r\n    <link href=\"css/style.css?v=2.2.0\" rel=\"stylesheet\">\r\n\r\n</head>\r\n\r\n<body>\r\n<div id=\"wrapper\">\r\n    <!-- 侧边栏 -->\r\n    <div id=\"left_sidebar\"></div>\r\n\r\n    <div id=\"page-wrapper\" class=\"gray-bg dashbard-1\">\r\n        <!--头部-->\r\n        <div class=\"row border-bottom\">\r\n            <nav class=\"navbar navbar-static-top\" role=\"navigation\" style=\"margin-bottom: 0\">\r\n                <ul class=\"nav navbar-top-links navbar-right\">\r\n                    <li>\r\n                        <span class=\"m-r-sm text-muted welcome-message\"><a href=\"index.html\" title=\"返回首页\"><i class=\"fa fa-home\"></i></a></span>\r\n                    </li>\r\n<!--  ---------------------------  邮箱及信息提示部分  -------------------------------------------------  -->\r\n                    <li class=\"dropdown\">\r\n                        <a class=\"dropdown-toggle count-info\" data-toggle=\"dropdown\" href=\"index.html#\">\r\n                            <i class=\"fa fa-envelope\"></i>  <span class=\"label label-warning\">16</span>\r\n                        </a>\r\n                        <ul class=\"dropdown-menu dropdown-messages\">\r\n                            <li>\r\n                                <div class=\"dropdown-messages-box\">\r\n                                    <a href=\"profile.html\" class=\"pull-left\">\r\n                                        <img alt=\"image\" class=\"img-circle\" src=\"img/a7.jpg\">\r\n                                    </a>\r\n                                    <div class=\"media-body\">\r\n                                        <small class=\"pull-right\">46小时前</small>\r\n                                        <strong>小四</strong> 项目已处理完结\r\n                                        <br>\r\n                                        <small class=\"text-muted\">3天前 2014.11.8</small>\r\n                                    </div>\r\n                                </div>\r\n                            </li>\r\n                            <li class=\"divider\"></li>\r\n                            <li>\r\n                                <div class=\"dropdown-messages-box\">\r\n                                    <a href=\"profile.html\" class=\"pull-left\">\r\n                                        <img alt=\"image\" class=\"img-circle\" src=\"img/a4.jpg\">\r\n                                    </a>\r\n                                    <div class=\"media-body \">\r\n                                        <small class=\"pull-right text-navy\">25小时前</small>\r\n                                        <strong>国民岳父</strong> 这是一条测试信息\r\n                                        <br>\r\n                                        <small class=\"text-muted\">昨天</small>\r\n                                    </div>\r\n                                </div>\r\n                            </li>\r\n                            <li class=\"divider\"></li>\r\n                            <li>\r\n                                <div class=\"text-center link-block\">\r\n                                    <a href=\"mailbox.html\">\r\n                                        <i class=\"fa fa-envelope\"></i>  <strong> 查看所有消息</strong>\r\n                                    </a>\r\n                                </div>\r\n                            </li>\r\n                        </ul>\r\n                    </li>\r\n                    <li class=\"dropdown\">\r\n                        <a class=\"dropdown-toggle count-info\" data-toggle=\"dropdown\" href=\"index.html#\">\r\n                            <i class=\"fa fa-bell\"></i>  <span class=\"label label-primary\">8</span>\r\n                        </a>\r\n                        <ul class=\"dropdown-menu dropdown-alerts\">\r\n                            <li>\r\n                                <a href=\"mailbox.html\">\r\n                                    <div>\r\n                                        <i class=\"fa fa-envelope fa-fw\"></i> 您有16条未读消息\r\n                                        <span class=\"pull-right text-muted small\">4分钟前</span>\r\n                                    </div>\r\n                                </a>\r\n                            </li>\r\n                            <li class=\"divider\"></li>\r\n                            <li>\r\n                                <a href=\"profile.html\">\r\n                                    <div>\r\n                                        <i class=\"fa fa-qq fa-fw\"></i> 3条新回复\r\n                                        <span class=\"pull-right text-muted small\">12分钟钱</span>\r\n                                    </div>\r\n                                </a>\r\n                            </li>\r\n                            <li class=\"divider\"></li>\r\n                            <li>\r\n                                <div class=\"text-center link-block\">\r\n                                    <a href=\"notifications.html\">\r\n                                        <strong>查看所有 </strong>\r\n                                        <i class=\"fa fa-angle-right\"></i>\r\n                                    </a>\r\n                                </div>\r\n                            </li>\r\n                        </ul>\r\n                    </li>\r\n<!--    -----------------------------------------------------------------------------------------       -->\r\n\r\n                    <li>\r\n                        <a href=\"login.html\">\r\n                            <i class=\"fa fa-sign-out\"></i> 退出\r\n                        </a>\r\n                    </li>\r\n                </ul>\r\n\r\n            </nav>\r\n        </div>\r\n        <!--标题-->\r\n        <div class=\"row wrapper border-bottom white-bg page-heading\">\r\n            <div class=\"col-lg-10\">\r\n                <h2>领用/借用申请表</h2>\r\n                <ol class=\"breadcrumb\">\r\n                    <li>\r\n                        <a href=\"index.html\">主页</a>\r\n                    </li>\r\n                    <li>\r\n                        <a>表单</a>\r\n                    </li>\r\n                    <li>\r\n                        <strong>领用/借用表单</strong>\r\n                    </li>\r\n                </ol>\r\n            </div>\r\n            <div class=\"col-lg-2\">\r\n\r\n            </div>\r\n        </div>\r\n        <!--表单本体-->\r\n        <div class=\"wrapper wrapper-content animated fadeInRight\">\r\n            <div class=\"row\">\r\n                <div class=\"col-lg-12\">\r\n                    <div class=\"ibox float-e-margins\">\r\n\r\n                        <div class=\"ibox-title\" >\r\n                            <label>领用/借用表单</label>\r\n                        </div>\r\n\r\n                        <!--填 领用/借用申请 基本信息的表单-->\r\n                        <div class=\"ibox-content\">\r\n                            <form method=\"get\" class=\"form-horizontal\">\r\n\r\n                                <div class=\"form-group\">\r\n                                    <label class=\"col-sm-2 control-label\">领用/借用申请表编号</label>\r\n                                    <div class=\"col-sm-10\">\r\n                                        <input id=\"use_or_borrow_id\" type=\"text\" disabled=\"\" placeholder=\"不可编辑，提交时系统自动生成\" class=\"form-control\">\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\">\r\n                                    <label class=\"col-sm-2 control-label\">领用/借用物品清单编号</label>\r\n                                    <div class=\"col-sm-10\">\r\n                                        <input id=\"use_or_borrow_order_id\" type=\"text\" disabled=\"\" placeholder=\"不可编辑，提交时系统自动生成\" class=\"form-control\">\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\">\r\n                                    <label class=\"col-sm-2 control-label\">申请单类型</label>\r\n                                    <div class=\"col-sm-10\">\r\n\r\n                                        <div class=\"radio\" style=\"display: inline-block\">\r\n                                            <label><input type=\"radio\" checked=\"true\" value=\"option1\" id=\"type-use\" name=\"optionsRadios\">\r\n                                                领用</label>\r\n                                        </div>\r\n                                        <div class=\"radio\" style=\"display: inline-block; margin-left: 20px;\">\r\n                                            <label><input type=\"radio\" value=\"option2\" id=\"type-borrow\" name=\"optionsRadios\">\r\n                                                借用</label>\r\n                                        </div>\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\">\r\n                                    <label class=\"col-sm-2 control-label\">申请人</label>\r\n\r\n                                    <div class=\"col-sm-10\">\r\n                                        <input id=\"applicant\" type=\"text\" disabled=\"\" placeholder=\"直接提取登录状态\" class=\"form-control\">\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\">\r\n                                    <label class=\"col-sm-2 control-label\">领用/借用用途</label>\r\n                                    <div class=\"col-sm-10\">\r\n                                        <textarea id=\"purpose\" class=\"form-control input-lg m-b\" name=\"saysths\" rows=\"3\"\r\n                                                  cols=\"30\" wrap=\"soft\" style=\"resize:none;\"></textarea>\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\">\r\n                                    <label class=\"col-sm-2 control-label\">借用开始日期</label>\r\n\r\n                                    <div class=\"col-sm-10\">\r\n                                        <input type=\"date\" placeholder=\"\" class=\"form-control layer-date\" id=\"start_time\">\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\">\r\n                                    <label class=\"col-sm-2 control-label\">借用结束日期</label>\r\n\r\n                                    <div class=\"col-sm-10\">\r\n                                        <input type=\"date\" placeholder=\"\" class=\"form-control layer-date\" id=\"end_time\">\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\">\r\n                                    <label class=\"col-sm-2 control-label\">申请提交日期</label>\r\n\r\n                                    <div class=\"col-sm-10\">\r\n                                        <input id=\"submit_time\" type=\"text\" disabled=\"\" placeholder=\"后台生成\" class=\"form-control\">\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\">\r\n                                    <label class=\"col-lg-2 control-label\">申请当前状态</label>\r\n                                    <div class=\"col-lg-10\">\r\n                                        <input id=\"state\" type=\"text\" disabled=\"\" placeholder=\"初始未提交，后续后台控制\" class=\"form-control\">\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\" id=\"approval-1\">\r\n                                    <label class=\"col-sm-2 control-label\">审批人</label>\r\n                                    <div class=\"col-sm-10\">\r\n                                        <input id=\"approved_by\" type=\"text\" disabled=\"\" placeholder=\"后台生成\" class=\"form-control\">\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\" id=\"approval-2\">\r\n                                    <label class=\"col-sm-2 control-label\">审批意见</label>\r\n                                    <div class=\"col-sm-10\">\r\n                                        <textarea id=\"opinion\" class=\"form-control input-lg m-b\" name=\"saysths\" rows=\"3\"\r\n                                                  cols=\"30\" wrap=\"soft\" style=\"resize:none;\"></textarea>\r\n                                    </div>\r\n                                </div>\r\n\r\n                                <div class=\"form-group\" id=\"approval-3\">\r\n                                    <label class=\"col-sm-2 control-label\">审批日期</label>\r\n                                    <div class=\"col-sm-10\">\r\n                                        <input id=\"approval_time\" type=\"text\" disabled=\"\" placeholder=\"后台生成\" class=\"form-control\">\r\n                                    </div>\r\n                                </div>\r\n                            </form>\r\n                        </div>\r\n\r\n                        <!--填 领用/借用物品信息的可编辑表单-->\r\n                        <div class=\"ibox-title\">\r\n                            <h5>领用/借用物品清单</h5>\r\n                            <!-- 折叠表单按钮 -->\r\n                            <!--                            <div class=\"ibox-tools\">  -->\r\n                            <!--                                <a class=\"collapse-link\"><i class=\"fa fa-chevron-up\"></i></a>-->\r\n                            <!--                            </div>-->\r\n                        </div>\r\n\r\n                        <div class=\"ibox-content\">\r\n                            <div class=\"\">\r\n                                <!--fnClickAddRow()函数在本页最下面-->\r\n                                <a onclick=\"fnClickAddRow();\" href=\"javascript:void(0);\" class=\"btn btn-primary \">添加行</a>\r\n                            </div>\r\n                            <table class=\"table table-striped table-bordered table-hover \" id=\"editable\">\r\n                                <thead>\r\n                                <tr>\r\n                                    <th>编号</th>\r\n                                    <th>领用/借用物品名称</th>\r\n                                    <th>数量</th>\r\n                                    <th>单位</th>\r\n                                    <th>备注</th>\r\n                                </tr>\r\n                                </thead>\r\n                                <tbody>\r\n                                <!--留了5行的示例数据，可删除-->\r\n                                <tr>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td></td>\r\n                                    <td class=\"center\"></td>\r\n                                    <td class=\"center\"></td>\r\n                                </tr>\r\n                                <tr class=\"gradeA\">\r\n                                    <td>Trident</td>\r\n                                    <td>Internet Explorer 5.5\r\n                                    </td>\r\n                                    <td>Win 95+</td>\r\n                                    <td class=\"center\">5.5</td>\r\n                                    <td class=\"center\">A</td>\r\n                                </tr>\r\n                                </tbody>\r\n                            </table>\r\n\r\n                        </div>\r\n\r\n                        <!-- 底部按钮组 -->\r\n                        <div class=\"ibox-content\">\r\n                            <form method=\"get\" class=\"form-horizontal\">\r\n                                <div class=\"hr-line-dashed\"></div>\r\n                                <div class=\"form-group\">\r\n                                    <div class=\"col-sm-4 col-sm-offset-2\" style=\"margin-left: 1000px\">\r\n                                        <button id=\"btn-save-requisition\" class=\"btn btn-primary\" type=\"submit\">保存</button>\r\n                                        <button id=\"btn-submit-requisition\" class=\"btn btn-primary\" type=\"submit\">提交</button>\r\n                                        <button id=\"btn-cancel-requisition\" class=\"btn btn-white\" type=\"submit\">取消</button>\r\n                                    </div>\r\n                                </div>\r\n                            </form>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n\r\n        </div>\r\n\r\n    </div>\r\n</div>\r\n\r\n<!-- Mainly scripts -->\r\n<script src=\"js/jquery-2.1.1.min.js\"></script>\r\n<script src=\"js/bootstrap.min.js?v=3.4.0\"></script>\r\n<script src=\"js/plugins/metisMenu/jquery.metisMenu.js\"></script>\r\n<script src=\"js/plugins/slimscroll/jquery.slimscroll.min.js\"></script>\r\n<script src=\"js/plugins/jeditable/jquery.jeditable.js\"></script>\r\n\r\n<!-- Data Tables -->\r\n<script src=\"js/plugins/dataTables/jquery.dataTables.js\"></script>\r\n<script src=\"js/plugins/dataTables/dataTables.bootstrap.js\"></script>\r\n\r\n<!-- Custom and plugin javascript -->\r\n<script src=\"js/hplus.js?v=2.2.0\"></script>\r\n<script src=\"js/plugins/pace/pace.min.js\"></script>\r\n\r\n<!-- iCheck -->\r\n<script src=\"js/plugins/iCheck/icheck.min.js\"></script>\r\n\r\n\r\n<!-- 导入left_sidebar -->\r\n<script>\r\n    $(function () {\r\n\r\n        $(\"#approval-1\").css(\"display\", \"none\")\r\n        $(\"#approval-2\").css(\"display\", \"none\")\r\n        $(\"#approval-3\").css(\"display\", \"none\")\r\n\r\n        $.get(\"left_sidebar.html\",function (data) {\r\n            $(\"#left_sidebar\").html(data);\r\n        });\r\n\r\n\r\n\r\n    });\r\n\r\n    $(document).ready(function () {\r\n        $('.i-checks').iCheck({\r\n            checkboxClass: 'icheckbox_square-green',\r\n            radioClass: 'iradio_square-green',\r\n        });\r\n    });\r\n<!-- Page-Level Scripts -->\r\n    $(document).ready(function () {\r\n        $('.dataTables-example').dataTable();\r\n\r\n        /* Init DataTables */\r\n        let oTable = $('#editable').dataTable();\r\n\r\n        /* Apply the jEditable handlers to the table */\r\n        oTable.$('td').editable('../example_ajax.php', {\r\n            \"callback\": function (sValue, y) {\r\n                let aPos = oTable.fnGetPosition(this);\r\n                oTable.fnUpdate(sValue, aPos[0], aPos[1]);\r\n            },\r\n            \"submitdata\": function (value, settings) {\r\n                return {\r\n                    \"row_id\": this.parentNode.getAttribute('id'),\r\n                    \"column\": oTable.fnGetPosition(this)[2]\r\n                };\r\n            },\r\n\r\n            \"width\": \"90%\",\r\n            \"height\": \"100%\"\r\n        });\r\n\r\n\r\n    });\r\n\r\n    // 让 点击的该行 可编辑\r\n    function fnClickAddRow() {\r\n        $('#editable').dataTable().fnAddData([\r\n            \"New ID\",\r\n            \"New Name\",\r\n            \"New num\",\r\n            \"New unit\",  // 单位\r\n            \"New notes\"]);\r\n    }\r\n</script>\r\n\r\n\r\n</body>\r\n\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/form_use_or_borrow.html b/src/main/webapp/form_use_or_borrow.html
+--- a/src/main/webapp/form_use_or_borrow.html	(revision 9833e4f5202370e6fcc8a6466df7608808e29457)
++++ b/src/main/webapp/form_use_or_borrow.html	(date 1685955136436)
+@@ -195,8 +195,9 @@
+                                 <div class="form-group">
+                                     <label class="col-sm-2 control-label">领用/借用用途</label>
+                                     <div class="col-sm-10">
+-                                        <textarea id="purpose" class="form-control input-lg m-b" name="saysths" rows="3"
+-                                                  cols="30" wrap="soft" style="resize:none;"></textarea>
++                                        <input type="text" id="purpose" class="form-control input-lg m-b" name="saysths" rows="3"
++                                                  cols="30" wrap="soft" style="resize:none;">
++
+                                     </div>
+                                 </div>
+ 
+@@ -340,8 +341,69 @@
+ 
+ <!-- iCheck -->
+ <script src="js/plugins/iCheck/icheck.min.js"></script>
++<script>
++    //领用用途校验
++    let purposeElement = document.getElementById("purpose");
++    purposeElement.onblur = checkPurpose;
++    function checkPurpose() {
++        let purpose = purposeElement.value.trim();
++        var purpose_reg = /^[\s\S]*.*[^\s][\s\S]*$/;
++        var flag = purpose_reg.test(purpose);
++        if (flag) {
++            //账号合法
++            purposeElement.style.border = "";
++        } else {
++            //账号非法,加一个红色边框
++            purposeElement.style.border = "1px solid red";
++        }
++        return flag;
++    }
+ 
++    //开始日期校验
++    let startElement = document.getElementById("start_time");
++    startElement.onblur = checkStart;
++    function checkStart() {
++        var today = new Date();
++        var dd = today.getDate();
++        var mm = today.getMonth() + 1; //January is 0!
++        var yyyy = today.getFullYear();
++        if (dd < 10) {dd = '0' + dd;}
++        if (mm < 10) {mm = '0' + mm;}
++        var today = yyyy + '-' + mm + '-' + dd;
++        //alert(today);
++        let start_time = startElement.value.trim();
++        //alert(start_time);
++        var start_time_reg =/^[\s\S]*.*[^\s][\s\S]*$/;
++        var flag = start_time_reg.test(start_time);
++        if (flag&&start_time>=today) {
++            //账号合法
++            startElement.style.border = "";
++        } else {
++            //账号非法,加一个红色边框
++            startElement.style.border = "1px solid red";
++        }
++        return flag;
++    }
+ 
++    //结束日期校验
++    let endElement = document.getElementById("end_time");
++    endElement.onblur = checkEnd;
++    function checkEnd() {
++        let start_time = startElement.value.trim();
++        let end_time = endElement.value.trim();
++        var end_time_reg =/^[\s\S]*.*[^\s][\s\S]*$/;
++        var flag = end_time_reg.test(end_time);
++        if (flag&&start_time<=end_time) {
++            //账号合法
++            endElement.style.border = "";
++        } else {
++            //账号非法,加一个红色边框
++            endElement.style.border = "1px solid red";
++        }
++        return flag;
++    }
++
++</script>
+ <!-- 导入left_sidebar -->
+ <script>
+     $(function () {
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n  xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n  <modelVersion>4.0.0</modelVersion>\r\n\r\n  <groupId>cn.itcast</groupId>\r\n  <artifactId>ChemicalLabItemMS</artifactId>\r\n  <version>1.0-SNAPSHOT</version>\r\n  <packaging>war</packaging>\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>junit</groupId>\r\n            <artifactId>junit</artifactId>\r\n            <version>3.8.1</version>\r\n            <scope>test</scope>\r\n        </dependency>\r\n        <!--servlet-->\r\n        <dependency>\r\n            <groupId>javax.servlet</groupId>\r\n            <artifactId>javax.servlet-api</artifactId>\r\n            <version>3.1.0</version>\r\n            <scope>provided</scope>\r\n        </dependency>\r\n\r\n        <dependency>\r\n            <groupId>joda-time</groupId>\r\n            <artifactId>joda-time</artifactId>\r\n            <version>2.9.8</version>\r\n        </dependency>\r\n\r\n\r\n        <!--mysql驱动-->\r\n        <dependency>\r\n            <groupId>mysql</groupId>\r\n            <artifactId>mysql-connector-java</artifactId>\r\n            <version>8.0.18</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n        <!--druid连接池-->\r\n        <dependency>\r\n            <groupId>com.alibaba</groupId>\r\n            <artifactId>druid</artifactId>\r\n            <version>1.1.21</version>\r\n        </dependency>\r\n        <!--jdbcTemplate-->\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-core</artifactId>\r\n            <version>4.1.2.RELEASE</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-jdbc</artifactId>\r\n            <version>4.1.2.RELEASE</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-tx</artifactId>\r\n            <version>4.1.2.RELEASE</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.springframework</groupId>\r\n            <artifactId>spring-beans</artifactId>\r\n            <version>4.1.2.RELEASE</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>commons-logging</groupId>\r\n            <artifactId>commons-logging</artifactId>\r\n            <version>1.1.1</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n        <!--beanUtils-->\r\n        <dependency>\r\n            <groupId>commons-beanutils</groupId>\r\n            <artifactId>commons-beanutils</artifactId>\r\n            <version>1.9.2</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n        <!--jackson-->\r\n        <dependency>\r\n            <groupId>com.fasterxml.jackson.core</groupId>\r\n            <artifactId>jackson-databind</artifactId>\r\n            <version>2.3.3</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>com.fasterxml.jackson.core</groupId>\r\n            <artifactId>jackson-core</artifactId>\r\n            <version>2.3.3</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>com.fasterxml.jackson.core</groupId>\r\n            <artifactId>jackson-annotations</artifactId>\r\n            <version>2.3.3</version>\r\n        </dependency>\r\n\r\n\r\n        <!--javaMail-->\r\n        <dependency>\r\n            <groupId>javax.mail</groupId>\r\n            <artifactId>javax.mail-api</artifactId>\r\n            <version>1.5.6</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>com.sun.mail</groupId>\r\n            <artifactId>javax.mail</artifactId>\r\n            <version>1.5.3</version>\r\n        </dependency>\r\n        <!--jedis-->\r\n        <dependency>\r\n            <groupId>redis.clients</groupId>\r\n            <artifactId>jedis</artifactId>\r\n            <version>2.7.0</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>junit</groupId>\r\n            <artifactId>junit</artifactId>\r\n            <version>4.12</version>\r\n            <scope>test</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.testng</groupId>\r\n            <artifactId>testng</artifactId>\r\n            <version>RELEASE</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>junit</groupId>\r\n            <artifactId>junit</artifactId>\r\n            <version>4.12</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.junit.jupiter</groupId>\r\n            <artifactId>junit-jupiter</artifactId>\r\n            <version>RELEASE</version>\r\n            <scope>compile</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.junit.jupiter</groupId>\r\n            <artifactId>junit-jupiter</artifactId>\r\n            <version>RELEASE</version>\r\n            <scope>test</scope>\r\n        </dependency>\r\n\r\n    </dependencies>\r\n\r\n    <build>\r\n        <plugins>\r\n            <plugin>\r\n                <groupId>org.apache.maven.plugins</groupId>\r\n                <artifactId>maven-war-plugin</artifactId>\r\n                <version>3.3.2</version>\r\n            </plugin>\r\n            <!--  Tomcat插件，此版本为官方最新版本，其他的8.0版本都不是官方提供的 -->\r\n            <plugin>\r\n                <groupId>org.apache.tomcat.maven</groupId>\r\n                <artifactId>tomcat7-maven-plugin</artifactId>\r\n                <version>2.2</version>\r\n                <configuration>\r\n                    <path>/travel</path>\r\n                </configuration>\r\n            </plugin>\r\n            <plugin>\r\n                <groupId>org.apache.maven.plugins</groupId>\r\n                <artifactId>maven-compiler-plugin</artifactId>\r\n                <configuration>\r\n                    <source>1.8</source>\r\n                    <target>1.8</target>\r\n                </configuration>\r\n            </plugin>\r\n        </plugins>\r\n\r\n</build>\r\n\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 9833e4f5202370e6fcc8a6466df7608808e29457)
++++ b/pom.xml	(date 1685951935519)
+@@ -147,6 +147,12 @@
+             <scope>test</scope>
+         </dependency>
+ 
++        <dependency>
++            <groupId>joda-time</groupId>
++            <artifactId>joda-time</artifactId>
++            <version>2.9.8</version>
++        </dependency>
++
+     </dependencies>
+ 
+     <build>
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ArtifactsWorkspaceSettings\">\r\n    <artifacts-to-build>\r\n      <artifact name=\"travel:war\" />\r\n    </artifacts-to-build>\r\n  </component>\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec\" name=\"Default Changelist\" comment=\"更新了实体类的注释\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/form_purchase_in_warehouse.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/form_purchase_in_warehouse.html\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"LAZ\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"LogFilters\">\r\n    <option name=\"FILTER_ERRORS\" value=\"false\" />\r\n    <option name=\"FILTER_WARNINGS\" value=\"false\" />\r\n    <option name=\"FILTER_INFO\" value=\"true\" />\r\n    <option name=\"FILTER_DEBUG\" value=\"true\" />\r\n    <option name=\"CUSTOM_FILTER\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"userSettingsFile\" value=\"D:\\Program Files\\apache-maven-3.6.3\\conf\\settings.xml\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2Avt6bIjEb9LPH0DVMOFNxUmr9z\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">\r\n    <property name=\"ASKED_ADD_EXTERNAL_FILES\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\r\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\r\n    <property name=\"SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\r\n    <property name=\"WebServerToolWindowFactoryState\" value=\"false\" />\r\n    <property name=\"aspect.path.notification.shown\" value=\"true\" />\r\n    <property name=\"last_opened_file_path\" value=\"$PROJECT_DIR$/src/main/webapp/front-end-res-lib\" />\r\n    <property name=\"nodejs_package_manager_path\" value=\"npm\" />\r\n    <property name=\"project.structure.last.edited\" value=\"Artifacts\" />\r\n    <property name=\"project.structure.proportion\" value=\"0.17\" />\r\n    <property name=\"project.structure.side.proportion\" value=\"0.26412776\" />\r\n    <property name=\"settings.editor.selected.configurable\" value=\"org.jetbrains.plugins.github.ui.GithubSettingsConfigurable\" />\r\n  </component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\webapp\\front-end-res-lib\" />\r\n      <recent name=\"D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\java\\service\\temp_service\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\develop\\Java\\ChemicalLabItemMS\\src\\main\\webapp\\html_temp\" />\r\n    </key>\r\n    <key name=\"MoveClassesOrPackagesDialog.RECENTS_KEY\">\r\n      <recent name=\"\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Maven.ChemicalLabItemMS\">\r\n    <configuration name=\"ChemicalLabItemMS\" type=\"MavenRunConfiguration\" factoryName=\"Maven\">\r\n      <MavenSettings>\r\n        <option name=\"myGeneralSettings\" />\r\n        <option name=\"myRunnerSettings\" />\r\n        <option name=\"myRunnerParameters\">\r\n          <MavenRunnerParameters>\r\n            <option name=\"profiles\">\r\n              <set />\r\n            </option>\r\n            <option name=\"goals\">\r\n              <list>\r\n                <option value=\"tomcat7:run\" />\r\n              </list>\r\n            </option>\r\n            <option name=\"pomFileName\" />\r\n            <option name=\"profilesMap\">\r\n              <map />\r\n            </option>\r\n            <option name=\"resolveToWorkspace\" value=\"false\" />\r\n            <option name=\"workingDirPath\" value=\"$PROJECT_DIR$\" />\r\n          </MavenRunnerParameters>\r\n        </option>\r\n      </MavenSettings>\r\n      <method v=\"2\" />\r\n    </configuration>\r\n    <configuration name=\"Tomcat 8.5.24\" type=\"#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory\" factoryName=\"Local\" APPLICATION_SERVER_NAME=\"Tomcat 8.5.24\" ALTERNATIVE_JRE_ENABLED=\"false\" nameIsGenerated=\"true\">\r\n      <option name=\"OPEN_IN_BROWSER_URL\" value=\"http://localhost:8080/travel_war/\" />\r\n      <option name=\"UPDATING_POLICY\" value=\"restart-server\" />\r\n      <deployment>\r\n        <artifact name=\"travel:war\">\r\n          <settings>\r\n            <option name=\"CONTEXT_PATH\" value=\"/travel_war\" />\r\n          </settings>\r\n        </artifact>\r\n      </deployment>\r\n      <server-settings>\r\n        <option name=\"BASE_DIRECTORY_NAME\" value=\"0049ada1-20ae-4acc-ba0a-1e64ffc4502d\" />\r\n      </server-settings>\r\n      <predefined_log_file enabled=\"true\" id=\"Tomcat\" />\r\n      <predefined_log_file enabled=\"true\" id=\"Tomcat Catalina\" />\r\n      <predefined_log_file id=\"Tomcat Manager\" />\r\n      <predefined_log_file id=\"Tomcat Host Manager\" />\r\n      <predefined_log_file id=\"Tomcat Localhost Access\" />\r\n      <RunnerSettings RunnerId=\"Debug\">\r\n        <option name=\"DEBUG_PORT\" value=\"1237\" />\r\n      </RunnerSettings>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Cover\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Debug\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Profile\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <ConfigurationWrapper VM_VAR=\"JAVA_OPTS\" RunnerId=\"Run\">\r\n        <option name=\"USE_ENV_VARIABLES\" value=\"true\" />\r\n        <STARTUP>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </STARTUP>\r\n        <SHUTDOWN>\r\n          <option name=\"USE_DEFAULT\" value=\"true\" />\r\n          <option name=\"SCRIPT\" value=\"\" />\r\n          <option name=\"VM_PARAMETERS\" value=\"\" />\r\n          <option name=\"PROGRAM_PARAMETERS\" value=\"\" />\r\n        </SHUTDOWN>\r\n      </ConfigurationWrapper>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n        <option name=\"BuildArtifacts\" enabled=\"true\">\r\n          <artifact name=\"travel:war\" />\r\n        </option>\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"Maven.ChemicalLabItemMS\" />\r\n      <item itemvalue=\"Tomcat Server.Tomcat 8.5.24\" />\r\n    </list>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec\" name=\"Default Changelist\" comment=\"\" />\r\n      <created>1655901715645</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1655901715645</updated>\r\n      <workItem from=\"1655901717854\" duration=\"450000\" />\r\n      <workItem from=\"1685427151825\" duration=\"1535000\" />\r\n      <workItem from=\"1685428706026\" duration=\"124000\" />\r\n      <workItem from=\"1685428833294\" duration=\"826000\" />\r\n      <workItem from=\"1685520782760\" duration=\"706000\" />\r\n      <workItem from=\"1685537381059\" duration=\"1334000\" />\r\n      <workItem from=\"1685540296469\" duration=\"811000\" />\r\n      <workItem from=\"1685599640376\" duration=\"132000\" />\r\n      <workItem from=\"1685599807762\" duration=\"1261000\" />\r\n      <workItem from=\"1685603422754\" duration=\"49000\" />\r\n      <workItem from=\"1685603474267\" duration=\"10000\" />\r\n      <workItem from=\"1685603485940\" duration=\"6000\" />\r\n      <workItem from=\"1685603502462\" duration=\"2399000\" />\r\n      <workItem from=\"1685674025238\" duration=\"1608000\" />\r\n      <workItem from=\"1685771307743\" duration=\"402000\" />\r\n      <workItem from=\"1685771714405\" duration=\"5544000\" />\r\n      <workItem from=\"1685777299983\" duration=\"306000\" />\r\n      <workItem from=\"1685897456684\" duration=\"1052000\" />\r\n      <workItem from=\"1685924081606\" duration=\"921000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"添加GoodsService及其实现，实体类Date-&gt;String\">\r\n      <created>1655902015448</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1655902015448</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"更新了实体类的注释\">\r\n      <created>1685776134712</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685776134712</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"更新了实体类的注释\">\r\n      <created>1685777451475</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1685777451475</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"4\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\r\n    <MESSAGE value=\"添加GoodsService及其实现，实体类Date-&gt;String\" />\r\n    <MESSAGE value=\"更新了实体类的注释\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"更新了实体类的注释\" />\r\n  </component>\r\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\r\n    <expand />\r\n    <select />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 9833e4f5202370e6fcc8a6466df7608808e29457)
++++ b/.idea/workspace.xml	(date 1685955077663)
+@@ -12,21 +12,22 @@
+     <list default="true" id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="更新了实体类的注释">
+       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_2023_6_2_21_37__Default_Changelist_.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_borrow_in_warehouse.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_ex_warehouse.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_other_in_warehouse.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_purchase_in_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_purchase_in_warehouse.html" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/view_ex_warehouse.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/form_use_or_borrow.html" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/webapp/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/register.html" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
++  </component>
++  <component name="Git.Merge.Settings">
++    <option name="BRANCH" value="origin/master" />
+   </component>
+   <component name="Git.Settings">
+     <option name="RECENT_BRANCH_BY_REPOSITORY">
+       <map>
+-        <entry key="$PROJECT_DIR$" value="LAZ" />
++        <entry key="$PROJECT_DIR$" value="LYF" />
+       </map>
+     </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+@@ -38,10 +39,15 @@
+     <option name="FILTER_DEBUG" value="true" />
+     <option name="CUSTOM_FILTER" />
+   </component>
++  <component name="MarkdownSettingsMigration">
++    <option name="stateVersion" value="1" />
++  </component>
+   <component name="MavenImportPreferences">
+     <option name="generalSettings">
+       <MavenGeneralSettings>
+-        <option name="userSettingsFile" value="D:\Program Files\apache-maven-3.6.3\conf\settings.xml" />
++        <option name="localRepository" value="D:\develop\Java\jar_tools\.m2\repository" />
++        <option name="mavenHome" value="$PROJECT_DIR$/../develop/Java/jar_tools/apache-maven-3.6.3" />
++        <option name="userSettingsFile" value="D:\develop\Java\jar_tools\apache-maven-3.6.3\conf\settings.xml" />
+       </MavenGeneralSettings>
+     </option>
+   </component>
+@@ -59,12 +65,12 @@
+     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+     <property name="WebServerToolWindowFactoryState" value="false" />
+     <property name="aspect.path.notification.shown" value="true" />
+-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/webapp/front-end-res-lib" />
++    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+     <property name="nodejs_package_manager_path" value="npm" />
+     <property name="project.structure.last.edited" value="Artifacts" />
+     <property name="project.structure.proportion" value="0.17" />
+     <property name="project.structure.side.proportion" value="0.26412776" />
+-    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
++    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+   </component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+@@ -198,6 +204,9 @@
+     </list>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
++  <component name="SvnConfiguration">
++    <configuration>C:\Users\Lee\AppData\Roaming\Subversion</configuration>
++  </component>
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+       <changelist id="4a6ee96f-f4a8-4e70-87f3-f76f4265a3ec" name="Default Changelist" comment="" />
+@@ -224,6 +233,8 @@
+       <workItem from="1685777299983" duration="306000" />
+       <workItem from="1685897456684" duration="1052000" />
+       <workItem from="1685924081606" duration="921000" />
++      <workItem from="1685935465132" duration="943000" />
++      <workItem from="1685936449253" duration="8078000" />
+     </task>
+     <task id="LOCAL-00001" summary="添加GoodsService及其实现，实体类Date-&gt;String">
+       <created>1655902015448</created>
+@@ -262,7 +273,6 @@
+         </entry>
+       </map>
+     </option>
+-    <option name="oldMeFiltersMigrated" value="true" />
+   </component>
+   <component name="VcsManagerConfiguration">
+     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />

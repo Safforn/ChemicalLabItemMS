@@ -57,4 +57,6 @@ public interface get_or_borrow_service {
      * @return
      */
     List<get_or_borrow_Requisition> searchBorrowUnreturn();
+
+    boolean updateByApprove(get_or_borrow_Requisition table);
 }

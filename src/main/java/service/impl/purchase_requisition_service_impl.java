@@ -112,4 +112,10 @@ public class purchase_requisition_service_impl implements purchase_requisition_s
     public List<Purchase_Requisition> searchUnreturn() {
         return purchaseRequisitionDao.searchUnreturn();
     }
+
+
+    @Override
+    public void updateByApprove(Purchase_Requisition purchase_requisition) {
+        purchaseRequisitionDao.updateByApprove(purchase_requisition);
+    }
 }

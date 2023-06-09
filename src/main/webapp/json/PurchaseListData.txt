@@ -1,26 +1,13 @@
 [{
-	"object_id":"a7d99e8bc46c44b0896279e3c783a2d7",
-	"name":"好东西",
-	"specification":"100ml",
+	"object_id":"c9e92e896d1c435f9256b7025304accd",
+	"name":"test",
+	"specification":"1",
 	"quantity":1.0,
-	"unit":"瓶",
-	"classification":null,
-	"price":100.0,
+	"unit":"1",
+	"classification":"1",
+	"price":1.0,
 	"expiration_time":null,
-	"lower_limit":100.0,
-	"upper_limit":10.0,
-	"notes":"可能是好东西"
-},
-{
-	"object_id":"b23bfb1a76b24b668a9e5c99f5a4926f",
-	"name":"坏东西",
-	"specification":"10g",
-	"quantity":3.0,
-	"unit":"块",
-	"classification":"化学试剂",
-	"price":178.0,
-	"expiration_time":null,
-	"lower_limit":30.0,
-	"upper_limit":2.0,
-	"notes":"可能是坏东西"
+	"lower_limit":1.0,
+	"upper_limit":1.0,
+	"notes":"test"
 }]

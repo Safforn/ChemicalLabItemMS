@@ -159,45 +159,86 @@
     });
 </script>
 <script>
-    const dataSet = [
-        ['id', 'aaa', 'bb', '30', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','1'],
-        ['id1', 'aaa1', 'cc', '20', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','2'],
-        ['id2', 'aaa', 'bb', '30', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','3'],
-        ['id3', 'aaa1', 'cc', '20', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','0'],
-        ['id4', 'aaa', 'bb', '30', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','1'],
-        ['id5', 'aaa1', 'cc', '20', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','2'],
-        ['id6', 'aaa', 'bb', '30', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','3'],
-        ['id7', 'aaa1', 'cc', '20', 'xxxx-xx','aaa', 'bb',  'xxxx-xx', '0'],
-        ['id8', 'aaa', 'bb', '30', 'xxxx-xx', 'aaa', 'bb', 'xxxx-xx','3'],
-        ['id9', 'aaa1', 'cc', '20', 'xxxx-xx', 'aaa', 'bb',  'xxxx-xx','2'],
-    ];
-    const dataSets = [
-        ['aaa1', '规格1', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu1'],
-        ['aaa2', '规格', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu2'],
-        ['aaa3', '规格1', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu3'],
-        ['aaa4', '规格', '20', '单位', 'fenlei', '10.0', '2000-12-24', '300', '20', '1hao', 'beizhu4'],
-        ['aaa5', '规格1', '20', '单位', 'fenlei', '10.0', 'xxxx-xx', '300', '20', '1hao', 'beizhu5']
-    ];
+    var temp_user_id;
+    var temp_data;
+
+    console.log("--flag-1-");
+
+    $.ajax({
+        async: false,
+        type : "post",
+        url : "user/findOne",
+        success : function(user) {
+            console.log("--flag-findOne-");
+            temp_user_id = user.user_id;
+            console.log("user.user_id"+user.user_id);
+        }
+    });
+
+    // 初始化，获取首页表格数据
+    $.ajax({
+        async: false,
+        data: {},
+        type : "post",
+        url : "approve/initBorrowTable",
+        success : function(data) {
+            console.log("--flag-inittable-");
+            temp_data=data.data;
+        }
+    });
+
+    function json2Array(jsonData, list_or_not) {
+        var jsonsString = jsonData.slice(1, jsonData.length - 1);
+        var jsonStrings = jsonsString.split("},");
+        var length = jsonStrings.length;
+        var jsons = [];
+        for (var i = 0; i !== length-1; ++i) {
+            jsonStrings[i] += '}';
+        }
+        var source = [[]];
+        for (var i = 0; i !== length; ++i) {
+            //console.log("$"+jsonStrings[i]);
+            jsons[i] = eval('(' + jsonStrings[i] + ')');
+            var data = [];
+            for(var key in jsons[i]) {
+                if(i === 0) {
+                    source[0].push(key);
+                }
+                //console.log("i="+i+"|key="+key+"|json[i,key]="+jsons[i][key]);
+                if(!list_or_not || key !== "object_id" ) {
+                    data.push(jsons[i][key]);
+                } else {
+                    console.log("跳过在执行一次")
+                }
+            }
+            source.push(data);
+        }
+        return source.slice(1); //删除第1行
+    }
+    //console.log("temp_data=\n"+temp_data);
+    temp_data = json2Array(temp_data, false)  // 主表格数据
+
+    const dataSets = [];
     $(document).ready(function() {
         $(function(){
             var table = $('#table').DataTable({
                 retrieve: true,
-                data:dataSet,
+                data:temp_data,
                 columns:[
                     {
-                        'field': "purchase_requisition_id",
+                        'field': "get_or_borrow_requisition_id",
                         'title': '领用/借用申请表编号',
                         'defaultContent' : ""
                     }, {
-                        'field': "purchase_order_id",
+                        'field': "get_or_borrow_order_id",
                         'title': '领用/借用物品清单编号',
                         'defaultContent' : ""
                     }, {
-                        'field': "requisition_user_id",
+                        'field': "type",
                         'title': '申请单类型',
                         'defaultContent' : ""
                     },{
-                        'field': "requisition_user_id",
+                        'field': "applicant_user_id",
                         'title': '申请人',
                         'defaultContent' : ""
                     }, {
@@ -205,11 +246,11 @@
                         'title': '领用/借用用途',
                         'defaultContent' : ""
                     }, {
-                        'field': "requisition_date",
+                        'field': "borrow_date",
                         'title': '借用开始日期',
                         'defaultContent' : ""
                     },{
-                        'field': "requisition_date",
+                        'field': "return_date",
                         'title': '借用结束日期',
                         'defaultContent' : ""
                     },{
@@ -327,11 +368,6 @@
                         'defaultContent' : "",
                         'sClass': 'text-center'
                     }, {
-                        'field': "warehouse_id",
-                        'title': '仓库',
-                        'defaultContent' : "",
-                        'sClass': 'text-center'
-                    }, {
                         'field': "notes",
                         'title': '备注',
                         'defaultContent' : "",
@@ -365,6 +401,25 @@
 
             // 点击 物品清单
             $("table tbody").on("click",".list-btn",function (){
+                var tds=$(this).parents("tr").children();
+                temp_order_id = tds[1].innerText;
+                // 向后端请求物品清单数据
+                $.ajax({
+                    async: false,  // true 异步，false 同步
+                    data: {order_id: temp_order_id},
+                    type: "post",
+                    url : "approve/initBorrowListTable",
+                    success : function(data) {
+                        //console.log("--flag-initListTable-");
+                        temp_list_data=data.data;
+                        temp_list_data = json2Array(temp_list_data, true)
+                    }
+                });
+                // 更新表格数据
+                $('#listTable').dataTable().api().clear();
+                $('#listTable').dataTable().api().rows.add(temp_list_data);
+                $('#listTable').dataTable().api().draw();
+
 
                 $('#updateModal').modal('show');
             })
@@ -379,32 +434,45 @@
                     if(confirm('确认审核通过？')){  //确认提交
                         // 拼后端BeanUtils所需的map串
                         var front_end_data = "";
-                        if (tds[0].innerText !== "") front_end_data += "purchase_requisition_id="+tds[0].innerText+"&";
-                        if (tds[1].innerText !== "") front_end_data += "purchase_order_id="+tds[1].innerText+"&";
-                        if (tds[3].innerText !== "") front_end_data += "purpose="+tds[3].innerText+"&";
-                        if (tds[4].innerText !== "") front_end_data += "requisition_date="+tds[4].innerText+"&";
-                        if (tds[5].innerText !== "") front_end_data += "&state="+tds[5].innerText+"&";
-                        if (tds[6].innerText !== "") front_end_data += "&approval_user_id="+tds[6].innerText+"&";
-                        if (tds[7].innerText !== "") front_end_data += "&approval_opinions="+tds[7].innerText+"&";
-                        if (tds[8].innerText !== "") front_end_data += "&approval_date="+tds[8].innerText+"&";
-                        // front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
+                        if (tds[0].innerText !== "") front_end_data += "get_or_borrow_requisition_id="+tds[0].innerText+"&";
+                        if (tds[8].innerText !== "") front_end_data += "state="+2+"&";
+                        if (tds[9].innerText !== "") front_end_data += "approval_user_id="+temp_user_id+"&";
+                        if (tds[10].innerText !== "") front_end_data += "approval_opinions="+tds[10].innerText+"&";
+                        if (tds[11].innerText !== "") front_end_data += "approval_date="+tds[11].innerText+"&";
+                        front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
 
+                        console.log("front_end_data="+front_end_data);
+                        // alert("打开F12看前端发送的数据");
                         $.get("user/findOne", {}, function (data) {
                             // 获取当前登陆的用户id
-                            front_end_data += "requisition_user_id="+data.user_id;
-                            console.log("front_end_data="+front_end_data);
-                            // 把前端数据传给后端
-                            $.post("purchase/createOrUpdateItems", front_end_data, function (data) {
+                            $.post("approve/borrowApproveOver", front_end_data, function (data) {
                                 console.log("在接受后端数据之后");
                                 if (data.flag) {
                                     alert("提交成功");
+                                    location.reload();
                                     tds[8].innerText = '审核通过';
                                     // 禁用按钮：应该放入点击确认
                                     $(this).attr('disabled',true);
                                     tds.find('.edit-btn').attr('disabled',true);
-                                } else {
-                                    alert("提交失败");
-                                }
+                                    tds.find('.submit-btn').attr('disabled',true);
+                                    tds.find('.not-submit-btn').attr('disabled',true);
+
+                                    $.ajax({
+                                        async: false,  // true 同步，false异步
+                                        data: {order_id: temp_order_id},
+                                        type: "post",
+                                        url : "approve/initBorrowListTable",
+                                        success : function(data) {
+                                            //console.log("--flag-initListTable-");
+                                            temp_list_data=data.data;
+                                            temp_list_data = json2Array(temp_list_data, true)
+                                        }
+                                    });
+                                    // 更新表格数据
+                                    $('#table').dataTable().api().clear();
+                                    $('#table').dataTable().api().rows.add(temp_list_data);
+                                    $('#table').dataTable().api().draw();
+                                } else {}
                             })
                         });  // end of $.get("user/findOne"...
                     } // end of confirm(确认提交申请？)
@@ -421,33 +489,47 @@
                     if(confirm('确认审核不通过？')){  //确认提交
                         // 拼后端BeanUtils所需的map串
                         var front_end_data = "";
-                        if (tds[0].innerText !== "") front_end_data += "purchase_requisition_id="+tds[0].innerText+"&";
-                        if (tds[1].innerText !== "") front_end_data += "purchase_order_id="+tds[1].innerText+"&";
-                        if (tds[3].innerText !== "") front_end_data += "purpose="+tds[3].innerText+"&";
-                        if (tds[4].innerText !== "") front_end_data += "requisition_date="+tds[4].innerText+"&";
-                        if (tds[5].innerText !== "") front_end_data += "&state="+tds[5].innerText+"&";
-                        if (tds[6].innerText !== "") front_end_data += "&approval_user_id="+tds[6].innerText+"&";
-                        if (tds[7].innerText !== "") front_end_data += "&approval_opinions="+tds[7].innerText+"&";
-                        if (tds[8].innerText !== "") front_end_data += "&approval_date="+tds[8].innerText+"&";
-                        // front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
+                        if (tds[0].innerText !== "") front_end_data += "get_or_borrow_requisition_id="+tds[0].innerText+"&";
+                        if (tds[8].innerText !== "") front_end_data += "state="+3+"&";
+                        if (tds[9].innerText !== "") front_end_data += "approval_user_id="+temp_user_id+"&";
+                        if (tds[10].innerText !== "") front_end_data += "approval_opinions="+tds[10].innerText+"&";
+                        if (tds[11].innerText !== "") front_end_data += "approval_date="+tds[11].innerText+"&";
+                        front_end_data = front_end_data.substring(0, front_end_data.length-1);  //删除最后一个字符
 
                         $.get("user/findOne", {}, function (data) {
                             // 获取当前登陆的用户id
-                            front_end_data += "requisition_user_id="+data.user_id;
                             console.log("front_end_data="+front_end_data);
                             // 把前端数据传给后端
-                            $.post("purchase/createOrUpdateItems", front_end_data, function (data) {
+                            $.post("approve/borrowApproveOver", front_end_data, function (data) {
                                 console.log("在接受后端数据之后");
                                 if (data.flag) {
                                     alert("提交成功");
+                                    location.reload();
                                     tds[8].innerText = '审核未通过';
                                     // 禁用按钮：应该放入点击确认
                                     $(this).attr('disabled',true);
                                     tds.find('.edit-btn').attr('disabled',true);
+                                    tds.find('.submit-btn').attr('disabled',true);
+                                    tds.find('.not-submit-btn').attr('disabled',true);
+                                    $.ajax({
+                                        async: false,  // true 同步，false异步
+                                        data: {order_id: temp_order_id},
+                                        type: "post",
+                                        url : "approve/initBorrowListTable",
+                                        success : function(data) {
+                                            //console.log("--flag-initListTable-");
+                                            temp_list_data=data.data;
+                                            temp_list_data = json2Array(temp_list_data, true)
+                                        }
+                                    });
+                                    // 更新表格数据
+                                    $('#table').dataTable().api().clear();
+                                    $('#table').dataTable().api().rows.add(temp_list_data);
+                                    $('#table').dataTable().api().draw();
                                 } else {
                                     alert("提交失败");
                                 }
-                            })
+                            });
                         });  // end of $.get("user/findOne"...
                     } // end of confirm(确认提交申请？)
                     else {} //点击取消，无事发生
@@ -472,7 +554,6 @@
 
             //申请表修改保存
             $("#table tbody").on("click",".save-btn",function(){
-                var row=table.row($(this).parents("tr"));
                 var tds=$(this).parents("tr").children();
                 $.each(tds, function(i,val){
                     var jqob=$(val);

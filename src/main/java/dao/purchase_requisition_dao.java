@@ -63,4 +63,6 @@ public interface purchase_requisition_dao {
      * @return
      */
     boolean changeState(String orderId, int state);
+
+    boolean updateByApprove(Purchase_Requisition table);
 }

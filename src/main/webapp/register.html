@@ -227,7 +227,30 @@
             $("#password").blur(checkPassword);
             $("#repassword").blur(checkRepassword);
             $("#phonenumber").blur(checkTel);
-        })
+
+
+            var registIdentity = $("input[type='radio']:checked").val();
+            var registId = null;
+            switch(registIdentity){
+                case "负责人":
+                    registId = 1;
+                    alert(registIdentity);
+                    break;
+                case "仓库管理员":
+                    registId = 2;
+                    alert(registIdentity);
+                    break;
+                case "审批人":
+                    registId = 3;
+                    alert(registIdentity);
+                    break;
+                default:
+                    alert(registIdentity);
+                    break;
+            }
+
+
+        });
     </script>
 
 </body>
