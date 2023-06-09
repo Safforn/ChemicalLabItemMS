@@ -1,5 +1,6 @@
 package dao;
 
+import domain.Purchase_Requisition;
 import domain.get_or_borrow_Requisition;
 
 import java.util.List;
@@ -63,4 +64,6 @@ public interface get_or_borrow_dao {
      */
     List<get_or_borrow_Requisition> searchBorrowUnreturn();
     List<get_or_borrow_Requisition> getMaxId();
+
+    boolean updateByApprove(get_or_borrow_Requisition table);
 }

@@ -75,6 +75,7 @@ public class GetOrBorrowServlet extends BaseServlet {
         List<Object_Entry> object_entries = new ArrayList<>();
         Object_Entry objectEntry = new Object_Entry();
 
+        if (order_id.equals("")) order_id = UuidUtil.getUuid();
 
         if (get_or_borrow_requisition.getGet_or_borrow_order_id() == null) {
             get_or_borrow_requisition.setGet_or_borrow_order_id(order_id);
@@ -86,12 +87,13 @@ public class GetOrBorrowServlet extends BaseServlet {
         //-----------？？？-----------------
         for (Item item : temp_items.get(order_id)) {
             objectEntry.setOrder_id(order_id);
-            objectEntry.setObject_id(item.getObject_id());  //TODO:NullPointerException
+            objectEntry.setObject_id(item.getObject_id());
             objectEntry.setNum((int)item.getQuantity());
             object_entries.add(objectEntry);
         }
-        i_service.add(temp_items.get(get_or_borrow_requisition.getGet_or_borrow_order_id()));
+        i_service.add(temp_items.get(order_id));
         //--------------？？？----------------
+        System.out.println(" *********  " + get_or_borrow_requisition.getApplicant_user_id());
 
         template_order templateOrder = new template_order(get_or_borrow_requisition, object_entries);
         service.createOrUpdate(templateOrder);
@@ -256,7 +258,7 @@ public class GetOrBorrowServlet extends BaseServlet {
                 }
             }
         }
-        System.out.println("-------*************************----------"+items.size());
+        System.out.println("-------*************************----------"+result.size());
         for(Item i : result) {
             i.print();
         }
@@ -313,6 +315,9 @@ public class GetOrBorrowServlet extends BaseServlet {
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+        item_changed.print();
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
         // 如果当前order_id没有关联的物品行，新建一个对应的缓存
         if (order_id == "") {
             order_id = UuidUtil.getPRO();

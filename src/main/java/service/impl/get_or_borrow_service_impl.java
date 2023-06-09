@@ -42,6 +42,7 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
          */
         table.setRequisition_date(getCurrentTime());
         table.setGet_or_borrow_requisition_id(UuidUtil.getGBR());
+        System.out.println("-- service : " + table.getGet_or_borrow_requisition_id());
 //        String orderId = UuidUtil.getUuid();
 //        table.setGet_or_borrow_order_id(orderId);
         for (Object_Entry object_entry : order) {
@@ -107,5 +108,10 @@ public class get_or_borrow_service_impl implements get_or_borrow_service {
     @Override
     public List<get_or_borrow_Requisition> searchBorrowUnreturn() {
         return getOrBorrowDao.searchBorrowUnreturn();
+    }
+
+    @Override
+    public boolean updateByApprove(get_or_borrow_Requisition table) {
+        return getOrBorrowDao.updateByApprove(table);
     }
 }

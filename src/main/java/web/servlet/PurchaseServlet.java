@@ -76,7 +76,8 @@ public class PurchaseServlet extends BaseServlet {
 
         purchase_requisition.print();  // 调试，显示前端传回的数据
 
-        // TODO: 前端表格里的物品清单数据还没传进来
+
+        if (order_id.equals("")) order_id = UuidUtil.getUuid();
         List<Object_Entry> objectEntries = new ArrayList<>();
         Object_Entry object_entry = new Object_Entry();
         if (purchase_requisition.getPurchase_order_id() == null) {
@@ -87,7 +88,7 @@ public class PurchaseServlet extends BaseServlet {
             for (Item item : temp_items.get(order_id)) {
                 object_entry.setObject_id(item.getObject_id());
                 object_entry.setNum((int) (item.getQuantity()));
-                object_entry.setOrder_id(purchase_requisition.getPurchase_order_id());
+                object_entry.setOrder_id(order_id);
                 objectEntries.add(object_entry);
                 item.setQuantity(0);
             }
@@ -122,7 +123,6 @@ public class PurchaseServlet extends BaseServlet {
             }
         }
         template_order templateOrder = new template_order(purchase_requisition, result);
-
 
         service.createOrUpdate(templateOrder);
         ResultInfo info = new ResultInfo();
